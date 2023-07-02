@@ -111,12 +111,13 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: obscurePassword,
                     validator: (value) {
                       if (_username.text.isEmpty) {
-                        return 'Akun tid';
+                        return 'Akun tidak tersedia';
                       } else if (_password.text.isEmpty) {
                         return 'Password tidak boleh kosong';
                       } else if (value != user[_username.text]['Password']) {
                         return 'Password salah';
                       }
+                      return null;
                     },
                   ),
                   Row(
