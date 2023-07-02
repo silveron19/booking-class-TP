@@ -1,5 +1,5 @@
+import 'package:booking_class_tp_mobile/mainpage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 Color indigoDye = const Color(0xff004267);
 Color grey = const Color(0xff7B7B7B);
@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Class Booking App',
-      home: const LoginPage(),
+      home: LoginPage(),
     );
   }
 }
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 48,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Text(
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 24,
                   ),
                   TextFormField(
@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8)),
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.visibility),
+                          icon: const Icon(Icons.visibility),
                           onPressed: () {
                             setState(() {
                               obscurePassword = !obscurePassword;
@@ -148,18 +148,21 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ]),
               ),
-              Container(
+              SizedBox(
                 height: 56,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: indigoDye),
                     onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return MainPage();
+                        }));
+                      }
                       // Navigator.push(context,
                       //     MaterialPageRoute(builder: (BuildContext context) {
                       //   return MainPage();
                       // }));
-                      if (_formKey.currentState!.validate()) {
-                        debugPrint('Terdapat username');
-                      }
                     },
                     child: const Text('LOGIN',
                         style: TextStyle(color: Colors.white, fontSize: 14))),

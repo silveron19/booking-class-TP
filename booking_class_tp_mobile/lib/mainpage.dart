@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import 'main.dart';
 
@@ -22,13 +23,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
             onPressed: () {},
             icon: Icon(
-              Icons.notifications_outlined,
+              Symbols.notifications,
               color: dimGrey,
             )),
         IconButton(
             onPressed: () {},
             icon: Icon(
-              Icons.person,
+              Symbols.person,
               color: dimGrey,
             ))
       ],
@@ -64,52 +65,57 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: const MyAppBar(name: 'Home'),
       body: Center(
-        child: _pages.elementAt(currentPage),
+        child: Text('Main'),
       ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: indigoDye,
           currentIndex: currentPage,
           onTap: changePage,
           type: BottomNavigationBarType.fixed,
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 activeIcon: Icon(
-                  Icons.home,
+                  Symbols.home_filled_rounded,
                   size: 32,
+                  fill: 1,
                 ),
                 icon: Icon(
-                  Icons.home_outlined,
+                  Symbols.home_rounded,
                   size: 32,
                 ),
                 label: 'Home'),
             BottomNavigationBarItem(
                 activeIcon: Icon(
-                  Icons.calendar_month,
+                  Symbols.calendar_month_rounded,
+                  fill: 1,
                   size: 32,
                 ),
                 icon: Icon(
-                  Icons.calendar_month_outlined,
+                  Symbols.calendar_month_rounded,
                   size: 32,
                 ),
                 label: 'Schedule'),
             BottomNavigationBarItem(
                 activeIcon: Icon(
-                  Icons.mail,
+                  Symbols.mail_rounded,
                   size: 32,
+                  fill: 1,
                 ),
                 icon: Icon(
-                  Icons.mail_outline,
+                  Symbols.mail_outline_rounded,
                   size: 32,
                 ),
                 label: 'Request'),
             BottomNavigationBarItem(
                 activeIcon: Icon(
-                  Icons.domain,
+                  Symbols.domain_rounded,
                   size: 32,
+                  weight: 700,
                 ),
                 icon: Icon(
-                  Icons.domain_outlined,
+                  Symbols.domain_rounded,
                   size: 32,
+                  weight: 300,
                 ),
                 label: 'Classroom')
           ]),
