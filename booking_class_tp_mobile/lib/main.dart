@@ -7,6 +7,8 @@ Color dimGrey = const Color(0xff616265);
 Color customWhite = const Color(0xFFFFFFFF);
 Color customBlack = const Color(0xff000000);
 
+const paddings = EdgeInsets.all(32);
+
 Map user = {
   'Nama': {'Password': '12345'},
   'Nama1': {'Password': '12345'},
@@ -154,6 +156,11 @@ class _LoginPageState extends State<LoginPage> {
                     style: ElevatedButton.styleFrom(backgroundColor: indigoDye),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) {
                           return MainPage();

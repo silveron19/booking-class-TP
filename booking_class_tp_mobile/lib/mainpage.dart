@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import 'homepage.dart';
 import 'main.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -48,8 +49,7 @@ class _MainPageState extends State<MainPage> {
   int currentPage = 0;
 
   static const List<Widget> _pages = <Widget>[
-    MainPage(),
-    // HomePage(),
+    HomePage(),
     // SchedulePage(),
     // RequestPage()
   ];
@@ -65,7 +65,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: const MyAppBar(name: 'Home'),
       body: Center(
-        child: Text('Main'),
+        child: _pages.elementAt(0),
       ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: indigoDye,
