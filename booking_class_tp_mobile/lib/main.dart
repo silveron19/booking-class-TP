@@ -6,6 +6,7 @@ Color grey = const Color(0xff7B7B7B);
 Color dimGrey = const Color(0xff616265);
 Color customWhite = const Color(0xFFFFFFFF);
 Color customBlack = const Color(0xff000000);
+Color antiFlashWhite = const Color(0xffEEEEEE);
 
 const paddings = EdgeInsets.all(32);
 
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(fontFamily: 'Montserrat'),
       title: 'Class Booking App',
       home: LoginPage(),
     );
@@ -166,10 +168,6 @@ class _LoginPageState extends State<LoginPage> {
                           return MainPage();
                         }));
                       }
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (BuildContext context) {
-                      //   return MainPage();
-                      // }));
                     },
                     child: const Text('LOGIN',
                         style: TextStyle(color: Colors.white, fontSize: 14))),

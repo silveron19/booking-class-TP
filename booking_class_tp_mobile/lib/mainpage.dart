@@ -1,8 +1,10 @@
+import 'package:booking_class_tp_mobile/schedulepage.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import 'homepage.dart';
 import 'main.dart';
+import 'requestpage.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -50,8 +52,8 @@ class _MainPageState extends State<MainPage> {
 
   static const List<Widget> _pages = <Widget>[
     HomePage(),
-    // SchedulePage(),
-    // RequestPage()
+    SchedulePage(),
+    RequestPage()
   ];
 
   void changePage(currentIndex) {
@@ -65,7 +67,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: const MyAppBar(name: 'Home'),
       body: Center(
-        child: _pages.elementAt(0),
+        child: _pages.elementAt(currentPage),
       ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: indigoDye,
