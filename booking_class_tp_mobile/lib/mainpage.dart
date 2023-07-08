@@ -41,7 +41,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  const MainPage({super.key, required this.user});
+  final Object user;
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -49,25 +50,42 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int currentPage = 0;
+  PageController _pageController = PageController();
 
-  static const List<Widget> _pages = <Widget>[
-    HomePage(),
-    SchedulePage(),
-    RequestPage()
-  ];
+  List<String> appbarTitle = ['Home', 'Schedule', 'Request', 'Classroom'];
+
+  void iniState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   void changePage(currentIndex) {
     setState(() {
       currentPage = currentIndex;
+      _pageController.animateToPage(currentIndex,
+          duration: Duration(milliseconds: 600), curve: Curves.easeInOut);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(name: 'Home'),
+      appBar: MyAppBar(name: appbarTitle[currentPage]),
       body: Center(
-        child: _pages.elementAt(currentPage),
+        child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                currentPage = index;
+              });
+            },
+            children: [HomePage(), SchedulePage(), RequestPage()]),
       ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: indigoDye,

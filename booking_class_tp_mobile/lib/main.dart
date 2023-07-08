@@ -11,9 +11,9 @@ Color antiFlashWhite = const Color(0xffEEEEEE);
 const paddings = EdgeInsets.all(32);
 
 Map user = {
-  'Nama': {'Password': '12345'},
-  'Nama1': {'Password': '12345'},
-  'Nama2': {'Password': '12345'},
+  'Nama': {'Password': '12345', 'role': 'admin'},
+  'Nama1': {'Password': '12345', 'role': 'mahasiswa'},
+  'Nama2': {'Password': '12345', 'role': 'ketua kelas'},
 };
 
 void main() {
@@ -47,6 +47,13 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController();
   final _password = TextEditingController();
+
+  @override
+  void dispose() {
+    _username.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +121,11 @@ class _LoginPageState extends State<LoginPage> {
                         )),
                     obscureText: obscurePassword,
                     validator: (value) {
-                      if (_username.text.isEmpty) {
-                        return 'Akun tidak tersedia';
-                      } else if (_password.text.isEmpty) {
-                        return 'Password tidak boleh kosong';
-                      } else if (value != user[_username.text]['Password']) {
-                        return 'Password salah';
+                      if (user.containsKey(_username.text)) {
+                        if (user[_username.text]['Password'] !=
+                            _password.text) {
+                          return 'Password salah';
+                        }
                       }
                       return null;
                     },
@@ -165,7 +171,9 @@ class _LoginPageState extends State<LoginPage> {
                         }
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return MainPage();
+                          return MainPage(
+                            user: user[_username.text],
+                          );
                         }));
                       }
                     },

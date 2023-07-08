@@ -17,7 +17,6 @@ TextStyle bottomSheetText =
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
-
   @override
   State<SchedulePage> createState() => _SchedulePageState();
 }
@@ -78,8 +77,14 @@ class _SchedulePageState extends State<SchedulePage> {
             }));
   }
 
-  Future<dynamic> scheduleModalBottomSheet(BuildContext context, String nama,
-      String tanggal, String namaDosen, String notifikasi, String kapasitas) {
+  Future<dynamic> scheduleModalBottomSheet(
+    BuildContext context,
+    String nama,
+    String tanggal,
+    String namaDosen,
+    String notifikasi,
+    String kapasitas,
+  ) {
     return showModalBottomSheet(
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(

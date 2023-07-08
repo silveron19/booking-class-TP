@@ -3,6 +3,49 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import 'main.dart';
 
+List requests = [
+  {
+    'nama': 'A. Analta Dwiyanto',
+    'tanggal': 'Rabu, 21 Oktober 2090 | 08:00 WITA',
+    'mata kuliah': 'Rekayasa Perangkat Lunak',
+    'jadwal baru': 'Rabu, 20 September 2023 Pukul 07:30 - 08:30',
+    'kelas baru': 'CR 100|201',
+    'deskripsi': 'Dosen ingin mengganti kelas',
+    'status': 'Ditolak',
+    'alasan': 'Dalam proses renovasi',
+  },
+  {
+    'nama': 'Testing',
+    'tanggal': 'Rabu, 21 Oktober 2090 | 08:00 WITA',
+    'mata kuliah': 'Rekayasa Perangkat Lunak',
+    'jadwal baru': 'Rabu, 20 September 2023 Pukul 07:30 - 08:30',
+    'kelas baru': 'CR 100|201',
+    'deskripsi': 'Dosen ingin mengganti kelas',
+    'status': 'Diterima',
+    'alasan': 'Dalam proses renovasi',
+  },
+  {
+    'nama': 'Fakhri',
+    'tanggal': 'Kamis, 21 Oktober 2090 | 08:00 WITA',
+    'mata kuliah': 'Rekayasa Perangkat Lunak',
+    'jadwal baru': 'Rabu, 20 September 2023 Pukul 07:30 - 08:30',
+    'kelas baru': 'CR 100|201',
+    'deskripsi': 'Dosen ingin mengganti kelas',
+    'status': 'Menunggu',
+    'alasan': 'Dalam proses renovasi',
+  },
+  {
+    'nama': 'Rasyad',
+    'tanggal': 'Rabu, 21 Oktober 2090 | 08:00 WITA',
+    'mata kuliah': 'Rekayasa Perangkat Lunak',
+    'jadwal baru': 'Rabu, 20 September 2023 Pukul 07:30 - 08:30',
+    'kelas baru': 'CR 100|201',
+    'deskripsi': 'Dosen ingin mengganti kelas',
+    'status': 'Ditolak',
+    'alasan': 'Dalam proses renovasi',
+  }
+];
+
 Future<void> myDialog(BuildContext context) {
   return showDialog(
       context: context,
@@ -131,7 +174,7 @@ class _RequestPageState extends State<RequestPage> {
           ),
           Flexible(
             child: ListView.separated(
-              itemCount: 5,
+              itemCount: requests.length,
               itemBuilder: (context, index) {
                 var textStyle = TextStyle(
                     fontSize: 14,
@@ -139,7 +182,8 @@ class _RequestPageState extends State<RequestPage> {
                     color: customWhite);
                 return InkWell(
                   onTap: () {
-                    showingBottomSheet(context, 'Nama', 'Tanggal');
+                    showingBottomSheet(context, requests[index]['nama'],
+                        requests[index]['tanggal']);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -149,7 +193,11 @@ class _RequestPageState extends State<RequestPage> {
                     child: Row(children: [
                       Icon(
                         Symbols.circle,
-                        color: grey,
+                        color: requests[index]['status'] == 'Diterima'
+                            ? Colors.green
+                            : requests[index]['status'] == 'Ditolak'
+                                ? Colors.red
+                                : grey,
                         fill: 1,
                       ),
                       SizedBox(
@@ -163,7 +211,7 @@ class _RequestPageState extends State<RequestPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Nama',
+                                  requests[index]['nama'],
                                   style: textStyle,
                                 ),
                                 Text(
@@ -180,7 +228,7 @@ class _RequestPageState extends State<RequestPage> {
                               color: customWhite,
                             ),
                             Text(
-                              'Mata Kuliah',
+                              requests[index]['mata kuliah'],
                               style: textStyle,
                             ),
                           ],
@@ -204,6 +252,7 @@ class _RequestPageState extends State<RequestPage> {
 
   Future<dynamic> showingBottomSheet(
       BuildContext context, String nama, String tanggal) {
+    bool isReadOnly = true;
     return showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -245,7 +294,11 @@ class _RequestPageState extends State<RequestPage> {
                               width: 12,
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                setState(() {
+                                  isReadOnly = !isReadOnly;
+                                });
+                              },
                               child: Icon(
                                 Symbols.edit_square_rounded,
                                 size: 28,
@@ -294,7 +347,7 @@ class _RequestPageState extends State<RequestPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
-                        readOnly: true,
+                        readOnly: isReadOnly,
                         initialValue: 'Value',
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
@@ -312,7 +365,7 @@ class _RequestPageState extends State<RequestPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
-                        readOnly: true,
+                        readOnly: isReadOnly,
                         initialValue: 'Value',
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
@@ -330,7 +383,7 @@ class _RequestPageState extends State<RequestPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
-                        readOnly: true,
+                        readOnly: isReadOnly,
                         initialValue: 'Value',
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
@@ -348,7 +401,7 @@ class _RequestPageState extends State<RequestPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
-                        readOnly: true,
+                        readOnly: isReadOnly,
                         initialValue: 'Value',
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
@@ -366,9 +419,14 @@ class _RequestPageState extends State<RequestPage> {
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
-                        readOnly: true,
+                        readOnly: isReadOnly,
                         initialValue: 'Value',
-                        decoration: InputDecoration(border: InputBorder.none),
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: Icon(
+                              Symbols.radio_button_unchecked,
+                              fill: 1,
+                            )),
                       ),
                     ),
                   ],
