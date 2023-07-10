@@ -1,3 +1,4 @@
+import 'package:booking_class_tp_mobile/Connection/database_connetion.dart';
 import 'package:booking_class_tp_mobile/mainpage.dart';
 import 'package:flutter/material.dart';
 
@@ -43,10 +44,17 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool rememberMe = false;
   bool obscurePassword = true;
+  bool isAuthenticating = false;
+
+  List errors = [];
 
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController();
   final _password = TextEditingController();
+
+  void iniState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -89,6 +97,9 @@ class _LoginPageState extends State<LoginPage> {
               Form(
                 key: _formKey,
                 child: Column(children: [
+                  Column(
+                      children: List.generate(
+                          errors.length, (index) => Text(errors[index]))),
                   TextFormField(
                     controller: _username,
                     validator: (value) {
@@ -120,15 +131,6 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         )),
                     obscureText: obscurePassword,
-                    validator: (value) {
-                      if (user.containsKey(_username.text)) {
-                        if (user[_username.text]['Password'] !=
-                            _password.text) {
-                          return 'Password salah';
-                        }
-                      }
-                      return null;
-                    },
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,24 +164,37 @@ class _LoginPageState extends State<LoginPage> {
                 height: 56,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: indigoDye),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        FocusScopeNode currentFocus = FocusScope.of(context);
+                    onPressed: () async {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
 
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
+                      }
+
+                      setState(() {
+                        isAuthenticating = true;
+                      });
+
+                      // loginAuthentication(_username.text, _password.text)
+                      //     .then((value) => errors = value);
+
+                      if (errors.isEmpty) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return MainPage(
-                            user: user[_username.text],
-                          );
+                          return MainPage();
                         }));
+                      } else {
+                        setState(() {
+                          errors = errors;
+                        });
                       }
                     },
-                    child: const Text('LOGIN',
-                        style: TextStyle(color: Colors.white, fontSize: 14))),
-              )
+                    child: isAuthenticating
+                        ? CircularProgressIndicator()
+                        : Text('LOGIN',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 14))),
+              ),
             ],
           ),
         ),

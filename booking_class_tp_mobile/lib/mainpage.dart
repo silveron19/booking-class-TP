@@ -1,3 +1,4 @@
+import 'package:booking_class_tp_mobile/classroom.dart';
 import 'package:booking_class_tp_mobile/schedulepage.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -41,8 +42,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key, required this.user});
-  final Object user;
+  const MainPage({
+    super.key,
+  });
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -85,7 +87,12 @@ class _MainPageState extends State<MainPage> {
                 currentPage = index;
               });
             },
-            children: [HomePage(), SchedulePage(), RequestPage()]),
+            children: [
+              HomePage(),
+              SchedulePage(),
+              RequestPage(),
+              ClassroomPage()
+            ]),
       ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: indigoDye,

@@ -46,6 +46,27 @@ List requests = [
   }
 ];
 
+class Requests {
+  Requests(
+      {required this.nama,
+      required this.tanggal,
+      required this.mataKuliah,
+      required this.jadwalBaru,
+      required this.kelasBaru,
+      required this.deskripsi,
+      required this.status,
+      required this.alasan});
+
+  String nama;
+  String tanggal;
+  String mataKuliah;
+  String jadwalBaru;
+  String kelasBaru;
+  String deskripsi;
+  String status;
+  String alasan;
+}
+
 Future<void> myDialog(BuildContext context) {
   return showDialog(
       context: context,
@@ -180,10 +201,18 @@ class _RequestPageState extends State<RequestPage> {
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: customWhite);
+                var thisRequest = Requests(
+                    nama: requests[index]['nama'],
+                    tanggal: requests[index]['tanggal'],
+                    mataKuliah: requests[index]['mata kuliah'],
+                    jadwalBaru: requests[index]['jadwal baru'],
+                    kelasBaru: requests[index]['kelas baru'],
+                    deskripsi: requests[index]['deskripsi'],
+                    status: requests[index]['status'],
+                    alasan: requests[index]['alasan']);
                 return InkWell(
                   onTap: () {
-                    showingBottomSheet(context, requests[index]['nama'],
-                        requests[index]['tanggal']);
+                    showingBottomSheet(context, thisRequest);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -193,9 +222,9 @@ class _RequestPageState extends State<RequestPage> {
                     child: Row(children: [
                       Icon(
                         Symbols.circle,
-                        color: requests[index]['status'] == 'Diterima'
+                        color: thisRequest.status == 'Diterima'
                             ? Colors.green
-                            : requests[index]['status'] == 'Ditolak'
+                            : thisRequest.status == 'Ditolak'
                                 ? Colors.red
                                 : grey,
                         fill: 1,
@@ -211,11 +240,11 @@ class _RequestPageState extends State<RequestPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  requests[index]['nama'],
+                                  thisRequest.nama,
                                   style: textStyle,
                                 ),
                                 Text(
-                                  'Waktu',
+                                  thisRequest.tanggal,
                                   style: textStyle,
                                 )
                               ],
@@ -228,7 +257,7 @@ class _RequestPageState extends State<RequestPage> {
                               color: customWhite,
                             ),
                             Text(
-                              requests[index]['mata kuliah'],
+                              thisRequest.mataKuliah,
                               style: textStyle,
                             ),
                           ],
@@ -251,12 +280,13 @@ class _RequestPageState extends State<RequestPage> {
   }
 
   Future<dynamic> showingBottomSheet(
-      BuildContext context, String nama, String tanggal) {
+      BuildContext context, Requests theRequest) {
     bool isReadOnly = true;
     return showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setState) {
           return Container(
             padding: EdgeInsets.all(24),
             height: MediaQuery.of(context).size.height,
@@ -322,13 +352,13 @@ class _RequestPageState extends State<RequestPage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                nama,
+                                theRequest.nama,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                     color: Colors.black),
                               ),
-                              Text(tanggal)
+                              Text(theRequest.tanggal)
                             ],
                           ),
                         )
@@ -348,7 +378,7 @@ class _RequestPageState extends State<RequestPage> {
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
                         readOnly: isReadOnly,
-                        initialValue: 'Value',
+                        initialValue: theRequest.mataKuliah,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -366,7 +396,7 @@ class _RequestPageState extends State<RequestPage> {
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
                         readOnly: isReadOnly,
-                        initialValue: 'Value',
+                        initialValue: theRequest.jadwalBaru,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -384,7 +414,7 @@ class _RequestPageState extends State<RequestPage> {
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
                         readOnly: isReadOnly,
-                        initialValue: 'Value',
+                        initialValue: theRequest.kelasBaru,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -402,7 +432,7 @@ class _RequestPageState extends State<RequestPage> {
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
                         readOnly: isReadOnly,
-                        initialValue: 'Value',
+                        initialValue: theRequest.alasan,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -420,20 +450,38 @@ class _RequestPageState extends State<RequestPage> {
                       decoration: BoxDecoration(border: Border.all()),
                       child: TextFormField(
                         readOnly: isReadOnly,
-                        initialValue: 'Value',
+                        initialValue: theRequest.status,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             icon: Icon(
                               Symbols.radio_button_unchecked,
                               fill: 1,
+                              color: theRequest.status == 'Diterima'
+                                  ? Colors.green
+                                  : theRequest.status == 'Ditolak'
+                                      ? Colors.red
+                                      : Colors.grey,
                             )),
                       ),
                     ),
                   ],
                 ),
+                if (!isReadOnly)
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: indigoDye,
+                          padding: EdgeInsets.symmetric(vertical: 18)),
+                      onPressed: () {},
+                      child: Text(
+                        'Konfirmasi Perubahan',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ))
               ],
             ),
           );
         });
+      },
+    );
   }
 }
