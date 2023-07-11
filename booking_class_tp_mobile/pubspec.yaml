@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   material_symbols_icons: ^4.2663.0
   mongo_dart: ^0.9.1
+  dropdown_button2: ^2.3.4
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,3 @@
-import 'package:booking_class_tp_mobile/Connection/database_connetion.dart';
 import 'package:booking_class_tp_mobile/mainpage.dart';
 import 'package:flutter/material.dart';
 
@@ -131,6 +130,14 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         )),
                     obscureText: obscurePassword,
+                    validator: (value) {
+                      if (user.containsKey(_username.text)) {
+                        if (user[_username.text]['Password'] != value) {
+                          return 'Password salah';
+                        }
+                      }
+                      return null;
+                    },
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,22 +178,11 @@ class _LoginPageState extends State<LoginPage> {
                         currentFocus.unfocus();
                       }
 
-                      setState(() {
-                        isAuthenticating = true;
-                      });
-
-                      // loginAuthentication(_username.text, _password.text)
-                      //     .then((value) => errors = value);
-
-                      if (errors.isEmpty) {
+                      if (_formKey.currentState!.validate()) {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) {
+                            MaterialPageRoute(builder: (context) {
                           return MainPage();
                         }));
-                      } else {
-                        setState(() {
-                          errors = errors;
-                        });
                       }
                     },
                     child: isAuthenticating
