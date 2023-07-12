@@ -11,12 +11,7 @@ class ClassroomPage extends StatefulWidget {
 }
 
 class _ClassroomPageState extends State<ClassroomPage> {
-  final List<String> items = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-  ];
+  final List<String> hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum\'at'];
 
   final List<String> lantai = ['Ground', 'Lt.1', 'Lt.2', 'Lt.3'];
 
@@ -47,20 +42,21 @@ class _ClassroomPageState extends State<ClassroomPage> {
     return Container(
         padding: paddings,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Center(
               child: DropdownButtonHideUnderline(
                 child: DropdownButton2<String>(
                   isExpanded: true,
                   hint: Text(
-                    'Select Item',
+                    'Senin',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  items: items
+                  items: hari
                       .map((String item) => DropdownMenuItem<String>(
                             value: item,
                             child: Text(
@@ -122,7 +118,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
                           style: TextStyle(
                               color: selectedButton == 'Ground'
                                   ? customWhite
-                                  : indigoDye),
+                                  : indigoDye,
+                              fontWeight: FontWeight.bold),
                         ))),
                 SizedBox(
                   width: 12,
@@ -146,7 +143,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
                           style: TextStyle(
                               color: selectedButton == 'Lt.1'
                                   ? customWhite
-                                  : indigoDye),
+                                  : indigoDye,
+                              fontWeight: FontWeight.bold),
                         ))),
                 SizedBox(
                   width: 12,
@@ -169,7 +167,8 @@ class _ClassroomPageState extends State<ClassroomPage> {
                             style: TextStyle(
                                 color: selectedButton == 'Lt.2'
                                     ? customWhite
-                                    : indigoDye)))),
+                                    : indigoDye,
+                                fontWeight: FontWeight.bold)))),
                 SizedBox(
                   width: 12,
                 ),
@@ -191,10 +190,18 @@ class _ClassroomPageState extends State<ClassroomPage> {
                             style: TextStyle(
                                 color: selectedButton == 'Lt.3'
                                     ? customWhite
-                                    : indigoDye)))),
+                                    : indigoDye,
+                                fontWeight: FontWeight.bold)))),
               ],
             ),
-            Text('Daftar Kelas Yang Belum Terisi'),
+            Text(
+              'Daftar Kelas Yang Belum Terisi',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              textAlign: TextAlign.left,
+            ),
             DropdownButtonHideUnderline(
                 child: DropdownButton2(
               isExpanded: true,
@@ -235,6 +242,9 @@ class _ClassroomPageState extends State<ClassroomPage> {
                       return Column(
                         children: [
                           ListTile(
+                            onTap: () {
+                              bookingDialog(context);
+                            },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8)),
                             title: Text(daftarKelas[index]),
@@ -252,4 +262,151 @@ class _ClassroomPageState extends State<ClassroomPage> {
           ],
         ));
   }
+}
+
+Future<void> bookingDialog(context) async {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        String test = 'tes';
+        String? selectedSubject;
+        final List<String> subjects = [
+          'Subject1',
+          'Subject2',
+          'Subject3',
+          'Subject4',
+          'Subject5',
+        ];
+        return AlertDialog(
+          titlePadding: EdgeInsets.zero,
+          title: IconButton(
+            iconSize: 24,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Symbols.close,
+              weight: 700,
+            ),
+            alignment: Alignment.centerRight,
+          ),
+          contentPadding: EdgeInsets.only(left: 24, right: 24, bottom: 24),
+          content: StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                  width: 304,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Pemesanan Kelas',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 18,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text('Mata Kuliah',
+                              style: TextStyle(fontWeight: FontWeight.w500)),
+                          DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                            hint: Text('Pilih Mata Kuliah'),
+                            buttonStyleData: ButtonStyleData(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: indigoDye),
+                                    borderRadius: BorderRadius.circular(8))),
+                            value: selectedSubject,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedSubject = value;
+                              });
+                            },
+                            items: subjects
+                                .map((e) =>
+                                    DropdownMenuItem(value: e, child: Text(e)))
+                                .toList(),
+                          ))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 18,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Alasan',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          TextField(
+                            maxLength: 100,
+                            maxLines: 5,
+                            decoration: InputDecoration(
+                                counterText: '0/100',
+                                hintText: 'Berikan alasan',
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: indigoDye))),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 18,
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(130, 48),
+                                    backgroundColor: customWhite,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        side: BorderSide(color: indigoDye))),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Batal',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: indigoDye),
+                                )),
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(130, 48),
+                                    backgroundColor: indigoDye,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: BorderSide(color: indigoDye),
+                                    )),
+                                onPressed: () {},
+                                child: Text(
+                                  'Pesan',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14),
+                                )),
+                          )
+                        ],
+                      )
+                    ],
+                  ));
+            },
+          ),
+        );
+      });
 }
