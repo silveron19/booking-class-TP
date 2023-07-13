@@ -194,6 +194,9 @@ class _ClassroomPageState extends State<ClassroomPage> {
                                 fontWeight: FontWeight.bold)))),
               ],
             ),
+            SizedBox(
+              height: 48,
+            ),
             Text(
               'Daftar Kelas Yang Belum Terisi',
               style: TextStyle(
@@ -201,6 +204,9 @@ class _ClassroomPageState extends State<ClassroomPage> {
                 fontSize: 18,
               ),
               textAlign: TextAlign.left,
+            ),
+            SizedBox(
+              height: 12,
             ),
             DropdownButtonHideUnderline(
                 child: DropdownButton2(
@@ -231,7 +237,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
               menuItemStyleData: MenuItemStyleData(height: 36),
             )),
             SizedBox(
-              height: 12,
+              height: 24,
             ),
             Flexible(
               child: Material(
@@ -243,7 +249,7 @@ class _ClassroomPageState extends State<ClassroomPage> {
                         children: [
                           ListTile(
                             onTap: () {
-                              bookingDialog(context);
+                              scheduleModalBottomSheet(context);
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8)),
@@ -262,6 +268,202 @@ class _ClassroomPageState extends State<ClassroomPage> {
           ],
         ));
   }
+}
+
+Future<dynamic> scheduleModalBottomSheet(
+  BuildContext context,
+) {
+  return showModalBottomSheet(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          side: BorderSide(),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 18),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ListTile(
+                  leading: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Symbols.close,
+                      size: 24,
+                      weight: 700,
+                    ),
+                  ),
+                  title: Text(
+                    'Nama Mata Kuliah',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * .8,
+                  padding: EdgeInsets.symmetric(horizontal: 28),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Column(
+                          children: [
+                            Row(children: [
+                              Icon(
+                                Symbols.calendar_month,
+                                color: Colors.black,
+                                size: 32,
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Text(
+                                "nama",
+                              ),
+                            ]),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            Row(children: [
+                              Icon(
+                                Symbols.location_on,
+                                color: Colors.black,
+                                size: 32,
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Text(
+                                "kapasitas",
+                              ),
+                            ]),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            Row(children: [
+                              Icon(
+                                Symbols.school,
+                                color: Colors.black,
+                                size: 32,
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Text(
+                                "namaDosen",
+                              ),
+                            ]),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            Row(children: [
+                              Icon(
+                                Symbols.groups,
+                                color: Colors.black,
+                                size: 32,
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Text(
+                                "kapasitas",
+                              ),
+                            ]),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text('Jadwal Baru'),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: indigoDye, width: 2),
+                                  borderRadius: BorderRadius.circular(8)),
+                              padding: EdgeInsets.all(12),
+                              child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Pilih Tanggal'),
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Icon(Symbols.calendar_month),
+                                    )
+                                  ]),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text('Kelas Baru'),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: indigoDye, width: 2),
+                                  borderRadius: BorderRadius.circular(8)),
+                              padding: EdgeInsets.all(12),
+                              child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Kelas'),
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Icon(Symbols.arrow_drop_down),
+                                    )
+                                  ]),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              'Alasan',
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            TextField(
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: indigoDye, width: 2)),
+                                hintText: 'Berikan alasan',
+                              ),
+                              maxLines: 5,
+                              maxLength: 100,
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.all(18),
+                                backgroundColor: indigoDye,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                            onPressed: () {},
+                            child: Text('Kirim'))
+                      ]),
+                )
+              ]),
+        );
+      });
 }
 
 Future<void> bookingDialog(context) async {

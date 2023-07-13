@@ -30,12 +30,25 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               Symbols.notifications,
               color: dimGrey,
             )),
-        IconButton(
-            onPressed: () {},
+        PopupMenuButton(
             icon: Icon(
               Symbols.person,
               color: dimGrey,
-            ))
+            ),
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry>[
+                PopupMenuItem(
+                    child: ListTile(
+                  leading: Icon(Symbols.person),
+                  title: Text('Profile'),
+                )),
+                PopupMenuItem(
+                    child: ListTile(
+                  leading: Icon(Symbols.logout),
+                  title: Text('Logout'),
+                )),
+              ];
+            })
       ],
     );
   }
