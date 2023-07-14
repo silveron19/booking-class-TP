@@ -2,9 +2,15 @@ import 'package:booking_class_tp_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  double profileOpacity = 0.5;
   @override
   Widget build(BuildContext context) {
     var titleStyle = TextStyle(color: grey, fontWeight: FontWeight.bold);
@@ -39,9 +45,35 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 96,
               ),
-              CircleAvatar(
-                backgroundColor: dimGrey,
-                radius: 64,
+              Column(
+                children: [
+                  Stack(alignment: Alignment.center, children: [
+                    CircleAvatar(
+                      backgroundColor: dimGrey,
+                      radius: 64,
+                    ),
+                    Container(
+                      child: Positioned(
+                        right: 1,
+                        bottom: 1,
+                        child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: customWhite,
+                                borderRadius: BorderRadius.circular(24),
+                                boxShadow: [
+                                  BoxShadow(color: dimGrey, blurRadius: 8)
+                                ]),
+                            child: InkWell(
+                              child: Icon(
+                                Symbols.edit_square,
+                                size: 24,
+                              ),
+                            )),
+                      ),
+                    ),
+                  ]),
+                ],
               ),
               SizedBox(
                 height: 12,
