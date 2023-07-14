@@ -1,4 +1,5 @@
 import 'package:booking_class_tp_mobile/classroom.dart';
+import 'package:booking_class_tp_mobile/profile.dart';
 import 'package:booking_class_tp_mobile/schedulepage.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -35,18 +36,29 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               Symbols.person,
               color: dimGrey,
             ),
+            onSelected: (choice) {
+              if (choice == 1) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ProfilePage();
+                }));
+              } else {
+                Navigator.pop(context);
+              }
+            },
             itemBuilder: (BuildContext context) {
               return <PopupMenuEntry>[
                 PopupMenuItem(
+                    value: 1,
                     child: ListTile(
-                  leading: Icon(Symbols.person),
-                  title: Text('Profile'),
-                )),
+                      leading: Icon(Symbols.person),
+                      title: Text('Profile'),
+                    )),
                 PopupMenuItem(
+                    value: 2,
                     child: ListTile(
-                  leading: Icon(Symbols.logout),
-                  title: Text('Logout'),
-                )),
+                      leading: Icon(Symbols.logout),
+                      title: Text('Logout'),
+                    )),
               ];
             })
       ],
