@@ -1,0 +1,82 @@
+[
+    {
+        "day" : "Senin",
+        "start time" : "07:30", 
+        "end time" : "09:30",
+        "student": 
+        {
+            "$ref": "USERS",
+            "$id": ["D121211007", "D121211030"]
+        },
+        "subject": 
+        {
+            "$ref": "SUBJECTS",
+            "$id": "121211001"
+        },
+        "lecturer": "Elly Warni S.T., M.T.",
+        "classroom" : {
+            "$ref" : "CLASSROOM",
+            "$id" : "106"
+        }
+    },
+    {
+        "day" : "Senin",
+        "start time" : "10:00", 
+        "end time" : "11:45",
+        "student": 
+        {
+            "$ref": "USERS",
+            "$id": ["D121211007", "D121211030"]
+        },
+        "subject": 
+        {
+            "$ref": "SUBJECTS",
+            "$id": "121211002"
+        },
+        "lecturer": "Mukarramah Yusuf B.Sc., M.Sc.",
+        "classroom" : {
+            "$ref" : "CLASSROOM",
+            "$id" : "201"
+        }
+    },
+    {
+        "day" : "Rabu",
+        "start time" : "12:30", 
+        "end time" : "14:30",
+        "student": 
+        {
+            "$ref": "USERS",
+            "$id": [ "121211002","D121211006", "D121211030"]
+        },
+        "subject": 
+        {
+            "$ref": "SUBJECTS",
+            "$id": "121212002"
+        },
+        "lecturer": "Muh Anshar S.T., M.Sc(Research)., Ph.D.",
+        "classroom" : {
+            "$ref" : "CLASSROOM",
+            "$id" : "220"
+        }
+    },
+    {
+        "day" : "Kamis",
+        "start time" : "07:30", 
+        "end time" : "09:30",
+        "student": 
+        {
+            "$ref": "USERS",
+            "$id": [ "121211002","D121211006", "D121211030"]
+        },
+        "subject": 
+        {
+            "$ref": "SUBJECTS",
+            "$id": "121213001"
+        },
+        "lecturer": "Prof. Dr. Bualkar Abdullah, M.Eng.Sc.",
+        "classroom" : {
+            "$ref" : "CLASSROOM",
+            "$id" : "303"
+        }
+    }
+]

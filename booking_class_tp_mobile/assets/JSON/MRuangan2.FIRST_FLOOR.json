@@ -1,0 +1,117 @@
+[{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7bde"
+  },
+  "uid": "106",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7be4"
+  },
+  "uid": "112",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7bdf"
+  },
+  "uid": "107",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7be1"
+  },
+  "uid": "109",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7be3"
+  },
+  "uid": "111",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7bda"
+  },
+  "uid": "102",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7bd9"
+  },
+  "uid": "101",
+  "floor": "lantai 1",
+  "status": "unavailable",
+  "capacity": "CR50"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7bdb"
+  },
+  "uid": "103",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7bdc"
+  },
+  "uid": "104",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7be0"
+  },
+  "uid": "108",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7bdd"
+  },
+  "uid": "105",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7be2"
+  },
+  "uid": "110",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+},
+{
+  "_id": {
+    "$oid": "64b3b71b9f3a65cd29ca7be5"
+  },
+  "uid": "113",
+  "floor": "lantai 1",
+  "status": "available",
+  "capacity": "CR100"
+}]

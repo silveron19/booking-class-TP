@@ -2,8 +2,11 @@ import 'package:booking_class_tp_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import 'Entities/entities.dart';
+
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required this.currentUser});
+  final User? currentUser;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -79,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 12,
               ),
               Text(
-                'Nama Pengguna',
+                widget.currentUser!.name,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 18,
@@ -124,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       style: titleStyle,
                                     ),
                                     Text(
-                                      'Silverter Kristian Martin',
+                                      widget.currentUser!.id,
                                       style: subtitleStyle,
                                     ),
                                   ],
@@ -141,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       style: titleStyle,
                                     ),
                                     Text(
-                                      'Teknik Informatika - S1',
+                                      '${widget.currentUser!.department} - S1',
                                       style: subtitleStyle,
                                     ),
                                   ],
@@ -158,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       style: titleStyle,
                                     ),
                                     Text(
-                                      'Semester 4',
+                                      'Semester ${widget.currentUser!.semester}',
                                       style: subtitleStyle,
                                     ),
                                   ],

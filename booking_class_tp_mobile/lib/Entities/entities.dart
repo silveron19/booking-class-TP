@@ -1,35 +1,35 @@
-class Mahasiswa {
-  String role, department, name, password, profile, nim;
+import 'package:mongo_dart/mongo_dart.dart';
+
+class User {
+  String id, name, password, department, role;
   int semester;
-  Mahasiswa(
-      {required this.role,
-      required this.department,
-      required this.name,
-      required this.password,
-      required this.profile,
-      required this.nim,
-      required this.semester});
+
+  User(this.id, this.name, this.password, this.department, this.semester,
+      this.role);
 }
 
-class Dosen {
-  String role, department, name, password, profile, nidn;
-  Dosen({
-    required this.role,
-    required this.department,
-    required this.name,
-    required this.password,
-    required this.profile,
-    required this.nidn,
-  });
+class Session {
+  String day, startTime, endTime, lecturer;
+  ObjectId id;
+  Map<String, dynamic> students, subject, classroom;
+
+  Session(this.id, this.day, this.startTime, this.endTime, this.lecturer,
+      this.students, this.subject, this.classroom);
 }
 
-class Admin {
-  String role, name, password, profile, adminId;
-  Admin({
-    required this.role,
-    required this.name,
-    required this.password,
-    required this.profile,
-    required this.adminId,
-  });
+class Students {
+  String ref;
+  Map<String, dynamic> studentId;
+
+  Students(this.ref, this.studentId);
+}
+
+class SessionSubject {
+  String ref, id;
+  SessionSubject(this.id, this.ref);
+}
+
+class SessionClassroom {
+  String ref, id;
+  SessionClassroom(this.id, this.ref);
 }

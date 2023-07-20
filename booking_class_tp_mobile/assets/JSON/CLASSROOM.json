@@ -1,0 +1,235 @@
+[{
+    "_id": "106",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "112",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "107",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "109",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "111",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "102",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "101",
+    "floor": "lantai 1",
+    "status": "unavailable",
+    "capacity": "CR50"
+  },
+  {
+    "_id": "103",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "104",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "108",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "105",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "110",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "113",
+    "floor": "lantai 1",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "202",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "204",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "212",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "206",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "210",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "213",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "201",
+    "floor": "lantai 2",
+    "status": "unavailable",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "205",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "207",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "208",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "211",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "203",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "209",
+    "floor": "lantai 2",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "305",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "307",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "309",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "303",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "304",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "306",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "312",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "301",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "302",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "308",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "310",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "311",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  },
+  {
+    "_id": "313",
+    "floor": "lantai 3",
+    "status": "available",
+    "capacity": "CR100"
+  }
+]

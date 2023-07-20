@@ -1,5 +1,8 @@
+import 'package:booking_class_tp_mobile/Connection/database_connetion.dart';
 import 'package:booking_class_tp_mobile/mainpage.dart';
 import 'package:flutter/material.dart';
+
+import 'Entities/entities.dart';
 
 Color indigoDye = const Color(0xff004267);
 Color grey = const Color(0xff7B7B7B);
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Montserrat'),
       title: 'Class Booking App',
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }
@@ -44,6 +47,8 @@ class _LoginPageState extends State<LoginPage> {
   bool rememberMe = false;
   bool obscurePassword = true;
   bool isAuthenticating = false;
+
+  User? currentUser;
 
   List errors = [];
 
@@ -102,8 +107,8 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: _username,
                     validator: (value) {
-                      if (!user.containsKey(value)) {
-                        return 'Username tidak tersedia';
+                      if (currentUser == null) {
+                        return 'NIM Tidak terdaftar';
                       }
                       return null;
                     },
@@ -131,8 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                         )),
                     obscureText: obscurePassword,
                     validator: (value) {
-                      if (user.containsKey(_username.text)) {
-                        if (user[_username.text]['Password'] != value) {
+                      if (currentUser != null) {
+                        if (currentUser?.password != value) {
                           return 'Password salah';
                         }
                       }
@@ -174,20 +179,45 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () async {
                       FocusScopeNode currentFocus = FocusScope.of(context);
 
+                      setState(() {
+                        isAuthenticating = true;
+                      });
+
+                      var response = await loginAuthentication(_username.text);
+
+                      if (response == null) {
+                        currentUser = null;
+                      } else {
+                        currentUser = User(
+                            response['_id'],
+                            response['name'],
+                            response['password'],
+                            response['department'],
+                            response['semester'],
+                            response['role']);
+                      }
+
                       if (!currentFocus.hasPrimaryFocus) {
                         currentFocus.unfocus();
                       }
 
+                      isAuthenticating = false;
+
                       if (_formKey.currentState!.validate()) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MainPage();
-                        }));
+                        setState(() {});
+                        _username.clear();
+                        _password.clear();
+                        if (context.mounted) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return MainPage(currentUser: currentUser);
+                          }));
+                        }
                       }
                     },
                     child: isAuthenticating
-                        ? CircularProgressIndicator()
-                        : Text('LOGIN',
+                        ? const CircularProgressIndicator()
+                        : const Text('LOGIN',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 14))),
               ),

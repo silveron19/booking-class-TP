@@ -1,0 +1,88 @@
+[   
+    {
+        "uid": "121211001",
+        "name": "Rekayasa Perangkat Lunak",
+        "Class President": 
+        {
+            "uid": "D121211007",
+            "name" : "Silverter Kristian Martin",
+            "password": "silver2k23",
+            "department": "Teknik Informatika",
+            "semester": 4
+        },
+        "room_details": 
+        {   
+            "room_name": "201",
+            "floor": "lantai 2",  
+            "capacity": "CR100"
+        },
+        "schedule": 
+        {
+            "day": "Selasa",
+            "date": "2023-01-01",
+            "start_time": "07.50",
+            "end_time": "09.30"
+        }
+    },
+    {
+        "uid": "121211002",
+        "name": "Metode Komputasi Numerik",
+        "Class President": null,
+        "room_details": 
+        {   
+            "room_name": "101",
+            "floor": "lantai 1",  
+            "capacity": "CR50"
+        },
+        "schedule": 
+        {
+            "day": "Selasa",
+            "date": "2023-01-01",
+            "start_time": "07.50",
+            "end_time": "09.30"
+        }
+    },
+    {
+        "uid": "121213001",
+        "name": "Mekanika Kuantum",
+        "Class President": null,
+        "room_details": 
+        {   
+            "room_name": "G06",
+            "floor": "ground",  
+            "capacity": "CR100"
+        },
+        "schedule": 
+        {
+            "day": "Selasa",
+            "date": "2023-01-01",
+            "start_time": "13.00",
+            "end_time": "14.40"
+        }
+    },
+    {
+        "uid": "121212002",
+        "name": "IoT System",
+        "Class President": 
+        {
+            "uid": "D121211006",
+            "name" : "Javier Alfaro Montana Putra",
+            "password": "javier2k23",
+            "department": "Teknik Elektro",
+            "semester": 4
+        },
+        "room_details": 
+        {   
+            "room_name": "G06",
+            "floor": "lantai 3",  
+            "capacity": "CR100"
+        },
+        "schedule": 
+        {
+            "day": "Rabu",
+            "date": "2023-01-02",
+            "start_time": "13.00",
+            "end_time": "14.40"
+        }
+    }
+]

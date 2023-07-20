@@ -1,0 +1,56 @@
+[
+{
+  "_id": "D121211006",
+  "name": "Javier Alfaro Montana Putra",
+  "password": "javier2k23",
+  "department": "Teknik Elektro",
+  "semester": 4,
+  "role": "ketua kelas",
+  "profile_pic": null
+},
+{
+  "_id": "D121211007",
+  "name": "Silverter Kristian Martin",
+  "password": "silver2k23",
+  "department": "Teknik Informatika",
+  "semester": 4,
+  "role": "ketua kelas",
+  "profile_pic": null
+},
+{
+  "_id": "D121211017",
+  "name": "Fakhri Rasyad",
+  "password": "fakhri2k23",
+  "department": "Fisika",
+  "semester": 4,
+  "role": "admin",
+  "profile_pic": null
+},
+{
+  "_id": "D121211020",
+  "name": "Rendi Wijaya",
+  "password": "rendi2k23",
+  "department": "Fisika",
+  "semester": 4,
+  "role": "admin",
+  "profile_pic": null
+},
+{
+  "_id": "D121211029",
+  "name": "Gusti Ngurah Adhi Astika",
+  "password": "adhi2k23",
+  "department": "Teknik Informatika",
+  "semester": 4,
+  "role": "admin",
+  "profile_pic": null
+},
+{
+  "_id": "D121211030",
+  "name": "Fauzan Adhima",
+  "password": "fauzan2k23",
+  "department": "Teknik Informatika",
+  "semester": 4,
+  "role": "mahasiswa",
+  "profile_pic": null
+}
+]
