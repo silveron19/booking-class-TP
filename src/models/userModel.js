@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// schema model for USERS collection
 const userSchema = mongoose.Schema(
   {
     _id: {
