@@ -1,194 +1,122 @@
 [
-{
-  "_id": {
-    "$oid": "64b4be80eaf7053c5618c000"
-  },
-  "day": "Senin",
-  "start time": "07:30",
-  "end time": "09:30",
-  "student": {
-    "$ref": "USERS",
-    "$id": [
-      "D121211007",
-      "D121211030"
-    ]
-  },
-  "subject": {
-    "$ref": "SUBJECTS",
-    "$id": "121211001"
-  },
-  "lecturer": "Elly Warni S.T., M.T.",
-  "classroom": {
-    "$ref": "CLASSROOM",
-    "$id": "106"
-  }
-},
-{
-  "_id": {
-    "$oid": "64b4be80eaf7053c5618c001"
-  },
-  "day": "Senin",
-  "start time": "10:00",
-  "end time": "11:45",
-  "student": {
-    "$ref": "USERS",
-    "$id": [
-      "D121211007",
-      "D121211030"
-    ]
-  },
-  "subject": {
-    "$ref": "SUBJECTS",
-    "$id": "121211002"
-  },
-  "lecturer": "Mukarramah Yusuf B.Sc., M.Sc.",
-  "classroom": {
-    "$ref": "CLASSROOM",
-    "$id": "201"
-  }
-},
-{
-  "_id": {
-    "$oid": "64b4be80eaf7053c5618c002"
-  },
-  "day": "Rabu",
-  "start time": "12:30",
-  "end time": "14:30",
-  "student": {
-    "$ref": "USERS",
-    "$id": [
-      "D121211006",
-      "D121211030"
-    ]
-  },
-  "subject": {
-    "$ref": "SUBJECTS",
-    "$id": "121212002"
-  },
-  "lecturer": "Muh Anshar S.T., M.Sc(Research)., Ph.D.",
-  "classroom": {
-    "$ref": "CLASSROOM",
-    "$id": "220"
-  }
-},
-{
-  "_id": {
-    "$oid": "64b4be80eaf7053c5618c003"
-  },
-  "day": "Kamis",
-  "start time": "07:30",
-  "end time": "09:30",
-  "student": {
-    "$ref": "USERS",
-    "$id": [
-      "D121211006",
-      "D121211030"
-    ]
-  },
-  "subject": {
-    "$ref": "SUBJECTS",
-    "$id": "121213001"
-  },
-  "lecturer": "Prof. Dr. Bualkar Abdullah, M.Eng.Sc.",
-  "classroom": {
-    "$ref": "CLASSROOM",
-    "$id": "303"
-  }
-},
-{
-  "_id": {
-    "$oid": "64b4be80eaf7053c5618c004"
-  },
-  "day": "Rabu",
-  "start time": "07:30",
-  "end time": "09:30",
-  "student": {
-    "$ref": "USERS",
-    "$id": [
-      "D121211017",
-      "D121211020"
-    ]
-  },
-  "subject": {
-    "$ref": "SUBJECTS",
-    "$id": "121211001"
-  },
-  "lecturer": "Elly Warni S.T., M.T.",
-  "classroom": {
-    "$ref": "CLASSROOM",
-    "$id": "106"
-  }
-},
-{
-  "_id": {
-    "$oid": "64b4be80eaf7053c5618c005"
-  },
-  "day": "Jum'at",
-  "start time": "10:30",
-  "end time": "12:00",
-  "student": {
-    "$ref": "USERS",
-    "$id": [
-      "D121211020",
-      "D121211030"
-    ]
-  },
-  "subject": {
-    "$ref": "SUBJECTS",
-    "$id": "121213001"
-  },
-  "lecturer": "Prof. Dr. Bualkar Abdullah, M.Eng.Sc.",
-  "classroom": {
-    "$ref": "CLASSROOM",
-    "$id": "303"
-  }
-},
-{
-  "_id": {
-    "$oid": "64b4be80eaf7053c5618c006"
-  },
-  "day": "Selasa",
-  "start time": "10:00",
-  "end time": "11:45",
-  "student": {
-    "$ref": "USERS",
-    "$id": [
-      "D121211007",
-      "D121211030"
-    ]
-  },
-  "subject": {
-    "$ref": "SUBJECTS",
-    "$id": "121211002"
-  },
-  "lecturer": "Mukarramah Yusuf B.Sc., M.Sc.",
-  "classroom": {
-    "$ref": "CLASSROOM",
-    "$id": "201"
-  }
-},
-{
-  "_id": {
-    "$oid": "64b4be80eaf7053c5618c007"
-  },
-  "day": "Senin",
-  "start time": "12:30",
-  "end time": "14:30",
-  "student": {
-    "$ref": "USERS",
-    "$id": [
-      "D121211012",
-      "D121211014"
-    ]
-  },
-  "subject": {
-    "$ref": "SUBJECTS",
-    "$id": "121212002"
-  },
-  "lecturer": "Muh Anshar S.T., M.Sc(Research)., Ph.D.",
-  "classroom": {
-    "$ref": "CLASSROOM",
-    "$id": "220"
-  }
-}
+    {
+        "_id": {
+            "$oid": "64b4be80eaf7053c5618c000"
+        },
+        "day": "Senin",
+        "start time": "07:30",
+        "end time": "09:30",
+        "student": [
+            "D121211007",
+            "D121211030"
+        ],
+        "subject": "121211001",
+        "lecturer": "Elly Warni S.T., M.T.",
+        "classroom": "106"
+    },
+    {
+        "_id": {
+            "$oid": "64b4be80eaf7053c5618c001"
+        },
+        "day": "Senin",
+        "start time": "10:00",
+        "end time": "11:45",
+        "student": [
+            "D121211007",
+            "D121211030"
+        ],
+        "subject": "121211002",
+        "lecturer": "Mukarramah Yusuf B.Sc., M.Sc.",
+        "classroom": "201"
+    },
+    {
+        "_id": {
+            "$oid": "64b4be80eaf7053c5618c002"
+        },
+        "day": "Rabu",
+        "start time": "12:30",
+        "end time": "14:30",
+        "student": [
+            "D121211006",
+            "D121211030"
+        ],
+        "subject": "121212002",
+        "lecturer": "Muh Anshar S.T., M.Sc(Research)., Ph.D.",
+        "classroom": "220"
+    },
+    {
+        "_id": {
+            "$oid": "64b4be80eaf7053c5618c003"
+        },
+        "day": "Kamis",
+        "start time": "07:30",
+        "end time": "09:30",
+        "student": [
+            "D121211006",
+            "D121211030"
+        ],
+        "subject": "121213001",
+        "lecturer": "Prof. Dr. Bualkar Abdullah, M.Eng.Sc.",
+        "classroom": "303"
+    },
+    {
+        "_id": {
+            "$oid": "64b4be80eaf7053c5618c004"
+        },
+        "day": "Rabu",
+        "start time": "07:30",
+        "end time": "09:30",
+        "student": [
+            "D121211017",
+            "D121211020"
+        ],
+        "subject": "121211001",
+        "lecturer": "Elly Warni S.T., M.T.",
+        "classroom": "106"
+    },
+    {
+        "_id": {
+            "$oid": "64b4be80eaf7053c5618c005"
+        },
+        "day": "Jum'at",
+        "start time": "10:30",
+        "end time": "12:00",
+        "student": [
+            "D121211020",
+            "D121211030"
+        ],
+        "subject": "121213001",
+        "lecturer": "Prof. Dr. Bualkar Abdullah, M.Eng.Sc.",
+        "classroom": "303"
+    },
+    {
+        "_id": {
+            "$oid": "64b4be80eaf7053c5618c006"
+        },
+        "day": "Selasa",
+        "start time": "10:00",
+        "end time": "11:45",
+        "student": [
+            "D121211007",
+            "D121211030"
+        ],
+        "subject": "121211002",
+        "lecturer": "Mukarramah Yusuf B.Sc., M.Sc.",
+        "classroom": "201"
+    },
+    {
+        "_id": {
+            "$oid": "64b4be80eaf7053c5618c007"
+        },
+        "day": "Senin",
+        "start time": "12:30",
+        "end time": "14:30",
+        "student": [
+            "D121211012",
+            "D121211014"
+        ],
+        "subject": "121212002",
+        "lecturer": "Muh Anshar S.T., M.Sc(Research)., Ph.D.",
+        "classroom": "220"
+    }
 ]

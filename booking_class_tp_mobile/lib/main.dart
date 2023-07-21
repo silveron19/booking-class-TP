@@ -13,12 +13,6 @@ Color antiFlashWhite = const Color(0xffEEEEEE);
 
 const paddings = EdgeInsets.all(32);
 
-Map user = {
-  'Nama': {'Password': '12345', 'role': 'admin'},
-  'Nama1': {'Password': '12345', 'role': 'mahasiswa'},
-  'Nama2': {'Password': '12345', 'role': 'ketua kelas'},
-};
-
 void main() {
   runApp(const MyApp());
 }
@@ -49,8 +43,6 @@ class _LoginPageState extends State<LoginPage> {
   bool isAuthenticating = false;
 
   User? currentUser;
-
-  List errors = [];
 
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController();
@@ -101,9 +93,6 @@ class _LoginPageState extends State<LoginPage> {
               Form(
                 key: _formKey,
                 child: Column(children: [
-                  Column(
-                      children: List.generate(
-                          errors.length, (index) => Text(errors[index]))),
                   TextFormField(
                     controller: _username,
                     validator: (value) {
@@ -204,7 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                       isAuthenticating = false;
 
                       if (_formKey.currentState!.validate()) {
-                        setState(() {});
+                        setState(() {
+                          obscurePassword = true;
+                        });
                         _username.clear();
                         _password.clear();
                         if (context.mounted) {

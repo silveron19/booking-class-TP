@@ -100,8 +100,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   void setTodaySession() async {
-    print('berjalan');
-    List<Session> response = await getSession();
+    List<Session> response = await getSession(widget.currentUser!.id);
     setState(() {
       todaySession = response;
     });
@@ -133,7 +132,9 @@ class _MainPageState extends State<MainPage> {
                 });
               },
               children: [
-                HomePage(),
+                HomePage(
+                  currentUser: widget.currentUser,
+                ),
                 SchedulePage(),
                 RequestPage(),
                 ClassroomPage()

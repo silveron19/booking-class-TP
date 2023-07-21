@@ -9,27 +9,21 @@ class User {
 }
 
 class Session {
-  String day, startTime, endTime, lecturer;
+  String day, startTime, endTime, lecturer, classroom;
   ObjectId id;
-  Map<String, dynamic> students, subject, classroom;
+  List<dynamic> students;
+  Subjects subject;
 
   Session(this.id, this.day, this.startTime, this.endTime, this.lecturer,
       this.students, this.subject, this.classroom);
 }
 
 class Students {
-  String ref;
-  Map<String, dynamic> studentId;
-
-  Students(this.ref, this.studentId);
+  String id, name;
+  Students(this.id, this.name);
 }
 
-class SessionSubject {
-  String ref, id;
-  SessionSubject(this.id, this.ref);
-}
-
-class SessionClassroom {
-  String ref, id;
-  SessionClassroom(this.id, this.ref);
+class Subjects {
+  String id, name;
+  Subjects(this.id, this.name);
 }
