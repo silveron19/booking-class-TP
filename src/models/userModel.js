@@ -27,10 +27,9 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please add the user role'],
     },
-    profile_pict: {
+    profile_pic: {
       type: String,
       default: null,
-      require: false,
     },
   },
   { collection: 'USERS' }
