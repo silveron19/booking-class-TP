@@ -24,6 +24,6 @@ class Students {
 }
 
 class Subjects {
-  String id, name;
-  Subjects(this.id, this.name);
+  String id, name, classPresident;
+  Subjects(this.id, this.name, this.classPresident);
 }

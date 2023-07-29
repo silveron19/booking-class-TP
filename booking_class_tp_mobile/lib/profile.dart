@@ -25,13 +25,13 @@ class _ProfilePageState extends State<ProfilePage> {
         Container(
           decoration: BoxDecoration(
               color: indigoDye,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16))),
           height: 240,
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -41,11 +41,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Symbols.close),
+                icon: const Icon(Symbols.close),
                 color: customWhite,
                 iconSize: 32,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 96,
               ),
               Column(
@@ -55,30 +55,28 @@ class _ProfilePageState extends State<ProfilePage> {
                       backgroundColor: dimGrey,
                       radius: 64,
                     ),
-                    Container(
-                      child: Positioned(
-                        right: 1,
-                        bottom: 1,
-                        child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                color: customWhite,
-                                borderRadius: BorderRadius.circular(24),
-                                boxShadow: [
-                                  BoxShadow(color: dimGrey, blurRadius: 8)
-                                ]),
-                            child: InkWell(
-                              child: Icon(
-                                Symbols.edit_square,
-                                size: 24,
-                              ),
-                            )),
-                      ),
+                    Positioned(
+                      right: 1,
+                      bottom: 1,
+                      child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: customWhite,
+                              borderRadius: BorderRadius.circular(24),
+                              boxShadow: [
+                                BoxShadow(color: dimGrey, blurRadius: 8)
+                              ]),
+                          child: const InkWell(
+                            child: Icon(
+                              Symbols.edit_square,
+                              size: 24,
+                            ),
+                          )),
                     ),
                   ]),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
               Text(
@@ -89,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.bold,
                     color: indigoDye),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
               Column(children: [
@@ -102,8 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
+                          const Padding(
+                            padding: EdgeInsets.all(16.0),
                             child: Text(
                               'Personal Information: ',
                               textAlign: TextAlign.left,
@@ -115,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: dimGrey,
                           ),
                           Padding(
-                            padding: EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
                                 Column(
@@ -132,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 12,
                                 ),
                                 Column(
@@ -149,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 12,
                                 ),
                                 Column(

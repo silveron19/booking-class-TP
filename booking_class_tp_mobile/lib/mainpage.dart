@@ -1,4 +1,3 @@
-import 'package:booking_class_tp_mobile/Connection/database_connetion.dart';
 import 'package:booking_class_tp_mobile/Entities/entities.dart';
 import 'package:booking_class_tp_mobile/classroom.dart';
 import 'package:booking_class_tp_mobile/profile.dart';
@@ -52,13 +51,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             },
             itemBuilder: (BuildContext context) {
               return <PopupMenuEntry>[
-                PopupMenuItem(
+                const PopupMenuItem(
                     value: 1,
                     child: ListTile(
                       leading: Icon(Symbols.person),
                       title: Text('Profile'),
                     )),
-                PopupMenuItem(
+                const PopupMenuItem(
                     value: 2,
                     child: ListTile(
                       leading: Icon(Symbols.logout),
@@ -89,8 +88,6 @@ class _MainPageState extends State<MainPage> {
   void iniState() {
     super.initState();
     _pageController = PageController();
-    print('inistate');
-    setTodaySession();
   }
 
   @override
@@ -99,18 +96,11 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
-  void setTodaySession() async {
-    List<Session> response = await getSession(widget.currentUser!.id);
-    setState(() {
-      todaySession = response;
-    });
-  }
-
   void changePage(currentIndex) {
     setState(() {
       currentPage = currentIndex;
       _pageController.animateToPage(currentIndex,
-          duration: Duration(milliseconds: 600), curve: Curves.easeInOut);
+          duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
     });
   }
 
@@ -135,9 +125,13 @@ class _MainPageState extends State<MainPage> {
                 HomePage(
                   currentUser: widget.currentUser,
                 ),
-                SchedulePage(),
-                RequestPage(),
-                ClassroomPage()
+                SchedulePage(
+                  currentUser: widget.currentUser,
+                ),
+                const RequestPage(),
+                ClassroomPage(
+                  currentUser: widget.currentUser,
+                )
               ]),
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -145,7 +139,7 @@ class _MainPageState extends State<MainPage> {
             currentIndex: currentPage,
             onTap: changePage,
             type: BottomNavigationBarType.fixed,
-            items: <BottomNavigationBarItem>[
+            items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                   activeIcon: Icon(
                     Symbols.home_filled_rounded,

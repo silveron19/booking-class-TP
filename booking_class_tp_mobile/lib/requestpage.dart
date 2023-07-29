@@ -146,13 +146,14 @@ class _RequestPageState extends State<RequestPage> {
             padding: EdgeInsets.only(left: 16, right: 16),
             decoration: BoxDecoration(
                 color: Color(0xffE6E6E6),
-                borderRadius: BorderRadius.circular(4)),
+                borderRadius: BorderRadius.circular(8)),
             height: 48,
             child: TextField(
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  suffixIcon: Icon(Icons.search_outlined),
-                  hintText: 'Masukkan Pencarian'),
+                border: InputBorder.none,
+                suffixIcon: Icon(Icons.search_outlined),
+                hintText: 'Masukkan Pencarian',
+              ),
             ),
           ),
           SizedBox(
@@ -163,19 +164,31 @@ class _RequestPageState extends State<RequestPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                DropdownMenu(
-                  width: (MediaQuery.of(context).size.width - 64) / 2 - 10,
-                  hintText: 'Terbaru',
-                  dropdownMenuEntries: [
-                    DropdownMenuEntry(label: 'Text', value: 'Label')
-                  ],
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: indigoDye),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: DropdownMenu(
+                    width: (MediaQuery.of(context).size.width - 64) / 2 - 10,
+                    hintText: 'Terbaru',
+                    dropdownMenuEntries: [
+                      DropdownMenuEntry(label: 'Text', value: 'Label')
+                    ],
+                  ),
                 ),
-                DropdownMenu(
-                  width: (MediaQuery.of(context).size.width - 64) / 2 - 10,
-                  hintText: 'Semua',
-                  dropdownMenuEntries: [
-                    DropdownMenuEntry(label: 'Text', value: 'Label')
-                  ],
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: indigoDye),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: DropdownMenu(
+                    width: (MediaQuery.of(context).size.width - 64) / 2 - 10,
+                    hintText: 'Semua',
+                    dropdownMenuEntries: [
+                      DropdownMenuEntry(label: 'Diterima', value: 'Label'),
+                      DropdownMenuEntry(label: 'Ditolak', value: 'Label'),
+                      DropdownMenuEntry(label: 'Menunggu', value: 'Label')
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -183,12 +196,17 @@ class _RequestPageState extends State<RequestPage> {
           SizedBox(
             height: 12,
           ),
-          DropdownMenu(
-            width: MediaQuery.of(context).size.width - 64,
-            hintText: 'Ganti Jadwal',
-            dropdownMenuEntries: [
-              DropdownMenuEntry(label: 'Text', value: 'Label')
-            ],
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: indigoDye),
+                borderRadius: BorderRadius.circular(8)),
+            child: DropdownMenu(
+              width: MediaQuery.of(context).size.width - 64,
+              hintText: 'Ganti Jadwal',
+              dropdownMenuEntries: [
+                DropdownMenuEntry(label: 'Text', value: 'Label')
+              ],
+            ),
           ),
           SizedBox(
             height: 24,
@@ -198,9 +216,10 @@ class _RequestPageState extends State<RequestPage> {
               itemCount: requests.length,
               itemBuilder: (context, index) {
                 var textStyle = TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: customWhite);
+                var textStyle2 = TextStyle(fontSize: 12, color: customWhite);
                 var thisRequest = Requests(
                     nama: requests[index]['nama'],
                     tanggal: requests[index]['tanggal'],
@@ -216,9 +235,9 @@ class _RequestPageState extends State<RequestPage> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(8),
                         color: indigoDye),
-                    padding: EdgeInsets.symmetric(vertical: 24, horizontal: 32),
+                    padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
                     child: Row(children: [
                       Icon(
                         Symbols.circle,
@@ -230,7 +249,7 @@ class _RequestPageState extends State<RequestPage> {
                         fill: 1,
                       ),
                       SizedBox(
-                        width: 24,
+                        width: 12,
                       ),
                       Flexible(
                         child: Column(
@@ -258,7 +277,7 @@ class _RequestPageState extends State<RequestPage> {
                             ),
                             Text(
                               thisRequest.mataKuliah,
-                              style: textStyle,
+                              style: textStyle2,
                             ),
                           ],
                         ),

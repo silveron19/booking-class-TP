@@ -1,278 +1,435 @@
+import 'package:booking_class_tp_mobile/Connection/database_connetion.dart';
 import 'package:booking_class_tp_mobile/main.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import 'Entities/entities.dart';
+
 class ClassroomPage extends StatefulWidget {
-  const ClassroomPage({super.key});
+  ClassroomPage({super.key, required this.currentUser});
+  User? currentUser;
 
   @override
   State<ClassroomPage> createState() => _ClassroomPageState();
 }
 
-class _ClassroomPageState extends State<ClassroomPage> {
-  final List<String> hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum\'at'];
+class _ClassroomPageState extends State<ClassroomPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
 
-  final List<String> lantai = ['Ground', 'Lt.1', 'Lt.2', 'Lt.3'];
+  @override
+  void initState() {
+    super.initState();
+    settingUpClass();
+  }
 
-  final List<String> daftarKelas = [
-    'G01',
-    'G02',
-    'G03',
-    'G04',
-    'G05',
-    'G06',
-    'G01',
-    'G02',
-    'G03',
-    'G04',
-    'G05',
-    'G06',
-  ];
+  Future settingUpClass() async {
+    List availableClassroom = await getClassroom(widget.currentUser!.id);
+    setState(() {
+      daftarKelas = availableClassroom[0];
+      sessionList = availableClassroom[1];
+      listWhereTheUserIsInCharge = availableClassroom[2];
+      selectedDay = 'Senin';
+      selectedDuration = '07:30 - 09:30';
+    });
 
-  String? selectedValue;
+    choosingClass();
+  }
 
+  void choosingClass() {
+    List result = [];
+    List kelasYangPerluDihapuskan = [];
+    String? classCapacity;
+
+    if (selectedCapacity == 'Kapasitas 50') {
+      classCapacity = 'CR50';
+    } else if (selectedCapacity == 'Kapasitas 100') {
+      classCapacity = 'CR100';
+    }
+
+    for (var element in daftarKelas) {
+      if (element['floor'] == currentFloor &&
+          element['capacity'] == classCapacity) {
+        result.add(element);
+        print(element);
+      }
+    }
+
+    for (var element in sessionList) {
+      var sessionDuration = '${element['start_time']} - ${element['end_time']}';
+      if (element['day'] == selectedDay &&
+          sessionDuration == selectedDuration) {
+        kelasYangPerluDihapuskan.add(element['classroom']);
+      }
+    }
+
+    result.removeWhere(
+      (element) => kelasYangPerluDihapuskan.contains(element['_id']),
+    );
+
+    setState(() {
+      thisFloorClasses = result;
+    });
+  }
+
+  List daftarKelas = [];
+  List sessionList = [];
+  List thisFloorClasses = [];
+  List<Session> listWhereTheUserIsInCharge = [];
+
+  String currentFloor = 'ground';
+  String selectedDay = 'Senin';
+  String selectedDuration = '07:30 - 09:30';
   String selectedButton = 'Ground';
+  String selectedCapacity = 'Kapasitas 50';
 
-  String? selectedCapacity = 'Kapasitas 50';
   final List<String> kapasitas = ['Kapasitas 50', 'Kapasitas 100'];
+  final List<String> duration = [
+    '07:30 - 09:30',
+    '10:00 - 12:30',
+    '13:00 - 15:30'
+  ];
+  final List<String> hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum\'at'];
+  final List<String> daftarLantai = ['Ground', 'Lt.1', 'Lt.2', 'Lt.3'];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: paddings,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton2<String>(
-                  isExpanded: true,
-                  hint: Text(
-                    'Senin',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+    super.build;
+    return RefreshIndicator(
+      onRefresh: settingUpClass,
+      child: Container(
+          padding: paddings,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      isExpanded: true,
+                      hint: Text(
+                        'Senin',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      items: hari
+                          .map((String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedDay,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedDay = value!;
+                        });
+                        choosingClass();
+                      },
+                      buttonStyleData: ButtonStyleData(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          height: 52,
+                          width: 160,
+                          decoration: BoxDecoration(
+                              color: indigoDye,
+                              borderRadius: BorderRadius.circular(8))),
+                      dropdownStyleData: DropdownStyleData(
+                          decoration: BoxDecoration(
+                              color: indigoDye,
+                              borderRadius: BorderRadius.circular(8))),
+                      iconStyleData: IconStyleData(
+                          icon: Icon(
+                        Symbols.keyboard_arrow_down,
+                        color: Colors.white,
+                      )),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
                     ),
                   ),
-                  items: hari
-                      .map((String item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ))
-                      .toList(),
-                  value: selectedValue,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedValue = value;
-                    });
-                  },
-                  buttonStyleData: ButtonStyleData(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      height: 52,
-                      width:
-                          MediaQuery.of(context).size.width - paddings.left * 2,
-                      decoration: BoxDecoration(
-                          color: indigoDye,
-                          borderRadius: BorderRadius.circular(8))),
-                  dropdownStyleData: DropdownStyleData(
-                      decoration: BoxDecoration(
-                          color: indigoDye,
-                          borderRadius: BorderRadius.circular(8))),
-                  iconStyleData: IconStyleData(
-                      icon: Icon(
-                    Symbols.keyboard_arrow_down,
-                    color: Colors.white,
-                  )),
-                  menuItemStyleData: const MenuItemStyleData(
-                    height: 40,
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      isExpanded: true,
+                      hint: Text(
+                        '07:30 - 09:30',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      items: duration
+                          .map((String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedDuration,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedDuration = value!;
+                        });
+                        choosingClass();
+                      },
+                      buttonStyleData: ButtonStyleData(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          height: 52,
+                          width: 160,
+                          decoration: BoxDecoration(
+                              color: indigoDye,
+                              borderRadius: BorderRadius.circular(8))),
+                      dropdownStyleData: DropdownStyleData(
+                          decoration: BoxDecoration(
+                              color: indigoDye,
+                              borderRadius: BorderRadius.circular(8))),
+                      iconStyleData: IconStyleData(
+                          icon: Icon(
+                        Symbols.keyboard_arrow_down,
+                        color: Colors.white,
+                      )),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: selectedButton == 'Ground'
-                                ? indigoDye
-                                : customWhite,
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(color: indigoDye),
-                                borderRadius: BorderRadius.circular(8))),
-                        onPressed: () {
-                          setState(() {
-                            selectedButton = 'Ground';
-                          });
-                        },
-                        child: Text(
-                          'Ground',
-                          style: TextStyle(
-                              color: selectedButton == 'Ground'
-                                  ? customWhite
-                                  : indigoDye,
-                              fontWeight: FontWeight.bold),
-                        ))),
-                SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: selectedButton == 'Lt.1'
-                                ? indigoDye
-                                : customWhite,
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(color: indigoDye),
-                                borderRadius: BorderRadius.circular(8))),
-                        onPressed: () {
-                          setState(() {
-                            selectedButton = 'Lt.1';
-                          });
-                        },
-                        child: Text(
-                          'Lt.1',
-                          style: TextStyle(
-                              color: selectedButton == 'Lt.1'
-                                  ? customWhite
-                                  : indigoDye,
-                              fontWeight: FontWeight.bold),
-                        ))),
-                SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: selectedButton == 'Lt.2'
-                                ? indigoDye
-                                : customWhite,
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(color: indigoDye),
-                                borderRadius: BorderRadius.circular(8))),
-                        onPressed: () {
-                          setState(() {
-                            selectedButton = 'Lt.2';
-                          });
-                        },
-                        child: Text('Lt.2',
+              Row(
+                children: [
+                  Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: selectedButton == 'Ground'
+                                  ? indigoDye
+                                  : customWhite,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: indigoDye),
+                                  borderRadius: BorderRadius.circular(8))),
+                          onPressed: () {
+                            setState(() {
+                              selectedButton = 'Ground';
+                              currentFloor = 'ground';
+                            });
+                            choosingClass();
+                          },
+                          child: Text(
+                            'Ground',
                             style: TextStyle(
-                                color: selectedButton == 'Lt.2'
+                                fontSize: 10,
+                                color: selectedButton == 'Ground'
                                     ? customWhite
                                     : indigoDye,
-                                fontWeight: FontWeight.bold)))),
-                SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: selectedButton == 'Lt.3'
-                                ? indigoDye
-                                : customWhite,
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(color: indigoDye),
-                                borderRadius: BorderRadius.circular(8))),
-                        onPressed: () {
-                          setState(() {
-                            selectedButton = 'Lt.3';
-                          });
-                        },
-                        child: Text('Lt.3',
+                                fontWeight: FontWeight.bold),
+                          ))),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: selectedButton == 'Lt.1'
+                                  ? indigoDye
+                                  : customWhite,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: indigoDye),
+                                  borderRadius: BorderRadius.circular(8))),
+                          onPressed: () {
+                            setState(() {
+                              selectedButton = 'Lt.1';
+                              currentFloor = 'lantai 1';
+                            });
+                            choosingClass();
+                          },
+                          child: Text(
+                            'Lt.1',
                             style: TextStyle(
-                                color: selectedButton == 'Lt.3'
+                                fontSize: 10,
+                                color: selectedButton == 'Lt.1'
                                     ? customWhite
                                     : indigoDye,
-                                fontWeight: FontWeight.bold)))),
-              ],
-            ),
-            SizedBox(
-              height: 48,
-            ),
-            Text(
-              'Daftar Kelas Yang Belum Terisi',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: selectedButton == 'Lt.2'
+                                  ? indigoDye
+                                  : customWhite,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: indigoDye),
+                                  borderRadius: BorderRadius.circular(8))),
+                          onPressed: () {
+                            setState(() {
+                              selectedButton = 'Lt.2';
+                              currentFloor = 'lantai 2';
+                            });
+                            choosingClass();
+                          },
+                          child: Text('Lt.2',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: selectedButton == 'Lt.2'
+                                      ? customWhite
+                                      : indigoDye,
+                                  fontWeight: FontWeight.bold)))),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: selectedButton == 'Lt.3'
+                                  ? indigoDye
+                                  : customWhite,
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: indigoDye),
+                                  borderRadius: BorderRadius.circular(8))),
+                          onPressed: () {
+                            setState(() {
+                              selectedButton = 'Lt.3';
+                              currentFloor = 'lantai 3';
+                            });
+                            choosingClass();
+                          },
+                          child: Text('Lt.3',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: selectedButton == 'Lt.3'
+                                      ? customWhite
+                                      : indigoDye,
+                                  fontWeight: FontWeight.bold)))),
+                ],
               ),
-              textAlign: TextAlign.left,
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            DropdownButtonHideUnderline(
-                child: DropdownButton2(
-              isExpanded: true,
-              hint: Text(selectedCapacity!),
-              items: kapasitas
-                  .map((String e) =>
-                      DropdownMenuItem<String>(value: e, child: Text(e)))
-                  .toList(),
-              value: selectedCapacity,
-              onChanged: (value) {
-                setState(() {
-                  selectedCapacity = value;
-                });
-              },
-              buttonStyleData: ButtonStyleData(
-                  height: 36,
+              SizedBox(
+                height: 48,
+              ),
+              Text(
+                'Daftar Kelas Yang Belum Terisi',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                isExpanded: true,
+                hint: Text(selectedCapacity),
+                items: kapasitas
+                    .map((String e) =>
+                        DropdownMenuItem<String>(value: e, child: Text(e)))
+                    .toList(),
+                value: selectedCapacity,
+                onChanged: (value) {
+                  setState(() {
+                    selectedCapacity = value!;
+                  });
+                  choosingClass();
+                },
+                buttonStyleData: ButtonStyleData(
+                    height: 36,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: customWhite,
+                        border: Border.all(color: indigoDye, width: 2))),
+                dropdownStyleData: DropdownStyleData(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
                       color: customWhite,
-                      border: Border.all(color: indigoDye, width: 2))),
-              dropdownStyleData: DropdownStyleData(
-                decoration: BoxDecoration(
-                    color: customWhite,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: indigoDye, width: 2)),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: indigoDye, width: 2)),
+                ),
+                menuItemStyleData: MenuItemStyleData(height: 36),
+              )),
+              SizedBox(
+                height: 24,
               ),
-              menuItemStyleData: MenuItemStyleData(height: 36),
-            )),
-            SizedBox(
-              height: 24,
-            ),
-            Flexible(
-              child: Material(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: daftarKelas.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          ListTile(
-                            onTap: () {
-                              scheduleModalBottomSheet(context);
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            title: Text(daftarKelas[index]),
-                            tileColor: indigoDye,
-                            textColor: customWhite,
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                        ],
-                      );
-                    }),
-              ),
-            )
-          ],
-        ));
+              Flexible(
+                child: thisFloorClasses.isEmpty
+                    ? Center(child: CircularProgressIndicator())
+                    : Material(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: thisFloorClasses.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  ListTile(
+                                    onTap: () {
+                                      widget.currentUser!.role == 'ketua kelas'
+                                          ? scheduleModalBottomSheet(
+                                              context,
+                                              thisFloorClasses[index]['_id'],
+                                              thisFloorClasses[index]
+                                                  ['capacity'],
+                                              selectedDay,
+                                              selectedDuration,
+                                              listWhereTheUserIsInCharge,
+                                              widget.currentUser!)
+                                          : null;
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8)),
+                                    title: Text(thisFloorClasses[index]['_id']),
+                                    tileColor: indigoDye,
+                                    textColor: customWhite,
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                ],
+                              );
+                            }),
+                      ),
+              )
+            ],
+          )),
+    );
   }
 }
 
+Future showRequestNotification(BuildContext context, String popUpText) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(popUpText),
+        );
+      });
+}
+
 Future<dynamic> scheduleModalBottomSheet(
-  BuildContext context,
-) {
+    BuildContext context,
+    String className,
+    String capacity,
+    String day,
+    String duration,
+    List<Session> sessionList,
+    User currentUser) {
+  String? selectedSubject;
+  TextEditingController reason = TextEditingController();
   return showModalBottomSheet(
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
@@ -280,188 +437,254 @@ Future<dynamic> scheduleModalBottomSheet(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12), topRight: Radius.circular(12))),
       context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 18),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ListTile(
-                  leading: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Symbols.close,
-                      size: 24,
-                      weight: 700,
-                    ),
-                  ),
-                  title: Text(
-                    'Nama Mata Kuliah',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * .8,
-                  padding: EdgeInsets.symmetric(horizontal: 28),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 32, horizontal: 18),
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                          children: [
-                            Row(children: [
-                              Icon(
-                                Symbols.calendar_month,
-                                color: Colors.black,
-                                size: 32,
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Text(
-                                "nama",
-                              ),
-                            ]),
-                            SizedBox(
-                              height: 24,
+                        ListTile(
+                          leading: InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Symbols.close,
+                              size: 24,
+                              weight: 700,
                             ),
-                            Row(children: [
-                              Icon(
-                                Symbols.location_on,
-                                color: Colors.black,
-                                size: 32,
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Text(
-                                "kapasitas",
-                              ),
-                            ]),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            Row(children: [
-                              Icon(
-                                Symbols.school,
-                                color: Colors.black,
-                                size: 32,
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Text(
-                                "namaDosen",
-                              ),
-                            ]),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            Row(children: [
-                              Icon(
-                                Symbols.groups,
-                                color: Colors.black,
-                                size: 32,
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Text(
-                                "kapasitas",
-                              ),
-                            ]),
-                          ],
+                          ),
+                          title: Text(
+                            'Request Class',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text('Jadwal Baru'),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: indigoDye, width: 2),
-                                  borderRadius: BorderRadius.circular(8)),
-                              padding: EdgeInsets.all(12),
-                              child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                        Container(
+                          height: MediaQuery.of(context).size.height * .8,
+                          padding: EdgeInsets.symmetric(horizontal: 28),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Column(
                                   children: [
-                                    Text('Pilih Tanggal'),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Icon(Symbols.calendar_month),
-                                    )
-                                  ]),
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text('Kelas Baru'),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: indigoDye, width: 2),
-                                  borderRadius: BorderRadius.circular(8)),
-                              padding: EdgeInsets.all(12),
-                              child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                    Row(children: [
+                                      Icon(
+                                        Symbols.location_on,
+                                        color: Colors.black,
+                                        size: 32,
+                                      ),
+                                      SizedBox(
+                                        width: 12,
+                                      ),
+                                      Text(
+                                        className,
+                                      ),
+                                    ]),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Row(children: [
+                                      Icon(
+                                        Symbols.groups,
+                                        color: Colors.black,
+                                        size: 32,
+                                      ),
+                                      SizedBox(
+                                        width: 12,
+                                      ),
+                                      Text(
+                                        capacity,
+                                      ),
+                                    ]),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Row(children: [
+                                      Icon(
+                                        Symbols.calendar_month,
+                                        color: Colors.black,
+                                        size: 32,
+                                      ),
+                                      SizedBox(
+                                        width: 12,
+                                      ),
+                                      Text(
+                                        day,
+                                      ),
+                                    ]),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Row(children: [
+                                      Icon(
+                                        Symbols.schedule,
+                                        color: Colors.black,
+                                        size: 32,
+                                      ),
+                                      SizedBox(
+                                        width: 12,
+                                      ),
+                                      Text(
+                                        duration,
+                                      ),
+                                    ]),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
-                                    Text('Kelas'),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Icon(Symbols.arrow_drop_down),
-                                    )
-                                  ]),
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              'Alasan',
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            TextField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: indigoDye, width: 2)),
-                                hintText: 'Berikan alasan',
-                              ),
-                              maxLines: 5,
-                              maxLength: 100,
-                            ),
-                          ],
-                        ),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.all(18),
-                                backgroundColor: indigoDye,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8))),
-                            onPressed: () {},
-                            child: Text('Kirim'))
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Text('Jadwal Baru'),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton2<String>(
+                                        isExpanded: true,
+                                        hint: Text(
+                                          'Pilih Subject',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.indigo,
+                                          ),
+                                        ),
+                                        items: sessionList.map((item) {
+                                          return DropdownMenuItem<String>(
+                                            value: item.subject.name,
+                                            child: Text(
+                                              item.subject.name,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.indigo),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        value: selectedSubject,
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            selectedSubject = value;
+                                          });
+                                        },
+                                        buttonStyleData: ButtonStyleData(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          height: 32,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              MediaQuery.of(context)
+                                                      .padding
+                                                      .left *
+                                                  2,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border: Border.all(
+                                                color: Colors.indigo),
+                                          ),
+                                        ),
+                                        dropdownStyleData: DropdownStyleData(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        iconStyleData: IconStyleData(
+                                          icon: Icon(
+                                            Icons.keyboard_arrow_down,
+                                            color: Colors.indigo,
+                                          ),
+                                        ),
+                                        menuItemStyleData:
+                                            const MenuItemStyleData(
+                                          height: 32,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Text(
+                                      'Alasan',
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(color: indigoDye),
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: TextField(
+                                        controller: reason,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'Berikan alasan',
+                                        ),
+                                        maxLines: 5,
+                                        maxLength: 100,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 56,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.all(18),
+                                          backgroundColor: indigoDye,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8))),
+                                      onPressed: () {
+                                        if (selectedSubject == null) {
+                                          showRequestNotification(context,
+                                              'Subject Tidak Boleh Kosong');
+                                          return;
+                                        }
+                                        addRequest(
+                                            currentUser.id,
+                                            sessionList
+                                                .where((element) =>
+                                                    element.subject.name ==
+                                                    selectedSubject)
+                                                .first
+                                                .id
+                                                .toHexString(),
+                                            day,
+                                            duration,
+                                            className,
+                                            reason.text);
+                                        showRequestNotification(context,
+                                            'Permintaan Telah Dikirim');
+                                      },
+                                      child: Text('Kirim')),
+                                )
+                              ]),
+                        )
                       ]),
-                )
-              ]),
+                ),
+              ),
+            );
+          },
         );
       });
 }
@@ -470,7 +693,6 @@ Future<void> bookingDialog(context) async {
   return showDialog(
       context: context,
       builder: (context) {
-        String test = 'tes';
         String? selectedSubject;
         final List<String> subjects = [
           'Subject1',

@@ -31,16 +31,16 @@ class _HomePageState extends State<HomePage>
   }
 
   Future setTodaySession() async {
-    List<Session> response = await getSession(widget.currentUser!.id);
+    List<Session> response = await getTodaySession(widget.currentUser!.id);
     DateTime now = DateTime.now();
 
     for (Session element in response) {
       List<String> sessionTime = element.startTime.split(':');
-      DateTime sessionTimeInDateTime = DateTime(now.year, now.month, now.day,
-          int.parse(sessionTime[0]), int.parse(sessionTime[1]));
-      if (now.isBefore(sessionTimeInDateTime)) {
+      if (int.parse(sessionTime[0]) > now.hour) {
         activeClass = response.indexOf(element);
         break;
+      } else {
+        activeClass = response.length - 1;
       }
     }
     setState(() {
@@ -55,18 +55,18 @@ class _HomePageState extends State<HomePage>
     return RefreshIndicator(
       onRefresh: setTodaySession,
       child: todaySession.isEmpty && !todayIsEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : todaySession.isEmpty && todayIsEmpty
-              ? Center(child: Text('Yaay libur'))
+              ? const Center(child: Text('Yaay libur'))
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                       Container(
-                        height: MediaQuery.of(context).size.height * .3,
                         padding: paddings,
                         child: Stack(children: [
                           SizedBox(
+                            width: 720,
                             child: Card(
                               semanticContainer: true,
                               child: AspectRatio(
@@ -79,39 +79,42 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 24, horizontal: 32),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              mainAxisSize: MainAxisSize.max,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   'Kelas Berikutnya',
                                   style: TextStyle(
                                       color: customWhite,
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.normal),
                                 ),
                                 Text(
                                   todaySession[activeClass].subject.name,
                                   style: TextStyle(
                                       color: customWhite,
-                                      fontSize: 24,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 8,
                                 ),
                                 Text(
                                   'CR ${todaySession[activeClass].classroom}',
                                   style: TextStyle(
                                       color: customWhite,
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   '${todaySession[activeClass].day}, ${todaySession[activeClass].startTime} - ${todaySession[activeClass].endTime}',
                                   style: TextStyle(
                                       color: customWhite,
-                                      fontSize: 20,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.right,
                                 ),
@@ -120,17 +123,18 @@ class _HomePageState extends State<HomePage>
                           ),
                         ]),
                       ),
-                      Divider(),
-                      SizedBox(
+                      const Divider(),
+                      const SizedBox(
                         height: 32,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * .45,
-                        padding: EdgeInsets.symmetric(horizontal: 28),
+                        padding: const EdgeInsets.symmetric(horizontal: 28),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(
+                            const Text(
                               'Jadwal Hari Ini',
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
@@ -142,15 +146,15 @@ class _HomePageState extends State<HomePage>
                                   itemBuilder: (BuildContext context, index) {
                                     return Container(
                                       width: 480,
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 12),
-                                      padding: EdgeInsets.symmetric(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 12),
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 12),
                                       decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
                                                 color: dimGrey,
-                                                offset: Offset(2, 2),
+                                                offset: const Offset(2, 2),
                                                 blurRadius: 2)
                                           ],
                                           border: Border.all(color: indigoDye),
@@ -170,7 +174,7 @@ class _HomePageState extends State<HomePage>
                                                   : customBlack,
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 24,
                                           ),
                                           Column(
@@ -185,7 +189,7 @@ class _HomePageState extends State<HomePage>
                                                     color: activeClass == index
                                                         ? customWhite
                                                         : customBlack,
-                                                    fontSize: 18,
+                                                    fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),

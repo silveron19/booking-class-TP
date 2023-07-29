@@ -62,9 +62,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(24),
+        child: SizedBox(
           width: MediaQuery.of(context).size.width * .8,
           height: MediaQuery.of(context).size.height * .7,
           child: Column(
@@ -139,16 +139,19 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Checkbox(
-                              value: rememberMe,
-                              onChanged: (value) {
-                                setState(() {
-                                  rememberMe = value!;
-                                });
-                              }),
+                          SizedBox(
+                            child: Checkbox(
+                                splashRadius: 0,
+                                value: rememberMe,
+                                onChanged: (value) {
+                                  setState(() {
+                                    rememberMe = value!;
+                                  });
+                                }),
+                          ),
                           Text(
                             'Simpan Password',
-                            style: TextStyle(color: grey),
+                            style: TextStyle(color: grey, fontSize: 12),
                           )
                         ],
                       ),
