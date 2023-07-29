@@ -30,6 +30,11 @@ class _HomePageState extends State<HomePage>
     setTodaySession();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future setTodaySession() async {
     List<Session> response = await getTodaySession(widget.currentUser!.id);
     DateTime now = DateTime.now();

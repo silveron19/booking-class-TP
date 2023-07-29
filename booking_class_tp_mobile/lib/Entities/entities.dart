@@ -27,3 +27,27 @@ class Subjects {
   String id, name, classPresident;
   Subjects(this.id, this.name, this.classPresident);
 }
+
+class Request {
+  ObjectId id, sessionDetail;
+  String requestBy,
+      newDay,
+      newStartTime,
+      newEndTime,
+      newClassroom,
+      reason,
+      status;
+  DateTime createdAt, updatedAt;
+  Request(
+      this.id,
+      this.sessionDetail,
+      this.requestBy,
+      this.newDay,
+      this.newStartTime,
+      this.newEndTime,
+      this.newClassroom,
+      this.reason,
+      this.status,
+      this.createdAt,
+      this.updatedAt);
+}

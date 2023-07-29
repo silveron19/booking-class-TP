@@ -190,18 +190,42 @@ Future<List> checkIfCanBook(
   return docs;
 }
 
-Future<List> getRequest() async {
+Future getRequest() async {
   DbCollection request = await getConnection('REQUEST');
   List userRequests = [];
+  List<Request> requestObjects = [];
   await request.find().forEach((element) {
     userRequests.add(element);
   });
-  return userRequests;
+
+  for (var elemetn in userRequests) {
+    print(elemetn);
+  }
+
+  for (var element in userRequests) {
+    requestObjects.add(Request(
+        element['_id'],
+        element['session_detail'],
+        element['request_by'],
+        element['new_day'],
+        element['new_start_time'],
+        element['new_end_time'],
+        element['new_classroom'],
+        element['reason'],
+        element['status'],
+        element['created_at'],
+        element['updated_at']));
+  }
+
+  print(requestObjects);
+  // return userRequests;
+
+  request.db.close();
 }
 
 Future addRequest(String userId, String sessionId, String day,
     String newDuration, String newClassroom, String reason) async {
-  DbCollection requests = await getConnection('REQUEST_FAKHRI');
+  DbCollection requests = await getConnection('REQUEST');
   List startAndEndTime = newDuration.split(' - ');
   requests.insertOne({
     '_id': ObjectId(),
@@ -259,6 +283,7 @@ Future getClassroom(String userId) async {
 }
 
 void main(List<String> args) async {
+  getRequest();
   // String time = "13:00 - 15:30";
   // print(time.split(" - "));
 

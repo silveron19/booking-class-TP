@@ -38,6 +38,11 @@ class _SchedulePageState extends State<SchedulePage>
     getUserSession();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future getUserSession() async {
     List<Session> session = await getSessions(widget.currentUser!.id);
     setState(() {
@@ -763,6 +768,7 @@ class _SchedulePageState extends State<SchedulePage>
                                       } else if (reason.text.trim().isEmpty) {
                                         showRequestNotification(
                                             'Alasan tidak boleh kosong');
+                                        return;
                                       }
 
                                       setState(() {
@@ -792,9 +798,6 @@ class _SchedulePageState extends State<SchedulePage>
                                       setState(() {
                                         isRequesting = false;
                                       });
-
-                                      // await checkIfCanBook(
-                                      // newDay, newDuration, newClass);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: indigoDye),

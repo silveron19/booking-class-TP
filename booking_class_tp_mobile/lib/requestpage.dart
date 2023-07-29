@@ -136,6 +136,16 @@ class RequestPage extends StatefulWidget {
 
 class _RequestPageState extends State<RequestPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: paddings,
@@ -262,10 +272,6 @@ class _RequestPageState extends State<RequestPage> {
                                   thisRequest.nama,
                                   style: textStyle,
                                 ),
-                                Text(
-                                  thisRequest.tanggal,
-                                  style: textStyle,
-                                )
                               ],
                             ),
                             Text(

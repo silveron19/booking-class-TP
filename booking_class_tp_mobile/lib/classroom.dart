@@ -25,6 +25,11 @@ class _ClassroomPageState extends State<ClassroomPage>
     settingUpClass();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future settingUpClass() async {
     List availableClassroom = await getClassroom(widget.currentUser!.id);
     setState(() {
