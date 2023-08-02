@@ -32,16 +32,38 @@ Future getTodayClass(String id, String hari) async {
   return todaySubjects;
 }
 
-Future<List<Session>> getSessions(String id) async {
+Future<List> getStudentOfASession(List<dynamic> studentList) async {
+  DbCollection students = await getConnection('USERS');
+  List userList = [];
+  students.find(where.fields(['_id', 'name'])).forEach((element) {
+    if (studentList.contains(element['_id'])) {
+      userList.add(element);
+    }
+  });
+  return userList;
+}
+
+Future<List<Session>> getSessions(User userInfo) async {
   DbCollection session = await getConnection('SESSION');
   List temportal = [];
   List<Session> sessions = [];
 
-  await session.find().forEach((element) {
-    if ((element['student'] as List).contains(id)) {
-      temportal.add(element);
-    }
-  });
+  if (userInfo.role != 'admin') {
+    await session.find().forEach((element) {
+      if ((element['student'] as List).contains(userInfo.id)) {
+        temportal.add(element);
+      }
+    });
+  } else {
+    await session.find().forEach((element) {
+      print(element['department']);
+      print(userInfo.department);
+      print(element['department'] == userInfo.department);
+      if (element['department'] == userInfo.department) {
+        temportal.add(element);
+      }
+    });
+  }
 
   if (temportal.isNotEmpty) {
     temportal.sort((a, b) =>
@@ -49,13 +71,14 @@ Future<List<Session>> getSessions(String id) async {
 
     for (var element in temportal) {
       var retrievedSubject = await getSubject(element['subject']);
+      var studentList = await getStudentOfASession(element['student']);
       sessions.add(Session(
           element['_id'],
           element["day"],
           element['start_time'],
           element['end_time'],
           element['lecturer'],
-          element['student'],
+          studentList,
           retrievedSubject,
           element['classroom']));
     }
@@ -64,8 +87,8 @@ Future<List<Session>> getSessions(String id) async {
   return sessions;
 }
 
-Future<List<Session>> getTodaySession(String userId) async {
-  List<Session> listOfUserSession = await getSessions(userId);
+Future<List<Session>> getTodaySession(User userInfo) async {
+  List<Session> listOfUserSession = await getSessions(userInfo);
   List<Session> todaySessions = [];
   List<String> dayOfTheWeek = [
     'Senin',
@@ -124,6 +147,14 @@ Future<void> updateSession(
       where.id(ObjectId.fromHexString("64bd151c0a5b43e741ba7a4d")), update);
 
   sessions.db.close();
+}
+
+Future updateClassChief(String subjectId, String studentId) async {
+  DbCollection subjects = await getConnection('SUBJECTS');
+  subjects.updateOne(
+      where.eq('_id', subjectId), modify.set('class_president', studentId));
+  subjects.db.close();
+  return;
 }
 
 Future<Subjects> getSubject(String subjectId) async {
@@ -190,23 +221,38 @@ Future<List> checkIfCanBook(
   return docs;
 }
 
-Future getRequest() async {
+Future<Session> getSessionForRequest(ObjectId sessionId) async {
+  DbCollection sessionCollection = await getConnection('SESSION');
+  print(sessionId);
+  var session = await sessionCollection.findOne(where.eq('_id', sessionId));
+  Subjects thisSubject = await getSubject(session!['subject']);
+  return Session(
+      session['_id'],
+      session['day'],
+      session['start_time'],
+      session['end_time'],
+      session['lecturer'],
+      session['student'],
+      thisSubject,
+      session['classroom']);
+}
+
+Future<List<Request>> getRequest(User theUser) async {
   DbCollection request = await getConnection('REQUEST');
   List userRequests = [];
   List<Request> requestObjects = [];
-  await request.find().forEach((element) {
+  await request.find(where.eq('request_by', theUser.id)).forEach((element) {
     userRequests.add(element);
   });
 
-  for (var elemetn in userRequests) {
-    print(elemetn);
-  }
-
   for (var element in userRequests) {
+    Session thisRequestSession =
+        await getSessionForRequest(element['session_detail']);
+    User thisRequestUser = await getUser(element['request_by']);
     requestObjects.add(Request(
         element['_id'],
-        element['session_detail'],
-        element['request_by'],
+        thisRequestSession,
+        thisRequestUser,
         element['new_day'],
         element['new_start_time'],
         element['new_end_time'],
@@ -217,10 +263,8 @@ Future getRequest() async {
         element['updated_at']));
   }
 
-  print(requestObjects);
-  // return userRequests;
-
   request.db.close();
+  return requestObjects;
 }
 
 Future addRequest(String userId, String sessionId, String day,
@@ -245,10 +289,10 @@ Future addRequest(String userId, String sessionId, String day,
   return;
 }
 
-Future getClassroom(String userId) async {
+Future getClassroom(User userInfo) async {
   DbCollection session = await getConnection("SESSION");
   DbCollection classroom = await getConnection('CLASSROOM');
-  List thisUserSession = await getSessions(userId);
+  List thisUserSession = await getSessions(userInfo);
   List availableClassAndDuration = [];
   List availableSession = [];
   List<Session> sessionWhereThisUserIsInCharge = [];
@@ -266,8 +310,8 @@ Future getClassroom(String userId) async {
   });
 
   for (Session element in thisUserSession) {
-    if (element.subject.classPresident == userId &&
-        element.students.contains(userId)) {
+    if (element.subject.classPresident == userInfo.id &&
+        element.students.contains(userInfo)) {
       sessionWhereThisUserIsInCharge.add(element);
     }
   }
@@ -282,8 +326,28 @@ Future getClassroom(String userId) async {
   ];
 }
 
+Future<User> getUser(String userId) async {
+  DbCollection users = await getConnection('USERS');
+  User retrievedUser;
+  var result = await users.findOne(where.eq('_id', userId));
+
+  retrievedUser = User(result!['_id'], result['name'], result['password'],
+      result['department'], result['semester'], result['role']);
+  users.db.close();
+  return retrievedUser;
+}
+
+Future deleteRequest(ObjectId theId) async {
+  DbCollection request = await getConnection('REQUEST');
+
+  request.deleteOne(where.eq('_id', theId));
+
+  request.db.close();
+}
+
 void main(List<String> args) async {
-  getRequest();
+  // getUser('D121211007');
+  // getRequest();
   // String time = "13:00 - 15:30";
   // print(time.split(" - "));
 

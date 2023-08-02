@@ -29,14 +29,10 @@ class Subjects {
 }
 
 class Request {
-  ObjectId id, sessionDetail;
-  String requestBy,
-      newDay,
-      newStartTime,
-      newEndTime,
-      newClassroom,
-      reason,
-      status;
+  ObjectId id;
+  Session sessionDetail;
+  User requestBy;
+  String newDay, newStartTime, newEndTime, newClassroom, reason, status;
   DateTime createdAt, updatedAt;
   Request(
       this.id,

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import 'Connection/database_connetion.dart';
 import 'Entities/entities.dart';
 import 'main.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key, required this.currentUser});
+  const HomePage({super.key, required this.currentUser});
 
-  User? currentUser;
+  final User? currentUser;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage>
   }
 
   Future setTodaySession() async {
-    List<Session> response = await getTodaySession(widget.currentUser!.id);
+    List<Session> response = await getTodaySession(widget.currentUser!);
     DateTime now = DateTime.now();
 
     for (Session element in response) {
@@ -48,10 +49,12 @@ class _HomePageState extends State<HomePage>
         activeClass = response.length - 1;
       }
     }
-    setState(() {
-      todaySession = response;
-      todayIsEmpty = true;
-    });
+    if (mounted) {
+      setState(() {
+        todaySession = response;
+        todayIsEmpty = true;
+      });
+    }
   }
 
   @override
@@ -62,7 +65,23 @@ class _HomePageState extends State<HomePage>
       child: todaySession.isEmpty && !todayIsEmpty
           ? const Center(child: CircularProgressIndicator())
           : todaySession.isEmpty && todayIsEmpty
-              ? const Center(child: Text('Yaay libur'))
+              ? Center(
+                  child: Card(
+                  child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Symbols.warning,
+                            color: dimGrey,
+                            size: 64,
+                          ),
+                          Text(
+                              'Anda tidak memiliki mata kuliah untuk hari ini'),
+                        ],
+                      )),
+                ))
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -128,7 +147,10 @@ class _HomePageState extends State<HomePage>
                           ),
                         ]),
                       ),
-                      const Divider(),
+                      const Divider(
+                        height: 2,
+                        color: Colors.grey,
+                      ),
                       const SizedBox(
                         height: 32,
                       ),

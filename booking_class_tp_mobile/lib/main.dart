@@ -1,6 +1,7 @@
 import 'package:booking_class_tp_mobile/Connection/database_connetion.dart';
 import 'package:booking_class_tp_mobile/mainpage.dart';
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import 'Entities/entities.dart';
 
@@ -57,6 +58,30 @@ class _LoginPageState extends State<LoginPage> {
     _username.dispose();
     _password.dispose();
     super.dispose();
+  }
+
+  Future showPopUp(String popUpText) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: SizedBox(
+              height: 120,
+              width: 80,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    Symbols.mail,
+                    size: 64,
+                  ),
+                  Text(popUpText),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -133,33 +158,22 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     },
                   ),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            child: Checkbox(
-                                splashRadius: 0,
-                                value: rememberMe,
-                                onChanged: (value) {
-                                  setState(() {
-                                    rememberMe = value!;
-                                  });
-                                }),
-                          ),
-                          Text(
-                            'Simpan Password',
-                            style: TextStyle(color: grey, fontSize: 12),
-                          )
-                        ],
-                      ),
-                      Text(
-                        'Lupa Password?',
-                        style: TextStyle(
-                            color: indigoDye, fontWeight: FontWeight.bold),
-                      ),
+                      TextButton(
+                        onPressed: () {
+                          showPopUp('Password bisa diminta ke admin');
+                        },
+                        child: Text(
+                          'Lupa Password?',
+                          style: TextStyle(
+                              color: indigoDye, fontWeight: FontWeight.bold),
+                        ),
+                      )
                     ],
                   ),
                 ]),

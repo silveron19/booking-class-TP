@@ -128,7 +128,9 @@ class _MainPageState extends State<MainPage> {
                 SchedulePage(
                   currentUser: widget.currentUser,
                 ),
-                const RequestPage(),
+                RequestPage(
+                  currentUser: widget.currentUser,
+                ),
                 ClassroomPage(
                   currentUser: widget.currentUser,
                 )

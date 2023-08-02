@@ -7,8 +7,8 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'Entities/entities.dart';
 
 class ClassroomPage extends StatefulWidget {
-  ClassroomPage({super.key, required this.currentUser});
-  User? currentUser;
+  const ClassroomPage({super.key, required this.currentUser});
+  final User? currentUser;
 
   @override
   State<ClassroomPage> createState() => _ClassroomPageState();
@@ -31,14 +31,16 @@ class _ClassroomPageState extends State<ClassroomPage>
   }
 
   Future settingUpClass() async {
-    List availableClassroom = await getClassroom(widget.currentUser!.id);
-    setState(() {
-      daftarKelas = availableClassroom[0];
-      sessionList = availableClassroom[1];
-      listWhereTheUserIsInCharge = availableClassroom[2];
-      selectedDay = 'Senin';
-      selectedDuration = '07:30 - 09:30';
-    });
+    List availableClassroom = await getClassroom(widget.currentUser!);
+    if (mounted) {
+      setState(() {
+        daftarKelas = availableClassroom[0];
+        sessionList = availableClassroom[1];
+        listWhereTheUserIsInCharge = availableClassroom[2];
+        selectedDay = 'Senin';
+        selectedDuration = '07:30 - 09:30';
+      });
+    }
 
     choosingClass();
   }
@@ -58,7 +60,6 @@ class _ClassroomPageState extends State<ClassroomPage>
       if (element['floor'] == currentFloor &&
           element['capacity'] == classCapacity) {
         result.add(element);
-        print(element);
       }
     }
 
@@ -74,9 +75,19 @@ class _ClassroomPageState extends State<ClassroomPage>
       (element) => kelasYangPerluDihapuskan.contains(element['_id']),
     );
 
-    setState(() {
-      thisFloorClasses = result;
-    });
+    if (mounted) {
+      setState(() {
+        thisFloorClasses = result;
+      });
+
+      if (thisFloorClasses.isEmpty) {
+        setState(() {
+          hasRetrievedClassroom = true;
+        });
+      } else {
+        hasRetrievedClassroom = false;
+      }
+    }
   }
 
   List daftarKelas = [];
@@ -89,6 +100,8 @@ class _ClassroomPageState extends State<ClassroomPage>
   String selectedDuration = '07:30 - 09:30';
   String selectedButton = 'Ground';
   String selectedCapacity = 'Kapasitas 50';
+
+  bool hasRetrievedClassroom = false;
 
   final List<String> kapasitas = ['Kapasitas 50', 'Kapasitas 100'];
   final List<String> duration = [
@@ -118,7 +131,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                       hint: Text(
                         'Senin',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -129,7 +142,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                                 child: Text(
                                   item,
                                   style: const TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 ),
@@ -145,7 +158,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                       buttonStyleData: ButtonStyleData(
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           height: 52,
-                          width: 160,
+                          width: 144,
                           decoration: BoxDecoration(
                               color: indigoDye,
                               borderRadius: BorderRadius.circular(8))),
@@ -196,7 +209,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                       buttonStyleData: ButtonStyleData(
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           height: 52,
-                          width: 160,
+                          width: 144,
                           decoration: BoxDecoration(
                               color: indigoDye,
                               borderRadius: BorderRadius.circular(8))),
@@ -235,7 +248,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                             choosingClass();
                           },
                           child: Text(
-                            'Ground',
+                            'G',
                             style: TextStyle(
                                 fontSize: 10,
                                 color: selectedButton == 'Ground'
@@ -372,42 +385,50 @@ class _ClassroomPageState extends State<ClassroomPage>
                 height: 24,
               ),
               Flexible(
-                child: thisFloorClasses.isEmpty
+                child: thisFloorClasses.isEmpty && !hasRetrievedClassroom
                     ? Center(child: CircularProgressIndicator())
-                    : Material(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: thisFloorClasses.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  ListTile(
-                                    onTap: () {
-                                      widget.currentUser!.role == 'ketua kelas'
-                                          ? scheduleModalBottomSheet(
-                                              context,
-                                              thisFloorClasses[index]['_id'],
-                                              thisFloorClasses[index]
-                                                  ['capacity'],
-                                              selectedDay,
-                                              selectedDuration,
-                                              listWhereTheUserIsInCharge,
-                                              widget.currentUser!)
-                                          : null;
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
-                                    title: Text(thisFloorClasses[index]['_id']),
-                                    tileColor: indigoDye,
-                                    textColor: customWhite,
-                                  ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
-                                ],
-                              );
-                            }),
-                      ),
+                    : thisFloorClasses.isEmpty && hasRetrievedClassroom
+                        ? Center(
+                            child: Text('Oops tidak ada kelas yang tersedia!'),
+                          )
+                        : Material(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: thisFloorClasses.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      ListTile(
+                                        onTap: () {
+                                          widget.currentUser!.role ==
+                                                  'ketua kelas'
+                                              ? scheduleModalBottomSheet(
+                                                  context,
+                                                  thisFloorClasses[index]
+                                                      ['_id'],
+                                                  thisFloorClasses[index]
+                                                      ['capacity'],
+                                                  selectedDay,
+                                                  selectedDuration,
+                                                  listWhereTheUserIsInCharge,
+                                                  widget.currentUser!)
+                                              : null;
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        title: Text(
+                                            thisFloorClasses[index]['_id']),
+                                        tileColor: indigoDye,
+                                        textColor: customWhite,
+                                      ),
+                                      SizedBox(
+                                        height: 16,
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          ),
               )
             ],
           )),
