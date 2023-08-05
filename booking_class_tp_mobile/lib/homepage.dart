@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
-  List<Session> todaySession = [];
+  List todaySession = [];
   bool todayIsEmpty = false;
   int activeClass = 0;
 
@@ -28,47 +28,107 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    setTodaySession();
+    getTodaySessionFromGlobalSession();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  Future homePageRefresh() async {
+    await getSessionFromDatabase();
+    await getTodaySessionFromGlobalSession();
   }
 
-  Future setTodaySession() async {
-    List<Session> response = await getTodaySession(widget.currentUser!);
-    DateTime now = DateTime.now();
+  int converting(String time) {
+    List myTime = time.split(":");
+    return int.parse(myTime[0]) * 60 + int.parse(myTime[1]);
+  }
 
-    for (Session element in response) {
-      List<String> sessionTime = element.startTime.split(':');
-      if (int.parse(sessionTime[0]) > now.hour) {
-        activeClass = response.indexOf(element);
-        break;
-      } else {
-        activeClass = response.length - 1;
+  Future<void> getTodaySessionFromGlobalSession() async {
+    setState(() {
+      todaySession = [];
+    });
+    List<Session> session = [];
+    List<String> dayOfTheWeek = [
+      'Minggu',
+      'Senin',
+      'Selasa',
+      'Rabu',
+      'Kamis',
+      'Jum\'at',
+      'Sabtu',
+    ];
+    var hari = DateTime.now().weekday;
+    if (widget.currentUser!.role != 'admin') {
+      for (var element in globalSession) {
+        if ((element['student'] as List).contains(widget.currentUser!.id) &&
+            element['day'] == dayOfTheWeek[hari]) {
+          var retrievedSubject =
+              getSubjectFromGlobalSubjectForSession(element['subject']);
+          var studentList =
+              getStudentsFromGlobalUserForSession(element['student']);
+          session.add(Session(
+              element['_id'],
+              element["day"],
+              element['start_time'],
+              element['end_time'],
+              element['lecturer'],
+              studentList,
+              retrievedSubject,
+              element['classroom'],
+              element['department']));
+        }
+      }
+    } else {
+      for (var element in globalSession) {
+        if (element['department'] == widget.currentUser!.department &&
+            element['day'] == dayOfTheWeek[hari]) {
+          var retrievedSubject =
+              getSubjectFromGlobalSubjectForSession(element['subject']);
+          var studentList =
+              getStudentsFromGlobalUserForSession(element['student']);
+          session.add(Session(
+              element['_id'],
+              element["day"],
+              element['start_time'],
+              element['end_time'],
+              element['lecturer'],
+              studentList,
+              retrievedSubject,
+              element['classroom'],
+              element['department']));
+        }
       }
     }
-    if (mounted) {
-      setState(() {
-        todaySession = response;
-        todayIsEmpty = true;
-      });
+
+    session.sort(
+        (a, b) => converting(a.startTime).compareTo(converting(b.startTime)));
+
+    DateTime now = DateTime.now();
+    for (var element in session) {
+      List<String> sessionTime = element.startTime.split(':');
+      if (int.parse(sessionTime[0]) > now.hour) {
+        activeClass = session.indexOf(element);
+        break;
+      } else {
+        activeClass = session.length - 1;
+      }
     }
+    setState(() {
+      todaySession = session;
+      todayIsEmpty = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return RefreshIndicator(
-      onRefresh: setTodaySession,
+      onRefresh: homePageRefresh,
       child: todaySession.isEmpty && !todayIsEmpty
           ? const Center(child: CircularProgressIndicator())
           : todaySession.isEmpty && todayIsEmpty
               ? Center(
                   child: Card(
                   child: Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -77,7 +137,7 @@ class _HomePageState extends State<HomePage>
                             color: dimGrey,
                             size: 64,
                           ),
-                          Text(
+                          const Text(
                               'Anda tidak memiliki mata kuliah untuk hari ini'),
                         ],
                       )),
@@ -108,7 +168,7 @@ class _HomePageState extends State<HomePage>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              mainAxisSize: MainAxisSize.min,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(
                                   'Kelas Berikutnya',

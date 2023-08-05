@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
+                  const Icon(
                     Symbols.mail,
                     size: 64,
                   ),
@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Row(
@@ -207,20 +207,27 @@ class _LoginPageState extends State<LoginPage> {
                         currentFocus.unfocus();
                       }
 
-                      isAuthenticating = false;
-
                       if (_formKey.currentState!.validate()) {
                         setState(() {
                           obscurePassword = true;
                         });
+                        await getSessionFromDatabase();
+                        await getRequestFromDatabase();
+                        await getClassroomFromDatabase();
+                        await getSubjectsFromDatabase();
+                        await getUserFromDatabase();
+
                         _username.clear();
                         _password.clear();
-                        if (context.mounted) {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return MainPage(currentUser: currentUser);
-                          }));
-                        }
+
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return MainPage(currentUser: currentUser);
+                        }));
+
+                        setState(() {
+                          isAuthenticating = false;
+                        });
                       }
                     },
                     child: isAuthenticating

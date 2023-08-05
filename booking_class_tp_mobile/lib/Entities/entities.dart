@@ -9,13 +9,13 @@ class User {
 }
 
 class Session {
-  String day, startTime, endTime, lecturer, classroom;
+  String day, startTime, endTime, lecturer, classroom, department;
   ObjectId id;
   List<dynamic> students;
   Subjects subject;
 
   Session(this.id, this.day, this.startTime, this.endTime, this.lecturer,
-      this.students, this.subject, this.classroom);
+      this.students, this.subject, this.classroom, this.department);
 }
 
 class Students {

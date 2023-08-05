@@ -28,7 +28,7 @@ class _RequestPageState extends State<RequestPage>
   @override
   void initState() {
     super.initState();
-    retrieveRequest();
+    getRequestFromGlobalRequest();
   }
 
   @override
@@ -36,13 +36,49 @@ class _RequestPageState extends State<RequestPage>
     super.dispose();
   }
 
-  Future retrieveRequest() async {
-    List<Request> response = await getRequest(widget.currentUser!);
+  Future requestRefresh() async {
+    await getRequestFromDatabase();
+    await getRequestFromGlobalRequest();
+  }
+
+  Future getRequestFromGlobalRequest() async {
+    List<Request> globalRequestRequestPage = [];
+    List userRequest = [];
+    if (widget.currentUser!.role == 'admin') {
+      for (var element in globalRequest) {
+        userRequest.add(element);
+      }
+    } else {
+      for (var element in globalRequest) {
+        if (element['request_by'] == widget.currentUser!.id) {
+          userRequest.add(element);
+        }
+      }
+    }
+
+    for (var element in userRequest) {
+      Session sessionOfThisRequest =
+          getSessionForRequest(element['session_detail']);
+      User userOfThisRequest = getUserForRequest(element['request_by']);
+      globalRequestRequestPage.add(Request(
+          element['_id'],
+          sessionOfThisRequest,
+          userOfThisRequest,
+          element['new_day'],
+          element['new_start_time'],
+          element['new_end_time'],
+          element['new_classroom'],
+          element['reason'],
+          element['status'],
+          element['created_at'],
+          element['updated_at']));
+    }
+
     if (mounted) {
       setState(() {
-        userRequests = response;
+        userRequests = globalRequestRequestPage;
         hasRetrievedRequest = true;
-        modifiableList = response;
+        modifiableList = globalRequestRequestPage;
       });
     }
   }
@@ -80,239 +116,73 @@ class _RequestPageState extends State<RequestPage>
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return RefreshIndicator(
-            onRefresh: retrieveRequest,
-            child: AlertDialog(
-              content: Text(
-                  'Apakah anda yakin ingin menghapus request ini secara permanen?'),
-              icon: Icon(
-                Symbols.delete_outline_rounded,
-                size: 96,
-                semanticLabel: 'Delete',
-              ),
-              alignment: Alignment.center,
-              actionsAlignment: MainAxisAlignment.spaceBetween,
-              actionsPadding: EdgeInsets.only(bottom: 24, left: 24, right: 24),
-              actions: [
-                Row(
-                  children: [
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: Container(
+          return AlertDialog(
+            content: const Text(
+                'Apakah anda yakin ingin menghapus request ini secara permanen?'),
+            icon: const Icon(
+              Symbols.delete_outline_rounded,
+              size: 96,
+              semanticLabel: 'Delete',
+            ),
+            alignment: Alignment.center,
+            actionsAlignment: MainAxisAlignment.spaceBetween,
+            actionsPadding:
+                const EdgeInsets.only(bottom: 24, left: 24, right: 24),
+            actions: [
+              Row(
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: antiFlashWhite,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Batal',
+                            style: TextStyle(
+                                color: dimGrey, fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Container(
                         decoration: BoxDecoration(
-                            color: antiFlashWhite,
+                            color: Colors.red,
                             borderRadius: BorderRadius.circular(8)),
                         child: TextButton(
                             onPressed: () {
+                              deleteRequest(theRequest.id);
+                              modifiableList.removeWhere(
+                                  (element) => element.id == theRequest.id);
+                              userRequests.removeWhere(
+                                  (element) => element.id == theRequest.id);
+                              setState(() {
+                                modifiableList;
+                                userRequests;
+                              });
+                              Navigator.pop(context);
                               Navigator.pop(context);
                             },
                             child: Text(
-                              'Batal',
+                              'Hapus',
                               style: TextStyle(
-                                  color: dimGrey, fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 24,
-                    ),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: TextButton(
-                              onPressed: () {
-                                deleteRequest(theRequest.id);
-                                modifiableList.removeWhere(
-                                    (element) => element.id == theRequest.id);
-                                userRequests.removeWhere(
-                                    (element) => element.id == theRequest.id);
-                                setState(() {
-                                  modifiableList;
-                                  userRequests;
-                                });
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'Hapus',
-                                style: TextStyle(
-                                    color: customWhite,
-                                    fontWeight: FontWeight.bold),
-                              ))),
-                    ),
-                  ],
-                )
-              ],
-            ),
+                                  color: customWhite,
+                                  fontWeight: FontWeight.bold),
+                            ))),
+                  ),
+                ],
+              )
+            ],
           );
         });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build;
-    return Container(
-      padding: paddings,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: EdgeInsets.only(left: 16, right: 16),
-            decoration: BoxDecoration(
-                color: Color(0xffE6E6E6),
-                borderRadius: BorderRadius.circular(8)),
-            height: 48,
-            child: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                suffixIcon: Icon(Icons.search_outlined),
-                hintText: 'Masukkan Pencarian',
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: indigoDye),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: DropdownMenu(
-                    onSelected: (value) {
-                      sort = value;
-                      sortRequest();
-                    },
-                    width: (MediaQuery.of(context).size.width - 64) / 2 - 10,
-                    hintText: 'Terbaru',
-                    dropdownMenuEntries: sortingChoices
-                        .map((e) => DropdownMenuEntry(value: e, label: e))
-                        .toList(),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: indigoDye),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: DropdownMenu(
-                    onSelected: (value) {
-                      filter = value;
-                      sortRequest();
-                    },
-                    width: (MediaQuery.of(context).size.width - 64) / 2 - 10,
-                    hintText: 'Semua',
-                    dropdownMenuEntries: filterChoices
-                        .map((e) =>
-                            DropdownMenuEntry(value: e, label: e ?? 'Semua'))
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Flexible(
-            child: modifiableList.isEmpty && !hasRetrievedRequest
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : modifiableList.isEmpty && hasRetrievedRequest
-                    ? Center(
-                        child: Text('Oops kamu belum membuat request'),
-                      )
-                    : ListView.separated(
-                        itemCount: modifiableList.length,
-                        itemBuilder: (context, index) {
-                          var textStyle = TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: customWhite);
-                          var textStyle2 =
-                              TextStyle(fontSize: 14, color: customWhite);
-
-                          return InkWell(
-                            onTap: () {
-                              showingBottomSheet(
-                                  context, modifiableList[index]);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: indigoDye),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 24, horizontal: 24),
-                              child: Row(children: [
-                                Icon(
-                                  Symbols.circle,
-                                  color:
-                                      modifiableList[index].status == 'Diterima'
-                                          ? Colors.green
-                                          : modifiableList[index].status ==
-                                                  'Ditolak'
-                                              ? Colors.red
-                                              : grey,
-                                  fill: 1,
-                                ),
-                                SizedBox(
-                                  width: 12,
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            modifiableList[index]
-                                                .requestBy
-                                                .name,
-                                            style: textStyle,
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        modifiableList[index].requestBy.id,
-                                        style: textStyle,
-                                      ),
-                                      Divider(
-                                        color: customWhite,
-                                      ),
-                                      Text(
-                                        modifiableList[index]
-                                            .sessionDetail
-                                            .subject
-                                            .name,
-                                        style: textStyle2,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ]),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox(
-                            height: 18,
-                          );
-                        },
-                      ),
-          )
-        ],
-      ),
-    );
   }
 
   Future<dynamic> showingBottomSheet(BuildContext context, Request theRequest) {
@@ -350,184 +220,513 @@ class _RequestPageState extends State<RequestPage>
         context: context,
         builder: (BuildContext context) {
           return Container(
-            padding: EdgeInsets.all(24),
-            height: MediaQuery.of(context).size.height,
+            padding: const EdgeInsets.all(24),
+            height: MediaQuery.of(context).size.height * .95,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    Column(
                       children: [
-                        InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Symbols.close,
-                              size: 32,
-                            )),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             InkWell(
-                              onTap: () {
-                                myDialog(context, theRequest);
-                              },
-                              child: Icon(
-                                Symbols.delete_outline,
-                                size: 32,
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Icon(
+                                  Symbols.close,
+                                  size: 32,
+                                )),
+                            if (widget.currentUser!.role != 'admin')
+                              InkWell(
+                                onTap: () {
+                                  myDialog(context, theRequest);
+                                },
+                                child: const Icon(
+                                  Symbols.delete_outline,
+                                  size: 32,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 12,
-                            ),
                           ],
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Symbols.calendar_month,
-                          size: 28,
                         ),
-                        SizedBox(
-                          width: 16,
+                        const SizedBox(
+                          height: 24,
                         ),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                        Row(
+                          children: [
+                            const Icon(
+                              Symbols.calendar_month,
+                              size: 28,
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  Text(
-                                    theRequest.requestBy.name,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                        color: Colors.black),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        theRequest.requestBy.name,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: Colors.black),
+                                      ),
+                                    ],
                                   ),
+                                  Text(
+                                      '$day, ${theRequest.createdAt.day}, $month ${theRequest.createdAt.year} | $hour:$minute'),
+                                  // ${DateFormat.Hm(theRequest.createdAt).toString()}
                                 ],
                               ),
-                              Text(
-                                  '$day, ${theRequest.createdAt.day}, $month ${theRequest.createdAt.year} | $hour:$minute'),
-                              // ${DateFormat.Hm(theRequest.createdAt).toString()}
-                            ],
-                          ),
-                        )
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text('Nama Mata Kuliah: '),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: indigoDye),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Text(theRequest.sessionDetail.subject.name)),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text('Jadwal Baru: '),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Text(
+                                '${theRequest.newDay}, ${theRequest.newStartTime} - ${theRequest.newEndTime}')),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text('Kelas Baru: '),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Text(theRequest.newClassroom)),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text('Alasan: '),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Text(theRequest.reason)),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text('Status: '),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Symbols.radio_button_unchecked,
+                                  fill: 1,
+                                  color: theRequest.status == 'Diterima'
+                                      ? Colors.green
+                                      : theRequest.status == 'Ditolak'
+                                          ? Colors.red
+                                          : Colors.grey,
+                                ),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Text(theRequest.status)
+                              ],
+                            )),
+                        const SizedBox(
+                          height: 12,
+                        ),
                       ],
                     ),
                   ],
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text('Nama Mata Kuliah: '),
-                    SizedBox(
-                      height: 12,
+                if (widget.currentUser!.role == 'admin' &&
+                    theRequest.status.toLowerCase() == 'menunggu verifikasi')
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: indigoDye),
+                            onPressed: () {
+                              myRejectDialog(context, theRequest);
+                            },
+                            child: const Text('Tolak')),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: indigoDye),
+                            onPressed: () {
+                              updateSession(theRequest, 'Diterima');
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Future.delayed(
+                                        const Duration(milliseconds: 500), () {
+                                      Navigator.pop(context);
+                                    });
+                                    return const AlertDialog(
+                                      content: Text('Permintaan dikirim'),
+                                    );
+                                  });
+                              userRequests
+                                  .where(
+                                      (element) => element.id == theRequest.id)
+                                  .forEach((element) {
+                                element.status = 'Diterima';
+                              });
+                              modifiableList
+                                  .where(
+                                      (element) => element.id == theRequest.id)
+                                  .forEach((element) {
+                                element.status = 'Diterima';
+                              });
+                              setState(() {
+                                modifiableList;
+                                userRequests;
+                              });
+                            },
+                            child: const Text('Terima'))
+                      ],
                     ),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: indigoDye),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Text(theRequest.sessionDetail.subject.name)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text('Jadwal Baru: '),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Text(
-                            '${theRequest.newDay}, ${theRequest.newStartTime} - ${theRequest.newEndTime}')),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text('Kelas Baru: '),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Text(theRequest.newClassroom)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text('Alasan: '),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Text(theRequest.reason)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text('Status: '),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Symbols.radio_button_unchecked,
-                              fill: 1,
-                              color: theRequest.status == 'Diterima'
-                                  ? Colors.green
-                                  : theRequest.status == 'Ditolak'
-                                      ? Colors.red
-                                      : Colors.grey,
-                            ),
-                            SizedBox(
-                              width: 12,
-                            ),
-                            Text(theRequest.status)
-                          ],
-                        )),
-                  ],
-                ),
+                  ),
               ],
             ),
           );
         });
+  }
+
+  Future<void> myRejectDialog(BuildContext context, Request theRequest) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: const Text('Apakah anda yakin ingin menolak request?'),
+            icon: const Icon(
+              Symbols.warning,
+              size: 96,
+              semanticLabel: 'Delete',
+            ),
+            alignment: Alignment.center,
+            actionsAlignment: MainAxisAlignment.spaceBetween,
+            actionsPadding:
+                const EdgeInsets.only(bottom: 24, left: 24, right: 24),
+            actions: [
+              Row(
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: antiFlashWhite,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Batal',
+                            style: TextStyle(
+                                color: dimGrey, fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: TextButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const AlertDialog(
+                                      content: Text('Request Telah Ditolak'),
+                                    );
+                                  });
+                              userRequests
+                                  .where(
+                                      (element) => element.id == theRequest.id)
+                                  .forEach((element) {
+                                element.status = 'Ditolak';
+                              });
+                              modifiableList
+                                  .where(
+                                      (element) => element.id == theRequest.id)
+                                  .forEach((element) {
+                                element.status = 'Ditolak';
+                              });
+                              updateSession(theRequest, 'Ditolak');
+                              setState(() {
+                                modifiableList;
+                                userRequests;
+                              });
+                              Future.delayed(const Duration(milliseconds: 400),
+                                  () {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              });
+                            },
+                            child: Text(
+                              'Tolak',
+                              style: TextStyle(
+                                  color: customWhite,
+                                  fontWeight: FontWeight.bold),
+                            ))),
+                  ),
+                ],
+              )
+            ],
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build;
+    return RefreshIndicator(
+      onRefresh: requestRefresh,
+      child: Container(
+        padding: paddings,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              decoration: BoxDecoration(
+                  color: const Color(0xffE6E6E6),
+                  borderRadius: BorderRadius.circular(8)),
+              height: 48,
+              child: const TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  suffixIcon: Icon(Icons.search_outlined),
+                  hintText: 'Masukkan Pencarian',
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: indigoDye),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: DropdownMenu(
+                      onSelected: (value) {
+                        sort = value;
+                        sortRequest();
+                      },
+                      width: (MediaQuery.of(context).size.width - 64) / 2 - 10,
+                      hintText: 'Terbaru',
+                      dropdownMenuEntries: sortingChoices
+                          .map((e) => DropdownMenuEntry(value: e, label: e))
+                          .toList(),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: indigoDye),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: DropdownMenu(
+                      onSelected: (value) {
+                        filter = value;
+                        sortRequest();
+                      },
+                      width: (MediaQuery.of(context).size.width - 64) / 2 - 10,
+                      hintText: 'Semua',
+                      dropdownMenuEntries: filterChoices
+                          .map((e) =>
+                              DropdownMenuEntry(value: e, label: e ?? 'Semua'))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Flexible(
+              child: modifiableList.isEmpty && !hasRetrievedRequest
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : modifiableList.isEmpty && hasRetrievedRequest
+                      ? const Center(
+                          child: Text('Oops kamu belum membuat request'),
+                        )
+                      : ListView.separated(
+                          itemCount: modifiableList.length,
+                          itemBuilder: (context, index) {
+                            var textStyle = TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: customWhite);
+                            var textStyle2 =
+                                TextStyle(fontSize: 14, color: customWhite);
+
+                            return InkWell(
+                              onTap: () {
+                                showingBottomSheet(
+                                    context, modifiableList[index]);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: indigoDye),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 24, horizontal: 24),
+                                child: Row(children: [
+                                  Icon(
+                                    Symbols.circle,
+                                    color: modifiableList[index].status ==
+                                            'Diterima'
+                                        ? Colors.green
+                                        : modifiableList[index].status ==
+                                                'Ditolak'
+                                            ? Colors.red
+                                            : grey,
+                                    fill: 1,
+                                  ),
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              modifiableList[index]
+                                                  .requestBy
+                                                  .name,
+                                              style: textStyle,
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          modifiableList[index].requestBy.id,
+                                          style: textStyle,
+                                        ),
+                                        Divider(
+                                          color: customWhite,
+                                        ),
+                                        Text(
+                                          modifiableList[index]
+                                              .sessionDetail
+                                              .subject
+                                              .name,
+                                          style: textStyle2,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 18,
+                            );
+                          },
+                        ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

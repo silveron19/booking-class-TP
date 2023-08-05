@@ -12,7 +12,7 @@ TextStyle myTileTrailingStyle = const TextStyle(
 );
 
 class SchedulePage extends StatefulWidget {
-  SchedulePage({super.key, required this.currentUser});
+  const SchedulePage({super.key, required this.currentUser});
   final User? currentUser;
   @override
   State<SchedulePage> createState() => _SchedulePageState();
@@ -35,22 +35,61 @@ class _SchedulePageState extends State<SchedulePage>
   @override
   void initState() {
     super.initState();
-    getUserSession();
+    getSessionFromGlobalSession();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  Future schedulePageRefresh() async {
+    await getSessionFromDatabase();
+    await getSessionFromGlobalSession();
   }
 
-  Future getUserSession() async {
-    List<Session> session = await getSessions(widget.currentUser!);
-    if (mounted) {
-      setState(() {
-        sessions = session;
-        gotResponse = true;
-      });
+  Future getSessionFromGlobalSession() async {
+    List<Session> theSessions = [];
+
+    if (widget.currentUser!.role != 'admin') {
+      for (var element in globalSession) {
+        if ((element['student'] as List).contains(widget.currentUser!.id)) {
+          var retrievedSubject =
+              getSubjectFromGlobalSubjectForSession(element['subject']);
+          var studentList =
+              getStudentsFromGlobalUserForSession(element['student']);
+          theSessions.add(Session(
+              element['_id'],
+              element["day"],
+              element['start_time'],
+              element['end_time'],
+              element['lecturer'],
+              studentList,
+              retrievedSubject,
+              element['classroom'],
+              element['department']));
+        }
+      }
+    } else {
+      for (var element in globalSession) {
+        if (element['department'] == widget.currentUser!.department) {
+          var retrievedSubject =
+              getSubjectFromGlobalSubjectForSession(element['subject']);
+          var studentList =
+              getStudentsFromGlobalUserForSession(element['student']);
+          theSessions.add(Session(
+              element['_id'],
+              element["day"],
+              element['start_time'],
+              element['end_time'],
+              element['lecturer'],
+              studentList,
+              retrievedSubject,
+              element['classroom'],
+              element['department']));
+        }
+      }
     }
+
+    setState(() {
+      sessions = theSessions;
+      gotResponse = true;
+    });
   }
 
   List<Session> sessionCount(List<Session> session, String day) {
@@ -68,13 +107,13 @@ class _SchedulePageState extends State<SchedulePage>
   Widget build(BuildContext context) {
     super.build(context);
     return RefreshIndicator(
-      onRefresh: getUserSession,
+      onRefresh: schedulePageRefresh,
       child: sessions.isEmpty && !gotResponse
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : sessions.isEmpty && gotResponse
-              ? Center(
+              ? const Center(
                   child: Text('Anda belum terdaftar pada mata kuliah apapun'),
                 )
               : Container(
@@ -105,14 +144,14 @@ class _SchedulePageState extends State<SchedulePage>
             day,
             style: title,
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Flexible(fit: FlexFit.loose, child: sessionsOfItsDay(thisDaySession))
         ],
       );
     }
-    return Column();
+    return const Column();
   }
 
   ListView sessionsOfItsDay(List<Session> thisDaySessions) {
@@ -124,13 +163,7 @@ class _SchedulePageState extends State<SchedulePage>
           Session thisSession = thisDaySessions[index];
           return InkWell(
             onTap: () {
-              scheduleModalBottomSheet(context, thisSession
-                  // thisSession.subject,
-                  // '${thisSession.day}, ${thisSession.startTime} - ${thisSession.endTime}',
-                  // thisSession.classroom,
-                  // thisSession.lecturer,
-                  // thisSession.students.length.toString()
-                  );
+              scheduleModalBottomSheet(context, thisSession);
               if (mounted) {
                 setState(() {
                   activeSession = thisDaySessions[index];
@@ -138,8 +171,8 @@ class _SchedulePageState extends State<SchedulePage>
               }
             },
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              padding: EdgeInsets.all(18),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
                   border: Border.all(
                     color:
@@ -159,7 +192,7 @@ class _SchedulePageState extends State<SchedulePage>
                             ? customWhite
                             : indigoDye),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   Flexible(
@@ -182,13 +215,7 @@ class _SchedulePageState extends State<SchedulePage>
   }
 
   Future<dynamic> scheduleModalBottomSheet(
-      BuildContext context, Session thisSession
-      // Subjects mataKuliah,
-      // String tanggal,
-      // String kelas,
-      // String namaDosen,
-      // String jumlahMurid,
-      ) {
+      BuildContext context, Session thisSession) {
     return showModalBottomSheet(
         anchorPoint: const Offset(0, 96),
         showDragHandle: true,
@@ -208,11 +235,11 @@ class _SchedulePageState extends State<SchedulePage>
                 children: [
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Symbols.calendar_month,
                         size: 24,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 24,
                       ),
                       Column(
@@ -233,16 +260,16 @@ class _SchedulePageState extends State<SchedulePage>
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 18,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Symbols.location_on,
                         size: 24,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 24,
                       ),
                       Column(
@@ -256,16 +283,16 @@ class _SchedulePageState extends State<SchedulePage>
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 18,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Symbols.school,
                         size: 24,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 24,
                       ),
                       Flexible(
@@ -282,16 +309,16 @@ class _SchedulePageState extends State<SchedulePage>
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 18,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Symbols.groups,
                         size: 24,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 24,
                       ),
                       Flexible(
@@ -307,7 +334,7 @@ class _SchedulePageState extends State<SchedulePage>
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 18,
                   ),
                   if (widget.currentUser!.id ==
@@ -321,9 +348,9 @@ class _SchedulePageState extends State<SchedulePage>
                               ? 'Pilih ketua kelas mata kuliah ini'
                               : 'Kamu ketua kelas mata kuliah ini',
                           textAlign: TextAlign.start,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         Column(
@@ -422,8 +449,8 @@ class _SchedulePageState extends State<SchedulePage>
       "313"
     ];
     return showModalBottomSheet(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       isScrollControlled: true,
-      showDragHandle: true,
       context: context,
       builder: (context) {
         bool isRequesting = false;
@@ -435,36 +462,37 @@ class _SchedulePageState extends State<SchedulePage>
                     bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: SingleChildScrollView(
                   child: Container(
-                    height: MediaQuery.of(context).size.height - 32,
-                    padding: EdgeInsets.symmetric(vertical: 18, horizontal: 32),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 18, horizontal: 32),
+                    height: MediaQuery.of(context).size.height * .95,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.max,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
                           children: [
                             InkWell(
-                              child: Icon(Icons.close),
+                              child: const Icon(Icons.close),
                               onTap: () {
                                 Navigator.pop(context);
                               },
                             ),
-                            SizedBox(
-                              width: 12,
+                            const SizedBox(
+                              width: 6,
                             ),
                             Text(
                               thisSession.subject.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
-                        SizedBox(
-                          height: 48,
+                        const SizedBox(
+                          height: 24,
                         ),
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 18),
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -479,8 +507,8 @@ class _SchedulePageState extends State<SchedulePage>
                                             vertical: 8),
                                         child: Row(
                                           children: [
-                                            Icon(Symbols.calendar_month),
-                                            SizedBox(width: 12),
+                                            const Icon(Symbols.calendar_month),
+                                            const SizedBox(width: 12),
                                             Text(
                                                 '${thisSession.day}, ${thisSession.startTime} - ${thisSession.endTime}'),
                                           ],
@@ -491,8 +519,8 @@ class _SchedulePageState extends State<SchedulePage>
                                             vertical: 8),
                                         child: Row(
                                           children: [
-                                            Icon(Symbols.school),
-                                            SizedBox(width: 12),
+                                            const Icon(Symbols.school),
+                                            const SizedBox(width: 12),
                                             Text(thisSession.lecturer),
                                           ],
                                         ),
@@ -502,8 +530,8 @@ class _SchedulePageState extends State<SchedulePage>
                                             vertical: 8),
                                         child: Row(
                                           children: [
-                                            Icon(Symbols.location_on),
-                                            SizedBox(width: 12),
+                                            const Icon(Symbols.location_on),
+                                            const SizedBox(width: 12),
                                             Text('CR ${thisSession.classroom}'),
                                           ],
                                         ),
@@ -513,15 +541,15 @@ class _SchedulePageState extends State<SchedulePage>
                                             vertical: 8),
                                         child: Row(
                                           children: [
-                                            Icon(Symbols.groups),
-                                            SizedBox(width: 12),
+                                            const Icon(Symbols.groups),
+                                            const SizedBox(width: 12),
                                             Text(
                                                 '${thisSession.students.length} Orang'),
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 24,
+                                      const SizedBox(
+                                        height: 12,
                                       ),
                                     ]),
                                 widget.currentUser!.role == 'admin'
@@ -537,9 +565,12 @@ class _SchedulePageState extends State<SchedulePage>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.stretch,
                                               children: [
-                                                Text('Pilih Ketua Kelas'),
-                                                SizedBox(
-                                                  height: 12,
+                                                const SizedBox(
+                                                  height: 36,
+                                                ),
+                                                const Text('Pilih Ketua Kelas'),
+                                                const SizedBox(
+                                                  height: 6,
                                                 ),
                                                 DropdownButtonHideUnderline(
                                                   child:
@@ -556,7 +587,7 @@ class _SchedulePageState extends State<SchedulePage>
                                                         .map((item) {
                                                       return DropdownMenuItem<
                                                           String>(
-                                                        value: item['_id'],
+                                                        value: item.id,
                                                         child: Column(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
@@ -565,14 +596,14 @@ class _SchedulePageState extends State<SchedulePage>
                                                               MainAxisSize.min,
                                                           children: [
                                                             Text(
-                                                              item['name'],
+                                                              item.name,
                                                               style: TextStyle(
                                                                   fontSize: 14,
                                                                   color:
                                                                       customWhite),
                                                             ),
                                                             Text(
-                                                              item['_id'],
+                                                              item.id,
                                                               style: TextStyle(
                                                                   fontSize: 12,
                                                                   color:
@@ -590,9 +621,9 @@ class _SchedulePageState extends State<SchedulePage>
                                                     },
                                                     buttonStyleData:
                                                         ButtonStyleData(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 16),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 16),
                                                       height: 48,
                                                       width: MediaQuery.of(
                                                                   context)
@@ -644,25 +675,39 @@ class _SchedulePageState extends State<SchedulePage>
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             8)),
-                                                child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            backgroundColor:
-                                                                indigoDye),
-                                                    onPressed: () {
-                                                      if (chosenChief == null) {
+                                                child: SizedBox(
+                                                  height: 48,
+                                                  child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              backgroundColor:
+                                                                  indigoDye),
+                                                      onPressed: () {
+                                                        if (chosenChief ==
+                                                            null) {
+                                                          showRequestNotification(
+                                                              'Ketua Kelas Tidak Boleh Kosong!');
+                                                          return;
+                                                        }
+                                                        updateClassChief(
+                                                            thisSession
+                                                                .subject.id,
+                                                            chosenChief!);
                                                         showRequestNotification(
-                                                            'Ketua Kelas Tidak Boleh Kosong!');
-                                                        return;
-                                                      }
-                                                      updateClassChief(
-                                                          thisSession
-                                                              .subject.id,
-                                                          chosenChief!);
-                                                      showRequestNotification(
-                                                          'Permintaan telah dikirim');
-                                                    },
-                                                    child: Text('Kirim')),
+                                                            'Permintaan telah dikirim');
+                                                        Future.delayed(
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    600), () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                      },
+                                                      child:
+                                                          const Text('Kirim')),
+                                                ),
                                               ),
                                             )
                                           ],
@@ -678,11 +723,11 @@ class _SchedulePageState extends State<SchedulePage>
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.stretch,
                                             children: [
-                                              Text('Hari: '),
+                                              const Text('Hari: '),
                                               DropdownButtonHideUnderline(
                                                 child: DropdownButton2<String>(
                                                   isExpanded: true,
-                                                  hint: Text(
+                                                  hint: const Text(
                                                     'Pilih hari',
                                                     style: TextStyle(
                                                       fontSize: 14,
@@ -695,7 +740,7 @@ class _SchedulePageState extends State<SchedulePage>
                                                       value: item,
                                                       child: Text(
                                                         item,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 14,
                                                             color:
                                                                 Colors.indigo),
@@ -710,9 +755,9 @@ class _SchedulePageState extends State<SchedulePage>
                                                   },
                                                   buttonStyleData:
                                                       ButtonStyleData(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16),
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16),
                                                     height: 32,
                                                     width: MediaQuery.of(
                                                                 context)
@@ -740,7 +785,8 @@ class _SchedulePageState extends State<SchedulePage>
                                                               8),
                                                     ),
                                                   ),
-                                                  iconStyleData: IconStyleData(
+                                                  iconStyleData:
+                                                      const IconStyleData(
                                                     icon: Icon(
                                                       Icons.keyboard_arrow_down,
                                                       color: Colors.indigo,
@@ -754,16 +800,17 @@ class _SchedulePageState extends State<SchedulePage>
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 24),
+                                          const SizedBox(height: 12),
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.stretch,
                                             children: [
-                                              Text('Durasi Mata Kuliah: '),
+                                              const Text(
+                                                  'Durasi Mata Kuliah: '),
                                               DropdownButtonHideUnderline(
                                                 child: DropdownButton2<String>(
                                                   isExpanded: true,
-                                                  hint: Text(
+                                                  hint: const Text(
                                                     'Pilih sesi',
                                                     style: TextStyle(
                                                       fontSize: 14,
@@ -776,7 +823,7 @@ class _SchedulePageState extends State<SchedulePage>
                                                       value: item,
                                                       child: Text(
                                                         item,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 14,
                                                             color:
                                                                 Colors.indigo),
@@ -791,9 +838,9 @@ class _SchedulePageState extends State<SchedulePage>
                                                   },
                                                   buttonStyleData:
                                                       ButtonStyleData(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16),
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16),
                                                     height: 32,
                                                     width: MediaQuery.of(
                                                                 context)
@@ -821,7 +868,8 @@ class _SchedulePageState extends State<SchedulePage>
                                                               8),
                                                     ),
                                                   ),
-                                                  iconStyleData: IconStyleData(
+                                                  iconStyleData:
+                                                      const IconStyleData(
                                                     icon: Icon(
                                                       Icons.keyboard_arrow_down,
                                                       color: Colors.indigo,
@@ -835,18 +883,18 @@ class _SchedulePageState extends State<SchedulePage>
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: 24,
+                                          const SizedBox(
+                                            height: 12,
                                           ),
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.stretch,
                                             children: [
-                                              Text('Kelas: '),
+                                              const Text('Kelas: '),
                                               DropdownButtonHideUnderline(
                                                 child: DropdownButton2<String>(
                                                   isExpanded: true,
-                                                  hint: Text(
+                                                  hint: const Text(
                                                     'Pilih kelas',
                                                     style: TextStyle(
                                                       fontSize: 14,
@@ -859,7 +907,7 @@ class _SchedulePageState extends State<SchedulePage>
                                                       value: item,
                                                       child: Text(
                                                         item,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 14,
                                                             color:
                                                                 Colors.indigo),
@@ -874,9 +922,9 @@ class _SchedulePageState extends State<SchedulePage>
                                                   },
                                                   buttonStyleData:
                                                       ButtonStyleData(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16),
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16),
                                                     height: 32,
                                                     width: MediaQuery.of(
                                                                 context)
@@ -904,7 +952,8 @@ class _SchedulePageState extends State<SchedulePage>
                                                               8),
                                                     ),
                                                   ),
-                                                  iconStyleData: IconStyleData(
+                                                  iconStyleData:
+                                                      const IconStyleData(
                                                     icon: Icon(
                                                       Icons.keyboard_arrow_down,
                                                       color: Colors.indigo,
@@ -918,9 +967,10 @@ class _SchedulePageState extends State<SchedulePage>
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 24),
+                                          const SizedBox(height: 12),
+                                          const Text('Alasan: '),
                                           Container(
-                                            padding: EdgeInsets.all(8),
+                                            padding: const EdgeInsets.all(8),
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color: indigoDye),
@@ -928,7 +978,7 @@ class _SchedulePageState extends State<SchedulePage>
                                                     BorderRadius.circular(8)),
                                             child: TextField(
                                               controller: reason,
-                                              decoration: InputDecoration(
+                                              decoration: const InputDecoration(
                                                   border: InputBorder.none,
                                                   hintText:
                                                       'Berikan deskripsi request disini'),
@@ -936,71 +986,84 @@ class _SchedulePageState extends State<SchedulePage>
                                               maxLength: 100,
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 12,
                                           ),
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              if (newDay == null) {
-                                                showRequestNotification(
-                                                    'Hari Tidak Boleh Kosong!');
-                                                return;
-                                              } else if (newDuration == null) {
-                                                showRequestNotification(
-                                                    'Waktu Tidak Boleh Kosong');
-                                                return;
-                                              } else if (newClass == null) {
-                                                showRequestNotification(
-                                                    'Kelas Tidak Boleh Kosong');
-                                                return;
-                                              } else if (reason.text
-                                                  .trim()
-                                                  .isEmpty) {
-                                                showRequestNotification(
-                                                    'Alasan tidak boleh kosong');
-                                                return;
-                                              }
+                                          SizedBox(
+                                            height: 48,
+                                            child: ElevatedButton(
+                                              onPressed: () async {
+                                                if (newDay == null) {
+                                                  showRequestNotification(
+                                                      'Hari Tidak Boleh Kosong!');
+                                                  return;
+                                                } else if (newDuration ==
+                                                    null) {
+                                                  showRequestNotification(
+                                                      'Waktu Tidak Boleh Kosong');
+                                                  return;
+                                                } else if (newClass == null) {
+                                                  showRequestNotification(
+                                                      'Kelas Tidak Boleh Kosong');
+                                                  return;
+                                                } else if (reason.text
+                                                    .trim()
+                                                    .isEmpty) {
+                                                  showRequestNotification(
+                                                      'Alasan tidak boleh kosong');
+                                                  return;
+                                                }
 
-                                              setState(() {
-                                                isRequesting = true;
-                                              });
+                                                setState(() {
+                                                  isRequesting = true;
+                                                });
 
-                                              List check = await checkIfCanBook(
-                                                  newDay,
-                                                  newDuration,
-                                                  newClass);
+                                                List check =
+                                                    await checkIfCanBook(newDay,
+                                                        newDuration, newClass);
 
-                                              print(check);
+                                                if (check.isEmpty) {
+                                                  showRequestNotification(
+                                                      'Permintaan telah dikirim');
+                                                  addRequest(
+                                                      widget.currentUser!.id,
+                                                      thisSession.id
+                                                          .toHexString(),
+                                                      newDay!,
+                                                      newDuration!,
+                                                      newClass!,
+                                                      reason.text);
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 600),
+                                                      () {
+                                                    Navigator.pop(context);
+                                                  });
+                                                } else {
+                                                  showRequestNotification(
+                                                      'Permintaan tidak dapat dilakukan');
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 600),
+                                                      () {
+                                                    Navigator.pop(context);
+                                                  });
+                                                }
 
-                                              if (check.isEmpty) {
-                                                showRequestNotification(
-                                                    'Permintaan telah dikirim');
-                                                addRequest(
-                                                    widget.currentUser!.id,
-                                                    thisSession.id
-                                                        .toHexString(),
-                                                    newDay!,
-                                                    newDuration!,
-                                                    newClass!,
-                                                    reason.text);
-                                              } else {
-                                                showRequestNotification(
-                                                    'Permintaan tidak dapat dilakukan');
-                                              }
-
-                                              setState(() {
-                                                isRequesting = false;
-                                              });
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: indigoDye),
-                                            child: isRequesting
-                                                ? const CircularProgressIndicator()
-                                                : Text(
-                                                    'Kirim',
-                                                    style: TextStyle(
-                                                        color: customWhite),
-                                                  ),
+                                                setState(() {
+                                                  isRequesting = false;
+                                                });
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor: indigoDye),
+                                              child: isRequesting
+                                                  ? const CircularProgressIndicator()
+                                                  : Text(
+                                                      'Kirim',
+                                                      style: TextStyle(
+                                                          color: customWhite),
+                                                    ),
+                                            ),
                                           )
                                         ],
                                       )
@@ -1016,7 +1079,7 @@ class _SchedulePageState extends State<SchedulePage>
             },
           );
         } else {
-          return Center(child: Text('Empty'));
+          return const Center(child: Text('Empty'));
         }
       },
     );
@@ -1026,6 +1089,9 @@ class _SchedulePageState extends State<SchedulePage>
     return showDialog(
         context: context,
         builder: (context) {
+          Future.delayed(const Duration(milliseconds: 600), () {
+            Navigator.pop(context);
+          });
           return AlertDialog(
             content: Text(popUpText),
           );

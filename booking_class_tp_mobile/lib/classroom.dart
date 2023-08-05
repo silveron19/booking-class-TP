@@ -22,7 +22,7 @@ class _ClassroomPageState extends State<ClassroomPage>
   @override
   void initState() {
     super.initState();
-    settingUpClass();
+    settingUpClassNew();
   }
 
   @override
@@ -30,17 +30,48 @@ class _ClassroomPageState extends State<ClassroomPage>
     super.dispose();
   }
 
-  Future settingUpClass() async {
-    List availableClassroom = await getClassroom(widget.currentUser!);
-    if (mounted) {
-      setState(() {
-        daftarKelas = availableClassroom[0];
-        sessionList = availableClassroom[1];
-        listWhereTheUserIsInCharge = availableClassroom[2];
-        selectedDay = 'Senin';
-        selectedDuration = '07:30 - 09:30';
-      });
+  Future settingUpClassNew() async {
+    List availableSession = [];
+    List availableClassroom = [];
+    List<Session> listSessionWhereUserInCharge = [];
+
+    for (var element in globalSession) {
+      availableSession.add(element);
     }
+
+    for (var classes in globalClassroom) {
+      availableClassroom.add(classes);
+    }
+
+    for (var element in globalSession) {
+      if ((element['student'] as List).contains(widget.currentUser!.id)) {
+        var retrievedSubject =
+            getSubjectFromGlobalSubjectForSession(element['subject']);
+        var studentList =
+            getStudentsFromGlobalUserForSession(element['student']);
+        listSessionWhereUserInCharge.add(Session(
+            element['_id'],
+            element["day"],
+            element['start_time'],
+            element['end_time'],
+            element['lecturer'],
+            studentList,
+            retrievedSubject,
+            element['classroom'],
+            element['department']));
+      }
+    }
+
+    listSessionWhereUserInCharge.removeWhere(
+        (element) => element.subject.classPresident != widget.currentUser!.id);
+
+    setState(() {
+      daftarKelas = availableClassroom;
+      sessionList = availableSession;
+      listWhereTheUserIsInCharge = listSessionWhereUserInCharge;
+      selectedDay = 'Senin';
+      selectedDuration = '07:30 - 09:30';
+    });
 
     choosingClass();
   }
@@ -116,7 +147,7 @@ class _ClassroomPageState extends State<ClassroomPage>
   Widget build(BuildContext context) {
     super.build;
     return RefreshIndicator(
-      onRefresh: settingUpClass,
+      onRefresh: settingUpClassNew,
       child: Container(
           padding: paddings,
           child: Column(
@@ -128,7 +159,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                   DropdownButtonHideUnderline(
                     child: DropdownButton2<String>(
                       isExpanded: true,
-                      hint: Text(
+                      hint: const Text(
                         'Senin',
                         style: TextStyle(
                           fontSize: 14,
@@ -156,7 +187,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                         choosingClass();
                       },
                       buttonStyleData: ButtonStyleData(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           height: 52,
                           width: 144,
                           decoration: BoxDecoration(
@@ -166,7 +197,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                           decoration: BoxDecoration(
                               color: indigoDye,
                               borderRadius: BorderRadius.circular(8))),
-                      iconStyleData: IconStyleData(
+                      iconStyleData: const IconStyleData(
                           icon: Icon(
                         Symbols.keyboard_arrow_down,
                         color: Colors.white,
@@ -179,7 +210,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                   DropdownButtonHideUnderline(
                     child: DropdownButton2<String>(
                       isExpanded: true,
-                      hint: Text(
+                      hint: const Text(
                         '07:30 - 09:30',
                         style: TextStyle(
                           fontSize: 14,
@@ -207,7 +238,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                         choosingClass();
                       },
                       buttonStyleData: ButtonStyleData(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           height: 52,
                           width: 144,
                           decoration: BoxDecoration(
@@ -217,7 +248,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                           decoration: BoxDecoration(
                               color: indigoDye,
                               borderRadius: BorderRadius.circular(8))),
-                      iconStyleData: IconStyleData(
+                      iconStyleData: const IconStyleData(
                           icon: Icon(
                         Symbols.keyboard_arrow_down,
                         color: Colors.white,
@@ -256,7 +287,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                                     : indigoDye,
                                 fontWeight: FontWeight.bold),
                           ))),
-                  SizedBox(
+                  const SizedBox(
                     width: 12,
                   ),
                   Expanded(
@@ -284,7 +315,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                                     : indigoDye,
                                 fontWeight: FontWeight.bold),
                           ))),
-                  SizedBox(
+                  const SizedBox(
                     width: 12,
                   ),
                   Expanded(
@@ -310,7 +341,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                                       ? customWhite
                                       : indigoDye,
                                   fontWeight: FontWeight.bold)))),
-                  SizedBox(
+                  const SizedBox(
                     width: 12,
                   ),
                   Expanded(
@@ -338,10 +369,10 @@ class _ClassroomPageState extends State<ClassroomPage>
                                   fontWeight: FontWeight.bold)))),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 48,
               ),
-              Text(
+              const Text(
                 'Daftar Kelas Yang Belum Terisi',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -349,7 +380,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                 ),
                 textAlign: TextAlign.left,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
               DropdownButtonHideUnderline(
@@ -379,16 +410,16 @@ class _ClassroomPageState extends State<ClassroomPage>
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: indigoDye, width: 2)),
                 ),
-                menuItemStyleData: MenuItemStyleData(height: 36),
+                menuItemStyleData: const MenuItemStyleData(height: 36),
               )),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               Flexible(
                 child: thisFloorClasses.isEmpty && !hasRetrievedClassroom
-                    ? Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : thisFloorClasses.isEmpty && hasRetrievedClassroom
-                        ? Center(
+                        ? const Center(
                             child: Text('Oops tidak ada kelas yang tersedia!'),
                           )
                         : Material(
@@ -422,7 +453,7 @@ class _ClassroomPageState extends State<ClassroomPage>
                                         tileColor: indigoDye,
                                         textColor: customWhite,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 16,
                                       ),
                                     ],
@@ -484,13 +515,13 @@ Future<dynamic> scheduleModalBottomSheet(
                             onTap: () {
                               Navigator.pop(context);
                             },
-                            child: Icon(
+                            child: const Icon(
                               Symbols.close,
                               size: 24,
                               weight: 700,
                             ),
                           ),
-                          title: Text(
+                          title: const Text(
                             'Request Class',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
@@ -498,7 +529,7 @@ Future<dynamic> scheduleModalBottomSheet(
                         ),
                         Container(
                           height: MediaQuery.of(context).size.height * .8,
-                          padding: EdgeInsets.symmetric(horizontal: 28),
+                          padding: const EdgeInsets.symmetric(horizontal: 28),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -506,60 +537,60 @@ Future<dynamic> scheduleModalBottomSheet(
                                 Column(
                                   children: [
                                     Row(children: [
-                                      Icon(
+                                      const Icon(
                                         Symbols.location_on,
                                         color: Colors.black,
                                         size: 32,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 12,
                                       ),
                                       Text(
                                         className,
                                       ),
                                     ]),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 24,
                                     ),
                                     Row(children: [
-                                      Icon(
+                                      const Icon(
                                         Symbols.groups,
                                         color: Colors.black,
                                         size: 32,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 12,
                                       ),
                                       Text(
                                         capacity,
                                       ),
                                     ]),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 24,
                                     ),
                                     Row(children: [
-                                      Icon(
+                                      const Icon(
                                         Symbols.calendar_month,
                                         color: Colors.black,
                                         size: 32,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 12,
                                       ),
                                       Text(
                                         day,
                                       ),
                                     ]),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 24,
                                     ),
                                     Row(children: [
-                                      Icon(
+                                      const Icon(
                                         Symbols.schedule,
                                         color: Colors.black,
                                         size: 32,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 12,
                                       ),
                                       Text(
@@ -572,17 +603,17 @@ Future<dynamic> scheduleModalBottomSheet(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 8,
                                     ),
-                                    Text('Jadwal Baru'),
-                                    SizedBox(
+                                    const Text('Jadwal Baru'),
+                                    const SizedBox(
                                       height: 8,
                                     ),
                                     DropdownButtonHideUnderline(
                                       child: DropdownButton2<String>(
                                         isExpanded: true,
-                                        hint: Text(
+                                        hint: const Text(
                                           'Pilih Subject',
                                           style: TextStyle(
                                             fontSize: 14,
@@ -594,7 +625,7 @@ Future<dynamic> scheduleModalBottomSheet(
                                             value: item.subject.name,
                                             child: Text(
                                               item.subject.name,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.indigo),
                                             ),
@@ -607,7 +638,7 @@ Future<dynamic> scheduleModalBottomSheet(
                                           });
                                         },
                                         buttonStyleData: ButtonStyleData(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 16),
                                           height: 32,
                                           width: MediaQuery.of(context)
@@ -632,7 +663,7 @@ Future<dynamic> scheduleModalBottomSheet(
                                                 BorderRadius.circular(8),
                                           ),
                                         ),
-                                        iconStyleData: IconStyleData(
+                                        iconStyleData: const IconStyleData(
                                           icon: Icon(
                                             Icons.keyboard_arrow_down,
                                             color: Colors.indigo,
@@ -644,24 +675,24 @@ Future<dynamic> scheduleModalBottomSheet(
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 8,
                                     ),
-                                    Text(
+                                    const Text(
                                       'Alasan',
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 8,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
                                           border: Border.all(color: indigoDye),
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                       child: TextField(
                                         controller: reason,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: 'Berikan alasan',
                                         ),
@@ -675,7 +706,7 @@ Future<dynamic> scheduleModalBottomSheet(
                                   height: 56,
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.all(18),
+                                          padding: const EdgeInsets.all(18),
                                           backgroundColor: indigoDye,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -701,8 +732,14 @@ Future<dynamic> scheduleModalBottomSheet(
                                             reason.text);
                                         showRequestNotification(context,
                                             'Permintaan Telah Dikirim');
+                                        Future.delayed(
+                                            const Duration(milliseconds: 400),
+                                            () {
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        });
                                       },
-                                      child: Text('Kirim')),
+                                      child: const Text('Kirim')),
                                 )
                               ]),
                         )
@@ -734,37 +771,38 @@ Future<void> bookingDialog(context) async {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Symbols.close,
               weight: 700,
             ),
             alignment: Alignment.centerRight,
           ),
-          contentPadding: EdgeInsets.only(left: 24, right: 24, bottom: 24),
+          contentPadding:
+              const EdgeInsets.only(left: 24, right: 24, bottom: 24),
           content: StatefulBuilder(
             builder: (context, setState) {
-              return Container(
+              return SizedBox(
                   width: 304,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      const Text(
                         'Pemesanan Kelas',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 18,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text('Mata Kuliah',
+                          const Text('Mata Kuliah',
                               style: TextStyle(fontWeight: FontWeight.w500)),
                           DropdownButtonHideUnderline(
                               child: DropdownButton2(
-                            hint: Text('Pilih Mata Kuliah'),
+                            hint: const Text('Pilih Mata Kuliah'),
                             buttonStyleData: ButtonStyleData(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: indigoDye),
@@ -782,13 +820,13 @@ Future<void> bookingDialog(context) async {
                           ))
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 18,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
+                          const Text(
                             'Alasan',
                             style: TextStyle(fontWeight: FontWeight.w500),
                           ),
@@ -803,7 +841,7 @@ Future<void> bookingDialog(context) async {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 18,
                       ),
                       Row(
@@ -829,7 +867,7 @@ Future<void> bookingDialog(context) async {
                                       color: indigoDye),
                                 )),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 12,
                           ),
                           Flexible(
@@ -844,7 +882,7 @@ Future<void> bookingDialog(context) async {
                                       side: BorderSide(color: indigoDye),
                                     )),
                                 onPressed: () {},
-                                child: Text(
+                                child: const Text(
                                   'Pesan',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,

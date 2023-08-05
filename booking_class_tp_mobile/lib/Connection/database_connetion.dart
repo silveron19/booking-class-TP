@@ -1,6 +1,12 @@
 import 'package:booking_class_tp_mobile/Entities/entities.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+List globalSession = [];
+List globalUser = [];
+List globalRequest = [];
+List globalSubject = [];
+List globalClassroom = [];
+
 String url =
     'mongodb+srv://K4ND4:K4ND4@cluster0.ll3ytwj.mongodb.net/MRuangan2?retryWrites=true&w=majority';
 
@@ -9,6 +15,64 @@ Future<DbCollection> getConnection(String namaCollection) async {
   await db.open();
   var coll = db.collection(namaCollection);
   return coll;
+}
+
+Future getSessionFromDatabase() async {
+  DbCollection session = await getConnection('SESSION');
+  globalSession = [];
+
+  await session.find().forEach((element) {
+    globalSession.add(element);
+  });
+
+  session.db.close();
+}
+
+Future getRequestFromDatabase() async {
+  DbCollection request = await getConnection('REQUEST');
+
+  globalRequest = [];
+
+  await request.find().forEach((element) {
+    globalRequest.add(element);
+  });
+  request.db.close();
+}
+
+Future getUserFromDatabase() async {
+  DbCollection user = await getConnection('USERS');
+
+  globalUser = [];
+
+  await user.find().forEach((element) {
+    globalUser.add(element);
+  });
+
+  user.db.close();
+}
+
+Future getClassroomFromDatabase() async {
+  DbCollection classroom = await getConnection('CLASSROOM');
+
+  globalClassroom = [];
+
+  await classroom.find().forEach((element) {
+    globalClassroom.add(element);
+  });
+
+  classroom.db.close();
+}
+
+Future getSubjectsFromDatabase() async {
+  DbCollection subject = await getConnection('SUBJECTS');
+
+  globalSubject = [];
+
+  await subject.find().forEach((element) {
+    globalSubject.add(element);
+  });
+
+  subject.db.close();
 }
 
 Future loginAuthentication(String id) async {
@@ -43,110 +107,81 @@ Future<List> getStudentOfASession(List<dynamic> studentList) async {
   return userList;
 }
 
-Future<List<Session>> getSessions(User userInfo) async {
-  DbCollection session = await getConnection('SESSION');
-  List temportal = [];
-  List<Session> sessions = [];
+Subjects getSubjectFromGlobalSubjectForSession(String subjectId) {
+  var found =
+      globalSubject.where((element) => element['_id'] == subjectId).first;
 
-  if (userInfo.role != 'admin') {
-    await session.find().forEach((element) {
-      if ((element['student'] as List).contains(userInfo.id)) {
-        temportal.add(element);
-      }
-    });
-  } else {
-    await session.find().forEach((element) {
-      print(element['department']);
-      print(userInfo.department);
-      print(element['department'] == userInfo.department);
-      if (element['department'] == userInfo.department) {
-        temportal.add(element);
-      }
-    });
-  }
+  return Subjects(found['_id'], found['name'], found['class_president']);
+}
 
-  if (temportal.isNotEmpty) {
-    temportal.sort((a, b) =>
-        converting(a['start_time']).compareTo(converting(b['start_time'])));
-
-    for (var element in temportal) {
-      var retrievedSubject = await getSubject(element['subject']);
-      var studentList = await getStudentOfASession(element['student']);
-      sessions.add(Session(
-          element['_id'],
-          element["day"],
-          element['start_time'],
-          element['end_time'],
-          element['lecturer'],
-          studentList,
-          retrievedSubject,
-          element['classroom']));
+List<Students> getStudentsFromGlobalUserForSession(List<dynamic> studentList) {
+  List<Students> theList = [];
+  for (var element in globalUser) {
+    if (studentList.contains(element['_id'])) {
+      theList.add(Students(element['_id'], element['name']));
     }
   }
-
-  return sessions;
+  return theList;
 }
 
-Future<List<Session>> getTodaySession(User userInfo) async {
-  List<Session> listOfUserSession = await getSessions(userInfo);
-  List<Session> todaySessions = [];
-  List<String> dayOfTheWeek = [
-    'Senin',
-    'Selasa',
-    'Rabu',
-    'Kamis',
-    'Jum\'at',
-    'Sabtu',
-    'Minggu'
-  ];
-  var hari = DateTime.now().weekday;
+Session getSessionForRequest(ObjectId sessionDetail) {
+  var found =
+      globalSession.where((element) => (element['_id'] == sessionDetail)).first;
 
-  if (listOfUserSession.isNotEmpty) {
-    for (Session session in listOfUserSession) {
-      if (session.day == dayOfTheWeek[hari - 1]) {
-        todaySessions.add(session);
-      }
-    }
-  }
+  var thisSubject = getSubjectFromGlobalSubjectForSession(found['subject']);
 
-  return todaySessions;
+  return Session(
+      found['_id'],
+      found['day'],
+      found['start_time'],
+      found['end_time'],
+      found['lecturer'],
+      found['student'],
+      thisSubject,
+      found['classroom'],
+      found['department']);
 }
 
-Future getStudents(List<String> studentsId) async {
-  DbCollection collection = await getConnection('USERS');
-  List<Students> studentData = [];
+User getUserForRequest(String userId) {
+  var foundUser = globalUser.where((element) => element['_id'] == userId).first;
 
-  // var response = await collection.findOne(where.eq('_id', 'D121211029'));
-  // studentData.add(Students(response?['_id'], response?['name']));
-
-  for (String id in studentsId) {
-    await collection.findOne(where.eq('_id', id)).then(
-        (value) => studentData.add(Students(value?['_id'], value?['name'])));
-    // studentData.add(Students(response?['_id'], response?['name']));
-  }
-
-  collection.db.close();
-
-  return studentData;
+  return User(foundUser['_id'], foundUser['name'], foundUser['password'],
+      foundUser['department'], foundUser['semester'], foundUser['role']);
 }
 
-Future<void> updateSession(
-    String day, String startTime, String endTime, String classroom) async {
+/// ************************
+
+Future<void> updateSession(Request theRequest, String statusChange) async {
   DbCollection sessions = await getConnection('SESSION');
+  DbCollection request = await getConnection('REQUEST');
 
-  var update = {
-    r'$set': {
-      'day': day,
-      'start_time': startTime,
-      'end_time': endTime,
-      'classroom': classroom
-    }
-  };
+  if (statusChange == 'Diterima') {
+    var updateRequest = {
+      r'$set': {'status': 'Diterima', 'updated_at': DateTime.now()}
+    };
 
-  sessions.updateOne(
-      where.id(ObjectId.fromHexString("64bd151c0a5b43e741ba7a4d")), update);
+    var updateSession = {
+      r'$set': {
+        'day': theRequest.newDay,
+        'start_time': theRequest.newStartTime,
+        'end_time': theRequest.newEndTime,
+        'classroom': theRequest.newClassroom
+      }
+    };
+
+    request.updateOne(where.id(theRequest.id), updateRequest);
+
+    sessions.updateOne(where.id(theRequest.sessionDetail.id), updateSession);
+  } else if (statusChange == 'Ditolak') {
+    var updateRequest = {
+      r'$set': {'status': 'Ditolak', 'updated_at': DateTime.now()}
+    };
+
+    request.updateOne(where.id(theRequest.id), updateRequest);
+  }
 
   sessions.db.close();
+  request.db.close();
 }
 
 Future updateClassChief(String subjectId, String studentId) async {
@@ -191,80 +226,8 @@ Future<List> checkIfCanBook(
     }
   });
 
-  // session.find().forEach((element) async {
-  //   var retrievedSubject = await getSubject(element['subject']);
-  //   docs.add(Session(
-  //       element['_id'],
-  //       element["day"],
-  //       element['start_time'],
-  //       element['end_time'],
-  //       element['lecturer'],
-  //       element['student'],
-  //       retrievedSubject,
-  //       element['classroom']));
-  // });
-
-  // session.db.close();
-
-  // return docs;
-  //----------------------------------------Getting id
-  // var document = await session
-  //     .findOne({'_id': ObjectId.fromHexString(requestedSession.id.$oid)});
-  // print(document);
-  // if (document == null) {
-  //   print('Can update');
-  // } else {
-  //   print(document);
-  // }
-  //-------------------------------------------------------
   session.db.close();
   return docs;
-}
-
-Future<Session> getSessionForRequest(ObjectId sessionId) async {
-  DbCollection sessionCollection = await getConnection('SESSION');
-  print(sessionId);
-  var session = await sessionCollection.findOne(where.eq('_id', sessionId));
-  Subjects thisSubject = await getSubject(session!['subject']);
-  return Session(
-      session['_id'],
-      session['day'],
-      session['start_time'],
-      session['end_time'],
-      session['lecturer'],
-      session['student'],
-      thisSubject,
-      session['classroom']);
-}
-
-Future<List<Request>> getRequest(User theUser) async {
-  DbCollection request = await getConnection('REQUEST');
-  List userRequests = [];
-  List<Request> requestObjects = [];
-  await request.find(where.eq('request_by', theUser.id)).forEach((element) {
-    userRequests.add(element);
-  });
-
-  for (var element in userRequests) {
-    Session thisRequestSession =
-        await getSessionForRequest(element['session_detail']);
-    User thisRequestUser = await getUser(element['request_by']);
-    requestObjects.add(Request(
-        element['_id'],
-        thisRequestSession,
-        thisRequestUser,
-        element['new_day'],
-        element['new_start_time'],
-        element['new_end_time'],
-        element['new_classroom'],
-        element['reason'],
-        element['status'],
-        element['created_at'],
-        element['updated_at']));
-  }
-
-  request.db.close();
-  return requestObjects;
 }
 
 Future addRequest(String userId, String sessionId, String day,
@@ -280,7 +243,7 @@ Future addRequest(String userId, String sessionId, String day,
     'new_classroom': newClassroom,
     'session_detail': ObjectId.parse(sessionId),
     'reason': reason,
-    'status': 'Menunggu verifikasi',
+    'status': 'Menunggu Verifikasi',
     'created_at': DateTime.now(),
     'updated_at': DateTime.now()
   });
@@ -289,132 +252,10 @@ Future addRequest(String userId, String sessionId, String day,
   return;
 }
 
-Future getClassroom(User userInfo) async {
-  DbCollection session = await getConnection("SESSION");
-  DbCollection classroom = await getConnection('CLASSROOM');
-  List thisUserSession = await getSessions(userInfo);
-  List availableClassAndDuration = [];
-  List availableSession = [];
-  List<Session> sessionWhereThisUserIsInCharge = [];
-
-  await session
-      .find(where.fields(['_id', 'day', 'classroom', 'start_time', 'end_time']))
-      .forEach((element) {
-    availableSession.add(element);
-  });
-
-  await classroom
-      .find(where.fields(['_id', 'floor', 'capacity']))
-      .forEach((element) {
-    availableClassAndDuration.add(element);
-  });
-
-  for (Session element in thisUserSession) {
-    if (element.subject.classPresident == userInfo.id &&
-        element.students.contains(userInfo)) {
-      sessionWhereThisUserIsInCharge.add(element);
-    }
-  }
-
-  classroom.db.close();
-  session.db.close();
-
-  return [
-    availableClassAndDuration,
-    availableSession,
-    sessionWhereThisUserIsInCharge
-  ];
-}
-
-Future<User> getUser(String userId) async {
-  DbCollection users = await getConnection('USERS');
-  User retrievedUser;
-  var result = await users.findOne(where.eq('_id', userId));
-
-  retrievedUser = User(result!['_id'], result['name'], result['password'],
-      result['department'], result['semester'], result['role']);
-  users.db.close();
-  return retrievedUser;
-}
-
 Future deleteRequest(ObjectId theId) async {
   DbCollection request = await getConnection('REQUEST');
 
   request.deleteOne(where.eq('_id', theId));
 
   request.db.close();
-}
-
-void main(List<String> args) async {
-  // getUser('D121211007');
-  // getRequest();
-  // String time = "13:00 - 15:30";
-  // print(time.split(" - "));
-
-  // DbCollection mySession = await getConnection('SESSION');
-  // var lists = [];
-  // List<Session> thissubject = [];
-
-  // await mySession.find().forEach((element) async {
-  //   lists.add(element);
-  //   // Subjects thisSubject = await getSubject(element['subject']);
-  //   // lists.add(Session(
-  //   //     element['_id'],
-  //   //     element["day"],
-  //   //     element['start_time'],
-  //   //     element['end_time'],
-  //   //     element['lecturer'],
-  //   //     element['student'],
-  //   //     thisSubject,
-  //   //     element['classroom']));
-  // });
-
-  // for (var element in lists) {
-  //   var retrievedSubject = await getSubject(element['subject']);
-  //   thissubject.add(Session(
-  //       element['_id'],
-  //       element["day"],
-  //       element['start_time'],
-  //       element['end_time'],
-  //       element['lecturer'],
-  //       element['student'],
-  //       retrievedSubject,
-  //       element['classroom']));
-  // }
-
-  // var doc = await checkIfCanBook(thissubject[0]);
-
-  // for (Session element in thissubject) {
-  //   var objectID = element.id.$oid;
-  //   print(objectID);
-  // }
-  // updateSession('day', 'startTime', 'endTime', 'classroom');
-  // print(DateTime.now());
-  // var ada = ['', '', ''];
-  // print(ada.length);
-  // var hari = DateTime.now();
-  // switch (hari.weekday) {
-  //   case 1:
-  //     print('Print');
-  //   case 2:
-  //     print('Selasa');
-  //   case 3:
-  //     print('Rabu');
-  //   case 4:
-  //     print('kamis');
-  //   case 5:
-  //     print('Jumat');
-  //   case 6:
-  //     print('Sabtu');
-  //   case 7:
-  //     print('Minggu');
-  // }
-  // var newCommand = await getSession();
-  // newCommand.forEach((element) {
-  //   print(element.id);
-  // });
-  // await getStudents(['D121211020', 'D121211030']);
-
-  // Subjects subjek = await getSubject('121211001');
-  // print(subjek.name);
 }
