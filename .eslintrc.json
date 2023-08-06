@@ -16,7 +16,6 @@
     "comma-dangle": "off",
     "no-undef": "off",
     "object-curly-newline": "off",
-    "no-underscore-dangle": "off",
-    "dot-notation": "off"
+    "no-underscore-dangle": "off"
   }
 }

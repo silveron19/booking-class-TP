@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "84527ea9-97bd-4ebc-812f-1c24e0e68d2b",
+		"name": "mRuangan API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET CURRENT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIn0sImlhdCI6MTY4OTgzMDk3Nn0.xr0DgivXDOXdT46p4mswfP0mQoqiHk-DIP0ZhyH14os",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/users/current",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST JWT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"_id\": \"D121211030\",\r\n  \"name\": \"Fauzan Adhima\",\r\n  \"password\": \"fauzan2k23\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL SESSION",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIn0sImlhdCI6MTY4OTgzMDk3Nn0.xr0DgivXDOXdT46p4mswfP0mQoqiHk-DIP0ZhyH14os",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/schedule/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"schedule",
+						"session"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

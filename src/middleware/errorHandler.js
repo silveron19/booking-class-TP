@@ -1,54 +1,59 @@
 const { constants } = require('../../constants');
+const logger = require('../../logger');
 
-// code to specify the response for each error
+// eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
-  const statusCode = res.statusCode ? res.statusCode : 500;
+  const statusCode = err.status || 500;
+
   switch (statusCode) {
     case constants.VALIDATION_ERROR:
-      res.json({
+      logger.error(`Validation Failed: ${err.message}\n${err.stack}`);
+      res.status(statusCode).json({
         title: 'Validation Failed',
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
 
     case constants.NOT_FOUND:
-      res.json({
+      logger.error(`Not Found: ${err.message}\n${err.stack}`);
+      res.status(statusCode).json({
         title: 'Not Found',
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
 
     case constants.UNAUTHORIZED:
-      res.json({
+      logger.error(`Unauthorized: ${err.message}\n${err.stack}`);
+      res.status(statusCode).json({
         title: 'Unauthorized',
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
 
     case constants.FORBIDDEN:
-      res.json({
+      logger.error(`Forbidden: ${err.message}\n${err.stack}`);
+      res.status(statusCode).json({
         title: 'Forbidden',
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
 
-    case constants.SERVER_ERROR:
-      res.json({
-        title: 'Server Error',
+    case constants.CONFLICT:
+      logger.error(`Conflict Error: ${err.message}\n${err.stack}`);
+      res.status(statusCode).json({
+        title: 'Conflict Error',
         message: err.message,
-        stackTrace: err.stack,
       });
       break;
 
     default:
-      console.log('No Error, All good !');
+      logger.error(`Internal Server Error: ${err.message}\n${err.stack}`);
+      res.status(500).json({
+        title: 'Internal Server Error',
+        message: 'Something went wrong.',
+      });
       break;
   }
-  next();
 };
 
 module.exports = errorHandler;

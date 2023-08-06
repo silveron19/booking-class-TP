@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 // validating jwt access token
 const validateToken = asyncHandler(async (req, res, next) => {
   // check the header with the name 'authorization'
-  const authHeader = req.headers['authorization'];
+  const authHeader = req.headers.authorization;
   // the authreader will be split and the array [1] will be taken
   const token = authHeader.split(' ')[1];
   // will verify the access token when the authHeader starts with 'bearer'
