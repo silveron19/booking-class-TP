@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('../subject/Model');
-require('../../users/Model');
+require('../users/Model');
 
 const { Schema, model } = mongoose;
 
@@ -14,7 +14,7 @@ const sessionSchema = new Schema({
   subject: { type: String, required: true, ref: 'SUBJECTS' },
   lecturer: { type: String, required: true },
   classroom: { type: String, required: true },
-  department: { type: String, required: true }
+  department: { type: String, required: true },
 }, { collection: 'SESSION' });
 
 const Session = model('SESSION', sessionSchema);

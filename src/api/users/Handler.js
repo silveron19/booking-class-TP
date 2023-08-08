@@ -3,19 +3,20 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const Users = require('./Model');
 const { constants } = require('../../../constants');
-const getUserById = require('../../Services/Users');
+const errorHandler = require('../../middleware/ErrorHandler');
+const getUserById = require('../../services/Users');
 // TODO add refresh token authentication
 
 // login API with jwt access token authentication
 const loginUserHandler = asyncHandler(async (req, res) => {
   // name & password is parameter to get user
-  const { name, password } = req.body;
-  if (!name || !password) {
+  const { _id, password } = req.body;
+  if (!_id || !password || Object.keys(req.body).length !== 2) {
     res.status(400);
     throw new Error('All field are mandatory');
   }
   // find one user that have name and password according to parameter
-  const user = await Users.findOne({ name, password });
+  const user = await Users.findOne({ _id, password });
   if (user) {
     // make jwt access token that contain user information and ACCESS_TOKEN_SECRET
     const accessToken = jwt.sign(
@@ -24,10 +25,10 @@ const loginUserHandler = asyncHandler(async (req, res) => {
           _id: user._id,
           name: user.name,
           department: user.department,
-          role: user.role
+          role: user.role,
         },
       },
-      process.env.ACCESS_TOKEN_SECRET
+      process.env.ACCESS_TOKEN_SECRET,
     );
     res.status(200).json({ accessToken });
   } else {
@@ -49,7 +50,7 @@ const getUserByIdHandler = asyncHandler(async (req, res) => {
   if (!result) {
     errorHandler({
       status: constants.NOT_FOUND,
-      message: 'Subject not found',
+      message: 'User not found',
     }, req, res);
   }
   res.status(200).send(result);

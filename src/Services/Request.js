@@ -1,4 +1,4 @@
-const Request = require('../api/admin/request/Model');
+const Request = require('../api/request/Model');
 
 async function getRequestsById(id) {
   const result = await Request.find({ request_by: id })
@@ -6,7 +6,7 @@ async function getRequestsById(id) {
     .populate({
       path: 'session_detail',
       select: 'subject',
-      populate: { path: 'subject', select: 'name' }
+      populate: { path: 'subject', select: 'name' },
     })
     .exec();
 
@@ -21,7 +21,7 @@ async function getRequestDetailById(id) {
     .populate('request_by', 'name')
     .populate({
       path: 'session_detail',
-      populate: { path: 'subject', select: 'name' }
+      populate: { path: 'subject', select: 'name' },
     })
     .exec();
 
@@ -31,16 +31,16 @@ async function getRequestDetailById(id) {
   return result;
 }
 
-async function postRequestWhyById(id, why) {
+async function rejectRequest(id, why) {
   const result = await Request.findOneAndUpdate(
     { _id: id },
-    { $set: { why, status: 'Ditolak', updated_at: Date.now() } },
-    { new: true }
+    { $set: { why, status: 'Ditolak', updated_at: new Date() } },
+    { new: true },
   )
     .populate('request_by', 'name')
     .populate({
       path: 'session_detail',
-      populate: { path: 'subject', select: 'name' }
+      populate: { path: 'subject', select: 'name' },
     })
     .exec();
 
@@ -51,4 +51,8 @@ async function postRequestWhyById(id, why) {
   return result;
 }
 
-module.exports = { getRequestsById, getRequestDetailById, postRequestWhyById };
+module.exports = {
+  getRequestsById,
+  getRequestDetailById,
+  rejectRequest,
+};

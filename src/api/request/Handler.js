@@ -1,8 +1,8 @@
 const asyncHandler = require('express-async-handler');
-const { constants } = require('../../../../constants');
-const getClassPresidentByDepartment = require('../../../Services/ClassPresident');
-const { getRequestsById, getRequestDetailById, postRequestWhyById } = require('../../../Services/Request');
-const errorHandler = require('../../../middleware/ErrorHandler');
+const { getRequestsById, getRequestDetailById, rejectRequest } = require('../../services/Request');
+const { constants } = require('../../../constants');
+const errorHandler = require('../../middleware/ErrorHandler');
+const getClassPresidentByDepartment = require('../../services/ClassPresident');
 
 const getAllRequestHandler = asyncHandler(async (req, res) => {
   const { department } = req.user;
@@ -36,11 +36,11 @@ const getRequestByIdHandler = asyncHandler(async (req, res) => {
   res.status(200).send(request);
 });
 
-const postRequestWhyHandler = asyncHandler(async (req, res) => {
+const postRejectedRequestHandler = asyncHandler(async (req, res) => {
   const { why } = req.body;
   const { id } = req.params;
 
-  const request = await postRequestWhyById(id, why);
+  const request = await rejectRequest(id, why);
   if (!request) {
     errorHandler({
       status: constants.NOT_FOUND,
@@ -51,4 +51,8 @@ const postRequestWhyHandler = asyncHandler(async (req, res) => {
   res.status(200).send(request);
 });
 
-module.exports = { getRequestByIdHandler, getAllRequestHandler, postRequestWhyHandler };
+module.exports = {
+  getRequestByIdHandler,
+  getAllRequestHandler,
+  postRejectedRequestHandler,
+};

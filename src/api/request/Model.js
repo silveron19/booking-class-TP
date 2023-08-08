@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('../session/Model');
-require('../../users/Model');
+require('../users/Model');
 
 const { Schema, model } = mongoose;
 // schema model for REQUEST collection
@@ -14,9 +14,9 @@ const requestSchema = new Schema({
   session_detail: { type: Schema.Types.ObjectId, required: true, ref: 'SESSION' },
   reason: { type: String, required: true },
   status: { type: String, required: true },
-  created_at: { type: String, required: true },
-  updated_at: { type: String, required: true, default: null },
-  why: { type: String, default: null }
+  created_at: { type: Date, required: true },
+  updated_at: { type: Date, required: true, default: null },
+  why: { type: String, default: null },
 }, { collection: 'REQUEST' });
 
 const Request = model('REQUEST', requestSchema);

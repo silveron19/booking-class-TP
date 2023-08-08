@@ -20,7 +20,7 @@ const logger = winston.createLogger({
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
-      maxFiles: '14d',
+      maxFiles: '3d',
     }),
     new winston.transports.Console({}),
     new winstonMongoDB.MongoDB({

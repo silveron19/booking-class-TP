@@ -1,4 +1,4 @@
-const Subject = require('../api/admin/subject/Model');
+const Subject = require('../api/subject/Model');
 
 async function getSubjectById(id) {
   const result = await Subject.findOne({ _id: id });
@@ -9,10 +9,10 @@ async function getSubjectById(id) {
 }
 
 async function updateClassPresident(id, classPresidentId) {
-  const result = await Subject.updateOne(
+  const result = await Subject.findOneAndUpdate(
     { _id: id },
     { $set: { class_president: classPresidentId } },
-    { new: true }
+    { new: true },
   );
   if (!result) {
     return null;
