@@ -12,7 +12,7 @@ async function updateClassPresident(id, classPresidentId) {
   const result = await Subject.findOneAndUpdate(
     { _id: id },
     { $set: { class_president: classPresidentId } },
-    { new: true },
+    { new: true }
   );
   if (!result) {
     return null;
@@ -20,4 +20,12 @@ async function updateClassPresident(id, classPresidentId) {
   return result;
 }
 
-module.exports = { getSubjectById, updateClassPresident };
+async function getAllSubjectById(userId) {
+  const result = await Subject.find({ class_president: userId });
+  if (!result) {
+    return null;
+  }
+  return result;
+}
+
+module.exports = { getSubjectById, updateClassPresident, getAllSubjectById };

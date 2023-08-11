@@ -8,7 +8,7 @@ async function approveRequest(req, res, next) {
   const result = await Request.findOneAndUpdate(
     { _id: id },
     { $set: { status: 'Diterima', updated_at: new Date() } },
-    { new: true },
+    { new: true }
   )
     .populate('request_by', 'name')
     .populate({
@@ -18,10 +18,14 @@ async function approveRequest(req, res, next) {
     .exec();
 
   if (!result) {
-    errorHandler({
-      status: constants.NOT_FOUND,
-      message: 'Request not found',
-    }, req, res);
+    errorHandler(
+      {
+        status: constants.NOT_FOUND,
+        message: 'Request not found',
+      },
+      req,
+      res
+    );
     return;
   }
   req.request = result;

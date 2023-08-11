@@ -1,8 +1,9 @@
 // package for handling exceptions inside of async to express error handler
+const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 
 // validating jwt access token
-async function validateToken(req, res, next) {
+const validateToken = asyncHandler(async (req, res, next) => {
   // check the header with the name 'authorization'
   const authHeader = req.headers.authorization;
   // the authreader will be split and the array [1] will be taken
@@ -24,6 +25,6 @@ async function validateToken(req, res, next) {
       throw new Error('User is not authorized or token is missing');
     }
   }
-}
+});
 
 module.exports = validateToken;

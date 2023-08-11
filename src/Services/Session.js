@@ -1,4 +1,5 @@
 const Session = require('../api/session/Model');
+const Request = require('../api/request/Model');
 
 async function getSessionsByDepartment(department) {
   const sessions = await Session.find({ department })
@@ -10,7 +11,7 @@ async function getSessionsByDepartment(department) {
 
   const result = sessions.map((session) => ({
     ...session.toObject(),
-    student: session.student.length,
+    participants: session.student.length,
   }));
   return result;
 }
@@ -28,7 +29,7 @@ async function updateSessionById(request) {
   const session = await Session.findOneAndUpdate(
     { _id: request.session_detail },
     update,
-    { new: true },
+    { new: true }
   )
     .populate('subject', 'name')
     .exec();
@@ -38,48 +39,78 @@ async function updateSessionById(request) {
 
   const result = {
     ...session.toObject(),
-    student: session.student.length,
+    participants: session.student.length,
   };
   return result;
 }
 
-async function getSessionById(id) {
-  const session = await Session.findOne({ _id: id })
+async function getSessionsByDate(userId, deviceDay) {
+  const result = await Session.find({
+    student: userId,
+    day: deviceDay,
+  })
+    .populate('student', '-password')
     .populate({
       path: 'subject',
-      select: 'name class_president',
-      populate: { path: 'class_president', select: '_id name' },
     })
-    .populate('student')
+    .populate({
+      path: 'classroom',
+    })
     .exec();
-  if (!session) {
-    return null;
-  }
 
-  const result = {
-    // status: 'Success',
-    ...session.toObject(),
-    student_quantity: session.student.length,
-  };
-
-  return result;
-}
-
-async function getSessionByFilter(day, start_time, end_time) {
-  const result = await Session.find(
-    {
-      day, start_time, end_time,
-    },
-  );
-  console.log(result);
   if (!result) {
     return null;
   }
   return result;
 }
+
+async function getSessionsByUser(userId) {
+  const result = await Session.find({ student: userId })
+    .populate('student', '-password')
+
+    .populate({
+      path: 'subject',
+    })
+    .populate({
+      path: 'classroom',
+    })
+    .exec();
+
+  if (!result) {
+    return null;
+  }
+  return result;
+}
+
+async function createRequestBySession(
+  userId,
+  sessionId,
+  new_day,
+  new_start_time,
+  new_end_time,
+  new_classroom,
+  reason
+) {
+  const result = await Request.create({
+    request_by: userId,
+    session_detail: sessionId,
+    new_day,
+    new_start_time,
+    new_end_time,
+    new_classroom,
+    reason,
+  });
+
+  if (!result) {
+    return null;
+  }
+  return result;
+}
+
 module.exports = {
   getSessionsByDepartment,
   updateSessionById,
-  getSessionById,
-  getSessionByFilter,
+  getSessionsByDate,
+  getSessionsByUser,
+  createRequestBySession,
 };

@@ -12,7 +12,12 @@
   },
   "rules": {
     "no-console": "off",
+    "comma-dangle": "off",
+    "no-undef": "off",
+    "object-curly-newline": "off",
     "no-underscore-dangle": "off",
-    "camelcase": "off"
+    "dot-notation": "off",
+    "camelcase": "off",
+    "operator-linebreak": "off"
   }
 }
