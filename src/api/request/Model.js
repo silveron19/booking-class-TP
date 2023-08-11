@@ -16,7 +16,7 @@ const requestSchema = new Schema({
   status: { type: String, required: true },
   created_at: { type: Date, required: true },
   updated_at: { type: Date, required: true, default: null },
-  why: { type: String, default: null },
+  why: { type: String },
 }, { collection: 'REQUEST' });
 
 const Request = model('REQUEST', requestSchema);

@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
+const { Schema, model } = mongoose;
+
 // schema model for USERS collection
-const userSchema = mongoose.Schema({
+const userSchema = Schema({
   _id: { type: String, required: true },
   name: { type: String, required: [true, 'Please add the name'] },
   password: { type: String, required: [true, 'Please add the user password'] },
@@ -11,4 +13,5 @@ const userSchema = mongoose.Schema({
   profile_pic: { type: String, default: null },
 }, { collection: 'USERS' });
 
-module.exports = mongoose.model('USERS', userSchema);
+const Users = model('USERS', userSchema);
+module.exports = Users;

@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "84527ea9-97bd-4ebc-812f-1c24e0e68d2b",
+		"_postman_id": "05d19e60-c23f-488a-b3bc-809b28c7e9d4",
 		"name": "mRuangan API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26247595"
 	},
 	"item": [
 		{
@@ -16,7 +17,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIn0sImlhdCI6MTY4OTgzMDk3Nn0.xr0DgivXDOXdT46p4mswfP0mQoqiHk-DIP0ZhyH14os",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTU4OTI4Mn0.VxTH5ehxa81mwqYESlw68b0k22DGKJrwyM-eJkaDZuA",
 							"type": "string"
 						}
 					]
@@ -33,7 +34,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/users/current",
+					"raw": "http://localhost:5000/api/current",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -41,7 +42,6 @@
 					"port": "5000",
 					"path": [
 						"api",
-						"users",
 						"current"
 					]
 				}
@@ -49,13 +49,13 @@
 			"response": []
 		},
 		{
-			"name": "POST JWT",
+			"name": "Post User Login Data",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"_id\": \"D121211030\",\r\n  \"name\": \"Fauzan Adhima\",\r\n  \"password\": \"fauzan2k23\"\r\n}",
+					"raw": "{\r\n  \"_id\": \"D121211030\",\r\n  \"password\": \"fauzan2k23\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -63,7 +63,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/users/login",
+					"raw": "http://localhost:5000/api/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -71,7 +71,6 @@
 					"port": "5000",
 					"path": [
 						"api",
-						"users",
 						"login"
 					]
 				}
@@ -89,7 +88,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIn0sImlhdCI6MTY4OTgzMDk3Nn0.xr0DgivXDOXdT46p4mswfP0mQoqiHk-DIP0ZhyH14os",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSJ9LCJpYXQiOjE2OTAxMDAzNzB9.a7Ai-wmVxHxzNTzlsLt9ZIxA0zVdOMhZN9WahPFHLS4",
 							"type": "string"
 						}
 					]
@@ -111,6 +110,455 @@
 						"api",
 						"schedule",
 						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Profile By Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA2NDY3MjV9.JNyRnw2SL9BPLHHl0wqfOPHylYI_kPBphFaflDPF8B4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Data By Access Token [Admin]",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA2NDY3MjV9.JNyRnw2SL9BPLHHl0wqfOPHylYI_kPBphFaflDPF8B4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/current",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Request [Admin]",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3MjUwNDN9.Afmx8yjyMDpNnWeSC864tFSvbDZfVqKOb43_WWWWLlY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/request",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Access Token [Admin]",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"_id\": \"D121211029\",\r\n    \"password\": \"adhi2k23\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Session [Admin]",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA5NTg1MjN9.lKfS25dXGnisq5mhgJLNPAH3_Z5hyS12Dl_zTCJdB4I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/schedule",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"schedule"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Session By Id [Admin]",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA2MTM3NzV9.wZZnxhMv6O1L_Kg5m3UdnxrJgnfx30ZzUR2oWHeIkBY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/schedule/64b4be80eaf7053c5618c001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"schedule",
+						"64b4be80eaf7053c5618c001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Request Detail By Id [Admin]",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA5NTg1MjN9.lKfS25dXGnisq5mhgJLNPAH3_Z5hyS12Dl_zTCJdB4I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/request/64cd9d7e211b95f3022fef9a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"request",
+						"64cd9d7e211b95f3022fef9a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Empty Class",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA5NTg1MjN9.lKfS25dXGnisq5mhgJLNPAH3_Z5hyS12Dl_zTCJdB4I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/classroom?day=Sabtu&duration=10:00-12:30&floor=Ground&capacity=Kapasitas 50",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"classroom"
+					],
+					"query": [
+						{
+							"key": "day",
+							"value": "Sabtu"
+						},
+						{
+							"key": "duration",
+							"value": "10:00-12:30"
+						},
+						{
+							"key": "floor",
+							"value": "Ground"
+						},
+						{
+							"key": "capacity",
+							"value": "Kapasitas 50"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Rejected Request [Admin]",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA5NTg1MjN9.lKfS25dXGnisq5mhgJLNPAH3_Z5hyS12Dl_zTCJdB4I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"why\": \"Tolak dikit gak ngaruh\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/request/64cb24e37c2f06fa7e44ddd8/tolak",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"request",
+						"64cb24e37c2f06fa7e44ddd8",
+						"tolak"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Approved Request [Admin]",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA5NTg1MjN9.lKfS25dXGnisq5mhgJLNPAH3_Z5hyS12Dl_zTCJdB4I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/request/64cf55e591b443975e423160",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"request",
+						"64cf55e591b443975e423160"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Patch Class President",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTA1OTU1OTV9.RsRJoxYj7wffLuQy3ck0IOuNuNh9lCk0H9zYTVf50sI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/schedule/64b4be80eaf7053c5618c000?userId=D121211007",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"schedule",
+						"64b4be80eaf7053c5618c000"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "D121211007"
+						}
 					]
 				}
 			},

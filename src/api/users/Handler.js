@@ -1,10 +1,10 @@
 // package for handling exceptions inside of async to express error handler
 const asyncHandler = require('express-async-handler');
-const jwt = require('jsonwebtoken');
 const Users = require('./Model');
 const { constants } = require('../../../constants');
 const errorHandler = require('../../middleware/ErrorHandler');
-const getUserById = require('../../services/Users');
+const { getUserById, createJWT } = require('../../services/Users');
+
 // TODO add refresh token authentication
 
 // login API with jwt access token authentication
@@ -19,17 +19,7 @@ const loginUserHandler = asyncHandler(async (req, res) => {
   const user = await Users.findOne({ _id, password });
   if (user) {
     // make jwt access token that contain user information and ACCESS_TOKEN_SECRET
-    const accessToken = jwt.sign(
-      {
-        user: {
-          _id: user._id,
-          name: user.name,
-          department: user.department,
-          role: user.role,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-    );
+    const accessToken = await createJWT(user);
     res.status(200).json({ accessToken });
   } else {
     res.status(404);

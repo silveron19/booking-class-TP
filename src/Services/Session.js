@@ -43,4 +43,43 @@ async function updateSessionById(request) {
   return result;
 }
 
-module.exports = { getSessionsByDepartment, updateSessionById };
+async function getSessionById(id) {
+  const session = await Session.findOne({ _id: id })
+    .populate({
+      path: 'subject',
+      select: 'name class_president',
+      populate: { path: 'class_president', select: '_id name' },
+    })
+    .populate('student')
+    .exec();
+  if (!session) {
+    return null;
+  }
+
+  const result = {
+    // status: 'Success',
+    ...session.toObject(),
+    student_quantity: session.student.length,
+  };
+
+  return result;
+}
+
+async function getSessionByFilter(day, start_time, end_time) {
+  const result = await Session.find(
+    {
+      day, start_time, end_time,
+    },
+  );
+  console.log(result);
+  if (!result) {
+    return null;
+  }
+  return result;
+}
+module.exports = {
+  getSessionsByDepartment,
+  updateSessionById,
+  getSessionById,
+  getSessionByFilter,
+};

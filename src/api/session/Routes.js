@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get('/schedule', checkRoleMiddleware, getAllSessionHandler);
 router.get('/schedule/:sessionId', checkRoleMiddleware, findSessionDetailById, getSessionDetailHandler);
-router.patch('/schedule/:sessionId', checkRoleMiddleware, patchClassPresidentHandler);
+// router.get('/schedule/:sessionId', checkRoleMiddleware, getSessionDetailHandler);
+router.patch('/schedule/:sessionId', checkRoleMiddleware, findSessionDetailById, patchClassPresidentHandler);
+// router.patch('/schedule/:sessionId', checkRoleMiddleware, patchClassPresidentHandler);
 
 module.exports = router;

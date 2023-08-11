@@ -5,10 +5,12 @@ const {
   currentUserHandler,
   getUserByIdHandler,
 } = require('./Handler');
+const validateToken = require('../../middleware/ValidateTokenHandler');
 
 const router = express.Router();
 
 router.post('/login', loginUserHandler);
+router.use(validateToken);
 router.get('/profile', getUserByIdHandler);
 router.get('/current', currentUserHandler);
 

@@ -2,7 +2,7 @@ const { constants } = require('../../constants');
 const Session = require('../api/session/Model');
 const errorHandler = require('./ErrorHandler');
 
-async function findSessionDetailById(req, res, next) {
+const findSessionDetailById = async (req, res, next) => {
   const { sessionId } = req.params;
 
   const session = await Session.findOne({ _id: sessionId })
@@ -28,6 +28,6 @@ async function findSessionDetailById(req, res, next) {
   };
   req.session = result;
   next();
-}
+};
 
 module.exports = findSessionDetailById;
