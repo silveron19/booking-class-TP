@@ -18,7 +18,7 @@ const sessionSchema = new Schema(
     classroom: { type: String, required: true, ref: 'CLASSROOM' },
     department: { type: String, required: true },
   },
-  { collection: 'SESSION' }
+  { collection: 'SESSION' },
 );
 
 const Session = model('SESSION', sessionSchema);

@@ -29,7 +29,7 @@ const requestSchema = new Schema(
       updatedAt: 'updated_at', // and `updated_at` to store the last updated date
     },
     versionKey: false,
-  }
+  },
 );
 
 const Request = model('REQUEST', requestSchema);

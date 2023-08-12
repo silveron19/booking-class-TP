@@ -1,0 +1,871 @@
+{
+	"info": {
+		"_postman_id": "88fadba6-553e-4cf2-89f7-1e30c8153d12",
+		"name": "mRuangan API [Safe]",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26247595"
+	},
+	"item": [
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "Get User Profile By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TODAY SESSION",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc2MTA3Mn0.zcX7zsmKxSTiLctD8fwH3D-BoAawIevkCtxOjbC5Qp4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/home",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"home"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL SESSION",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc2MTA3Mn0.zcX7zsmKxSTiLctD8fwH3D-BoAawIevkCtxOjbC5Qp4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/schedule",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET SESSION BY ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc2MTA3Mn0.zcX7zsmKxSTiLctD8fwH3D-BoAawIevkCtxOjbC5Qp4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/schedule/64c9b5bb6fba60ad8cb2d617",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"schedule",
+								"64c9b5bb6fba60ad8cb2d617"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE REQUEST IN SESSION",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc1NDgxMn0.TC4OcnkZ2Eh-sMg_7OJrDN4exIuMHfg-uhHljteLEL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"new_day\": \"Kamis\",\r\n    \"new_start_time\": \"10:00\",\r\n    \"new_end_time\": \"12:30\",\r\n    \"new_classroom\": \"G05\",\r\n    \"reason\": \"mau turu\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/schedule/64d4e87f67da5e368b0b5800",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"schedule",
+								"64d4e87f67da5e368b0b5800"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL REQUEST",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc1NDgxMn0.TC4OcnkZ2Eh-sMg_7OJrDN4exIuMHfg-uhHljteLEL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET REQUEST BY QUERY",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc1NDgxMn0.TC4OcnkZ2Eh-sMg_7OJrDN4exIuMHfg-uhHljteLEL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/request?status=semua&sort=Terlama",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "semua"
+								},
+								{
+									"key": "sort",
+									"value": "Terlama"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET DETAIL REQUEST BY ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc1NDgxMn0.TC4OcnkZ2Eh-sMg_7OJrDN4exIuMHfg-uhHljteLEL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/request/64d63afdab7fed0117959dc3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request",
+								"64d63afdab7fed0117959dc3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE REQUEST BY ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTY3NTAzM30.NTQBhpjj9wGfkzLWVBYg05ns81hK8O2zccn6X03sIY0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/request/64d639fec173b4535ee31c55",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request",
+								"64d639fec173b4535ee31c55"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE REQUEST BY ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc1NDgxMn0.TC4OcnkZ2Eh-sMg_7OJrDN4exIuMHfg-uhHljteLEL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reason\": \"malas menanggapi coi tes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/request/64c5f77466eb786016d8fe7c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request",
+								"64c5f77466eb786016d8fe7c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Empty Class",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/classroom?day=Sabtu&duration=10:00-12:30&floor=Ground&capacity=Kapasitas 50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"classroom"
+							],
+							"query": [
+								{
+									"key": "day",
+									"value": "Sabtu"
+								},
+								{
+									"key": "duration",
+									"value": "10:00-12:30"
+								},
+								{
+									"key": "floor",
+									"value": "Ground"
+								},
+								{
+									"key": "capacity",
+									"value": "Kapasitas 50"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ADMIN",
+			"item": [
+				{
+					"name": "Get User Profile By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Request [Admin]",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Request Detail By Id [Admin]",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/request/64cd9d7e211b95f3022fef9a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request",
+								"64cd9d7e211b95f3022fef9a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Rejected Request [Admin]",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"why\": \"Tolak dikit gak ngaruh\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/request/64cb24e37c2f06fa7e44ddd8/tolak",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request",
+								"64cb24e37c2f06fa7e44ddd8",
+								"tolak"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Approved Request [Admin]",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/request/64cb24e37c2f06fa7e44ddd8/terima",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"request",
+								"64cb24e37c2f06fa7e44ddd8",
+								"terima"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Session [Admin]",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/schedule",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Session By Id [Admin]",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/schedule/64b4be80eaf7053c5618c001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"schedule",
+								"64b4be80eaf7053c5618c001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Class President",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/schedule/64c9b7006fba60ad8cb2d61e?userId=D121211006",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"schedule",
+								"64c9b7006fba60ad8cb2d61e"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "D121211006"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Empty Class",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/classroom?day=Sabtu&duration=10:00-12:30&floor=Ground&capacity=Kapasitas 50",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"classroom"
+							],
+							"query": [
+								{
+									"key": "day",
+									"value": "Sabtu"
+								},
+								{
+									"key": "duration",
+									"value": "10:00-12:30"
+								},
+								{
+									"key": "floor",
+									"value": "Ground"
+								},
+								{
+									"key": "capacity",
+									"value": "Kapasitas 50"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSJ9LCJpYXQiOjE2OTA2NDQ1ODF9.hDPq3KVlMG0RtkDb7jWB3ell46rBM5rrNfxeU7dDuk4",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

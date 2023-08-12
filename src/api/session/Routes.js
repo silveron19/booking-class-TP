@@ -3,13 +3,13 @@ const {
   getAllSessionHandler,
   patchClassPresidentHandler,
   getSessionDetailHandler,
-  getTodaySessions,
-  getSessions,
+  getTodaySessionsHandler,
+  getSessionsHandler,
   postRequestByUserHandler,
 } = require('./Handler');
-const findSessionDetailById = require('../../middleware/FindSessionById');
+const findSessionDetailById = require('../../middleware/findSessionById');
 const checkRoleMiddleware = require('../../middleware/CheckRoleHandler');
-const validateToken = require('../../middleware/ValidateTokenHandler');
+const validateToken = require('../../middleware/validateTokenHandler');
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ function checkRoleAndExecuteHandler(req, res) {
   if (userRole === 'admin') {
     getAllSessionHandler(req, res);
   } else {
-    getSessions(req, res);
+    getSessionsHandler(req, res);
   }
 }
 
@@ -32,14 +32,14 @@ router.post('/schedule/:sessionId', postRequestByUserHandler);
 router.get(
   '/schedule/:sessionId',
   findSessionDetailById,
-  getSessionDetailHandler
+  getSessionDetailHandler,
 );
 router.patch(
   '/schedule/:sessionId',
   checkRoleMiddleware,
   findSessionDetailById,
-  patchClassPresidentHandler
+  patchClassPresidentHandler,
 );
-router.get('/home', getTodaySessions);
+router.get('/home', getTodaySessionsHandler);
 
 module.exports = router;

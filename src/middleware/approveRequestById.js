@@ -1,6 +1,6 @@
 const { constants } = require('../../constants');
 const Request = require('../api/request/Model');
-const errorHandler = require('./ErrorHandler');
+const errorHandler = require('./errorHandler');
 
 async function approveRequest(req, res, next) {
   const { id } = req.params;
@@ -8,7 +8,7 @@ async function approveRequest(req, res, next) {
   const result = await Request.findOneAndUpdate(
     { _id: id },
     { $set: { status: 'Diterima', updated_at: new Date() } },
-    { new: true }
+    { new: true },
   )
     .populate('request_by', 'name')
     .populate({
@@ -24,7 +24,7 @@ async function approveRequest(req, res, next) {
         message: 'Request not found',
       },
       req,
-      res
+      res,
     );
     return;
   }

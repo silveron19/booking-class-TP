@@ -29,7 +29,7 @@ async function updateSessionById(request) {
   const session = await Session.findOneAndUpdate(
     { _id: request.session_detail },
     update,
-    { new: true }
+    { new: true },
   )
     .populate('subject', 'name')
     .exec();
@@ -89,7 +89,7 @@ async function createRequestBySession(
   new_start_time,
   new_end_time,
   new_classroom,
-  reason
+  reason,
 ) {
   const result = await Request.create({
     request_by: userId,
@@ -107,10 +107,23 @@ async function createRequestBySession(
   return result;
 }
 
+async function getSessionByFilter(day, start_time, end_time) {
+  const result = await Session.find(
+    {
+      day, start_time, end_time,
+    },
+  );
+  if (!result) {
+    return null;
+  }
+  return result;
+}
+
 module.exports = {
   getSessionsByDepartment,
   updateSessionById,
   getSessionsByDate,
   getSessionsByUser,
   createRequestBySession,
+  getSessionByFilter,
 };

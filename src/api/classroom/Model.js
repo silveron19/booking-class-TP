@@ -20,7 +20,7 @@ const classroomSchema = mongoose.Schema(
       required: true,
     },
   },
-  { collection: 'CLASSROOM' }
+  { collection: 'CLASSROOM' },
 );
 
 module.exports = mongoose.model('CLASSROOM', classroomSchema);

@@ -3,8 +3,8 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const Users = require('./Model');
 const { constants } = require('../../../constants');
-const errorHandler = require('../../middleware/ErrorHandler');
-const { getUserById } = require('../../Services/Users');
+const errorHandler = require('../../middleware/errorHandler');
+const { getUserById } = require('../../services/Users');
 // TODO add refresh token authentication
 
 // login API with jwt access token authentication
@@ -28,7 +28,7 @@ const loginUserHandler = asyncHandler(async (req, res) => {
           role: user.role,
         },
       },
-      process.env.ACCESS_TOKEN_SECRET
+      process.env.ACCESS_TOKEN_SECRET,
     );
     res.status(200).json({ accessToken });
   } else {
@@ -54,7 +54,7 @@ const getUserByIdHandler = asyncHandler(async (req, res) => {
         message: 'User not found',
       },
       req,
-      res
+      res,
     );
   }
   res.status(200).send(result);

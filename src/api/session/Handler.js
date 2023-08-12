@@ -6,9 +6,9 @@ const {
   getSessionsByDate,
   getSessionsByUser,
   createRequestBySession,
-} = require('../../Services/Session');
-const errorHandler = require('../../middleware/ErrorHandler');
-const { updateClassPresident } = require('../../Services/Subject');
+} = require('../../services/Session');
+const errorHandler = require('../../middleware/errorHandler');
+const { updateClassPresident } = require('../../services/Subject');
 
 function getNamaHari(angkaHari) {
   const namaHari = [
@@ -23,7 +23,7 @@ function getNamaHari(angkaHari) {
   return namaHari[angkaHari];
 }
 
-const getTodaySessions = asyncHandler(async (req, res) => {
+const getTodaySessionsHandler = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const device = new Date();
   const deviceDayIndex = device.getDay(); // Mendapatkan angka hari dalam pekan
@@ -37,13 +37,13 @@ const getTodaySessions = asyncHandler(async (req, res) => {
         message: 'Subject not found',
       },
       req,
-      res
+      res,
     );
   }
   res.status(200).send(sessions);
 });
 
-const getSessions = asyncHandler(async (req, res) => {
+const getSessionsHandler = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
   const sessions = await getSessionsByUser(userId);
@@ -54,7 +54,7 @@ const getSessions = asyncHandler(async (req, res) => {
         message: 'Subject not found',
       },
       req,
-      res
+      res,
     );
   }
   res.status(200).send(sessions);
@@ -63,9 +63,9 @@ const getSessions = asyncHandler(async (req, res) => {
 const postRequestByUserHandler = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const { sessionId } = req.params;
-  // eslint-disable-next-line operator-linebreak
-  const { new_day, new_start_time, new_end_time, new_classroom, reason } =
-    req.body;
+  const {
+    new_day, new_start_time, new_end_time, new_classroom, reason,
+  } = req.body;
 
   const sessions = await createRequestBySession(
     userId,
@@ -74,7 +74,7 @@ const postRequestByUserHandler = asyncHandler(async (req, res) => {
     new_start_time,
     new_end_time,
     new_classroom,
-    reason
+    reason,
   );
   if (!sessions) {
     errorHandler(
@@ -83,7 +83,7 @@ const postRequestByUserHandler = asyncHandler(async (req, res) => {
         message: 'Subject not found',
       },
       req,
-      res
+      res,
     );
   }
   res.status(200).send(sessions);
@@ -100,7 +100,7 @@ const getAllSessionHandler = asyncHandler(async (req, res) => {
         message: 'Subject not found',
       },
       req,
-      res
+      res,
     );
   }
   res.status(200).send(sessions);
@@ -123,7 +123,7 @@ const patchClassPresidentHandler = asyncHandler(async (req, res) => {
         message: 'Subject not found',
       },
       req,
-      res
+      res,
     );
   }
   const result = await updateClassPresident(id, userId);
@@ -142,7 +142,7 @@ const putSessionByIdHandler = asyncHandler(async (req, res) => {
         message: 'Subject not found',
       },
       req,
-      res
+      res,
     );
     return;
   }
@@ -154,7 +154,7 @@ module.exports = {
   patchClassPresidentHandler,
   getSessionDetailHandler,
   putSessionByIdHandler,
-  getTodaySessions,
-  getSessions,
+  getTodaySessionsHandler,
+  getSessionsHandler,
   postRequestByUserHandler,
 };

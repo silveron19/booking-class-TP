@@ -5,20 +5,23 @@ const {
   rejectRequest,
   getRequestsByQuery,
   deleteRequestById,
-} = require('../../Services/Request');
+} = require('../../services/Request');
 const { constants } = require('../../../constants');
-const errorHandler = require('../../middleware/ErrorHandler');
-const { getAllUserByDepartment } = require('../../Services/Users');
-const { getAllSubjectById } = require('../../Services/Subject');
+const errorHandler = require('../../middleware/errorHandler');
+const { getAllUserByDepartment } = require('../../services/Users');
+const { getAllSubjectById } = require('../../services/Subject');
 
 const getAllRequestHandler = asyncHandler(async (req, res) => {
   const { department } = req.user;
+  const { sort } = req.query;
 
   const users = await getAllUserByDepartment(department);
   const userId = users.map((user) => user._id);
+
   const subjects = await getAllSubjectById(userId);
   const classPresidentId = subjects.map((user) => user.class_president);
-  const requests = await getRequestsById(classPresidentId);
+
+  const requests = await getRequestsById(classPresidentId, sort);
   if (!requests) {
     errorHandler(
       {
@@ -26,7 +29,7 @@ const getAllRequestHandler = asyncHandler(async (req, res) => {
         message: 'Request not found',
       },
       req,
-      res
+      res,
     );
     return;
   }
@@ -43,7 +46,7 @@ const getRequestByUserHandler = asyncHandler(async (req, res) => {
         message: 'Request not found',
       },
       req,
-      res
+      res,
     );
     return;
   }
@@ -52,7 +55,8 @@ const getRequestByUserHandler = asyncHandler(async (req, res) => {
 
 const getRequestByQueryHandler = asyncHandler(async (req, res) => {
   const { status, sort } = req.query;
-  const requests = await getRequestsByQuery(status, sort);
+  const id = req.user._id;
+  const requests = await getRequestsByQuery(id, status, sort);
   if (!requests) {
     errorHandler(
       {
@@ -60,7 +64,7 @@ const getRequestByQueryHandler = asyncHandler(async (req, res) => {
         message: 'Request not found',
       },
       req,
-      res
+      res,
     );
     return;
   }
@@ -78,7 +82,7 @@ const getRequestByIdHandler = asyncHandler(async (req, res) => {
         message: 'Request not found',
       },
       req,
-      res
+      res,
     );
     return;
   }
@@ -86,11 +90,11 @@ const getRequestByIdHandler = asyncHandler(async (req, res) => {
   res.status(200).send(request);
 });
 
-const postRejectedRequestHandler = asyncHandler(async (req, res) => {
-  const { why } = req.body;
+const putRequestHandler = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
+  const { choose } = req.query;
 
-  const request = await rejectRequest(id, why);
+  const request = await getRequestDetailById(id);
   if (!request) {
     errorHandler(
       {
@@ -98,11 +102,38 @@ const postRejectedRequestHandler = asyncHandler(async (req, res) => {
         message: 'Request not found',
       },
       req,
-      res
+      res,
     );
-    return;
   }
-  res.status(200).send(request);
+
+  if (request.status !== 'Menunggu Verifikasi') {
+    errorHandler(
+      {
+        status: constants.CONFLICT,
+        message: 'Unable to accept / reject request that has been previously approved / rejected',
+      },
+      req,
+      res,
+    );
+  }
+  if (choose.toLowerCase() === 'terima') {
+    next();
+  } else if (choose.toLowerCase() === 'tolak') {
+    const { why } = req.body;
+    if (!why) {
+      errorHandler(
+        {
+          status: constants.CONFLICT,
+          message: 'Unable to reject the request. The reason field is required',
+        },
+        req,
+        res,
+      );
+    }
+
+    const result = await rejectRequest(request._id, why);
+    res.status(200).send(result);
+  }
 });
 
 const deleteRequestByIdHandler = asyncHandler(async (req, res) => {
@@ -116,7 +147,7 @@ const deleteRequestByIdHandler = asyncHandler(async (req, res) => {
         message: 'Request not found',
       },
       req,
-      res
+      res,
     );
     return;
   }
@@ -126,7 +157,7 @@ const deleteRequestByIdHandler = asyncHandler(async (req, res) => {
 module.exports = {
   getRequestByIdHandler,
   getAllRequestHandler,
-  postRejectedRequestHandler,
+  putRequestHandler,
   getRequestByUserHandler,
   getRequestByQueryHandler,
   deleteRequestByIdHandler,

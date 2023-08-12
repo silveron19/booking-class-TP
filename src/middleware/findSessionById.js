@@ -1,6 +1,6 @@
 const { constants } = require('../../constants');
 const Session = require('../api/session/Model');
-const errorHandler = require('./ErrorHandler');
+const errorHandler = require('./errorHandler');
 
 async function findSessionDetailById(req, res, next) {
   const { sessionId } = req.params;

@@ -3,6 +3,7 @@ const connectDb = require('./config/dbConnection');
 const requestRoutes = require('./api/request/Routes');
 const sessionRoutes = require('./api/session/Routes');
 const userRoutes = require('./api/users/Routes');
+const classroomRoutes = require('./api/classroom/Routes');
 
 require('dotenv').config();
 
@@ -16,8 +17,6 @@ connectDb();
 app.use(express.json());
 // app.use(bodyParser.json());
 
-app.use('/api', userRoutes, requestRoutes, sessionRoutes);
+app.use('/api', userRoutes, requestRoutes, sessionRoutes, classroomRoutes);
 
-app.listen(port, () =>
-  console.log(`MRuangan listening on http://${host}:${port}`)
-);
+app.listen(port, () => console.log(`MRuangan listening on http://${host}:${port}`));

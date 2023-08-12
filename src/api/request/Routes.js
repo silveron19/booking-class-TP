@@ -4,13 +4,13 @@ const {
   getRequestByQueryHandler,
   getRequestByIdHandler,
   getRequestByUserHandler,
-  postRejectedRequestHandler,
+  putRequestHandler,
   deleteRequestByIdHandler,
 } = require('./Handler');
-const approveRequest = require('../../middleware/ApproveRequestById');
+const approveRequest = require('../../middleware/approveRequestById');
 const { putSessionByIdHandler } = require('../session/Handler');
 const checkRoleMiddleware = require('../../middleware/CheckRoleHandler');
-const validateToken = require('../../middleware/ValidateTokenHandler');
+const validateToken = require('../../middleware/validateTokenHandler');
 
 const router = express.Router();
 
@@ -31,17 +31,19 @@ router.get('/request', checkRoleAndExecuteHandler);
 router.get('/request?', getRequestByQueryHandler);
 
 router.get('/request/:id', getRequestByIdHandler);
-router.post(
-  '/request/:id/tolak',
+router.put(
+  '/request/:id',
   checkRoleMiddleware,
-  postRejectedRequestHandler
-);
-router.post(
-  '/request/:id/terima',
-  checkRoleMiddleware,
+  putRequestHandler,
   approveRequest,
-  putSessionByIdHandler
+  putSessionByIdHandler,
 );
+// router.post(
+//   '/request/:id/terima',
+//   checkRoleMiddleware,
+//   approveRequest,
+//   putSessionByIdHandler,
+// );
 router.delete('/request/:requestId', deleteRequestByIdHandler);
 
 module.exports = router;

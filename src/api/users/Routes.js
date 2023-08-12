@@ -5,7 +5,7 @@ const {
   currentUserHandler,
   getUserByIdHandler,
 } = require('./Handler');
-const validateToken = require('../../middleware/ValidateTokenHandler');
+const validateToken = require('../../middleware/validateTokenHandler');
 
 const router = express.Router();
 

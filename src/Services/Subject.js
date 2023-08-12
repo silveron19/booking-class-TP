@@ -12,7 +12,7 @@ async function updateClassPresident(id, classPresidentId) {
   const result = await Subject.findOneAndUpdate(
     { _id: id },
     { $set: { class_president: classPresidentId } },
-    { new: true }
+    { new: true },
   );
   if (!result) {
     return null;
