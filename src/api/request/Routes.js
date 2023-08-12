@@ -31,19 +31,15 @@ router.get('/request', checkRoleAndExecuteHandler);
 router.get('/request?', getRequestByQueryHandler);
 
 router.get('/request/:id', getRequestByIdHandler);
+
 router.put(
-  '/request/:id',
+  '/request/:id?',
   checkRoleMiddleware,
   putRequestHandler,
   approveRequest,
   putSessionByIdHandler,
 );
-// router.post(
-//   '/request/:id/terima',
-//   checkRoleMiddleware,
-//   approveRequest,
-//   putSessionByIdHandler,
-// );
+
 router.delete('/request/:requestId', deleteRequestByIdHandler);
 
 module.exports = router;

@@ -27,7 +27,7 @@ const getEmptyClassHandler = asyncHandler(async (req, res) => {
       .some((session) => session.classroom !== classroom._id));
 
   const emptyClass = await getEmptyClass(availableClass, formattedCapacity, formattedFloor);
-  if (!emptyClass) {
+  if (emptyClass.length === 0) {
     errorHandler({
       status: constants.NOT_FOUND,
       message: 'Class is full',

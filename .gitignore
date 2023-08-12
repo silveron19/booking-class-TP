@@ -2,3 +2,5 @@ node_modules/
 logs/
 trash.js
 .gitignore
+.gitattributes
+.env

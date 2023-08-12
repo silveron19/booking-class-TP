@@ -30,7 +30,7 @@ const getTodaySessionsHandler = asyncHandler(async (req, res) => {
   const deviceDay = getNamaHari(deviceDayIndex);
 
   const sessions = await getSessionsByDate(userId, deviceDay);
-  if (!sessions) {
+  if (sessions.length === 0) {
     errorHandler(
       {
         status: constants.NOT_FOUND,
@@ -47,7 +47,7 @@ const getSessionsHandler = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
   const sessions = await getSessionsByUser(userId);
-  if (!sessions) {
+  if (sessions.length === 0) {
     errorHandler(
       {
         status: constants.NOT_FOUND,
@@ -76,7 +76,7 @@ const postRequestByUserHandler = asyncHandler(async (req, res) => {
     new_classroom,
     reason,
   );
-  if (!sessions) {
+  if (sessions.length === 0) {
     errorHandler(
       {
         status: constants.NOT_FOUND,
@@ -93,7 +93,7 @@ const getAllSessionHandler = asyncHandler(async (req, res) => {
   const { department } = req.user;
 
   const sessions = await getSessionsByDepartment(department);
-  if (!sessions) {
+  if (sessions.length === 0) {
     errorHandler(
       {
         status: constants.NOT_FOUND,

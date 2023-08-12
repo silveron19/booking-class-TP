@@ -19,10 +19,12 @@ const getAllRequestHandler = asyncHandler(async (req, res) => {
   const userId = users.map((user) => user._id);
 
   const subjects = await getAllSubjectById(userId);
-  const classPresidentId = subjects.map((user) => user.class_president);
+  const classPresidentId = subjects
+    .map((user) => user.class_president)
+    .filter((value, index, self) => self.indexOf(value) === index);
 
   const requests = await getRequestsById(classPresidentId, sort);
-  if (!requests) {
+  if (requests.length === 0) {
     errorHandler(
       {
         status: constants.NOT_FOUND,
@@ -39,7 +41,7 @@ const getAllRequestHandler = asyncHandler(async (req, res) => {
 const getRequestByUserHandler = asyncHandler(async (req, res) => {
   const id = req.user._id;
   const requests = await getRequestsById(id);
-  if (!requests) {
+  if (requests.length === 0) {
     errorHandler(
       {
         status: constants.NOT_FOUND,
@@ -57,7 +59,7 @@ const getRequestByQueryHandler = asyncHandler(async (req, res) => {
   const { status, sort } = req.query;
   const id = req.user._id;
   const requests = await getRequestsByQuery(id, status, sort);
-  if (!requests) {
+  if (requests.length === 0) {
     errorHandler(
       {
         status: constants.NOT_FOUND,
