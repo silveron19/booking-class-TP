@@ -39,23 +39,7 @@ const getTodaySessionsHandler = asyncHandler(async (req, res) => {
       req,
       res,
     );
-  }
-  res.status(200).send(sessions);
-});
-
-const getSessionsHandler = asyncHandler(async (req, res) => {
-  const userId = req.user._id;
-
-  const sessions = await getSessionsByUser(userId);
-  if (sessions.length === 0) {
-    errorHandler(
-      {
-        status: constants.NOT_FOUND,
-        message: 'Subject not found',
-      },
-      req,
-      res,
-    );
+    return;
   }
   res.status(200).send(sessions);
 });
@@ -85,25 +69,47 @@ const postRequestByUserHandler = asyncHandler(async (req, res) => {
       req,
       res,
     );
+    return;
   }
   res.status(200).send(sessions);
 });
 
 const getAllSessionHandler = asyncHandler(async (req, res) => {
-  const { department } = req.user;
+  const userRole = req.user.role;
 
-  const sessions = await getSessionsByDepartment(department);
-  if (sessions.length === 0) {
-    errorHandler(
-      {
-        status: constants.NOT_FOUND,
-        message: 'Subject not found',
-      },
-      req,
-      res,
-    );
+  if (userRole === 'admin') {
+    const { department } = req.user;
+
+    const sessions = await getSessionsByDepartment(department);
+    if (sessions.length === 0) {
+      errorHandler(
+        {
+          status: constants.NOT_FOUND,
+          message: 'Subject not found',
+        },
+        req,
+        res,
+      );
+      return;
+    }
+    res.status(200).send(sessions);
+  } else {
+    const userId = req.user._id;
+
+    const sessions = await getSessionsByUser(userId);
+    if (sessions.length === 0) {
+      errorHandler(
+        {
+          status: constants.NOT_FOUND,
+          message: 'Subject not found',
+        },
+        req,
+        res,
+      );
+      return;
+    }
+    res.status(200).send(sessions);
   }
-  res.status(200).send(sessions);
 });
 
 const getSessionDetailHandler = asyncHandler(async (req, res) => {
@@ -116,16 +122,6 @@ const patchClassPresidentHandler = asyncHandler(async (req, res) => {
   const { userId } = req.query;
   const id = session.subject;
 
-  if (!session) {
-    errorHandler(
-      {
-        status: constants.NOT_FOUND,
-        message: 'Subject not found',
-      },
-      req,
-      res,
-    );
-  }
   const result = await updateClassPresident(id, userId);
 
   res.status(200).send(result);
@@ -155,6 +151,5 @@ module.exports = {
   getSessionDetailHandler,
   putSessionByIdHandler,
   getTodaySessionsHandler,
-  getSessionsHandler,
   postRequestByUserHandler,
 };

@@ -186,7 +186,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/schedule/64d4e87f67da5e368b0b5800",
+							"raw": "http://localhost:5000/api/schedule/64b4be80eaf7053c5618c001",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -195,7 +195,7 @@
 							"path": [
 								"api",
 								"schedule",
-								"64d4e87f67da5e368b0b5800"
+								"64b4be80eaf7053c5618c001"
 							]
 						}
 					},
@@ -229,7 +229,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/request",
+							"raw": "http://localhost:5000/api/request?status=semua&sort=Terlama",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,6 +238,16 @@
 							"path": [
 								"api",
 								"request"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "semua"
+								},
+								{
+									"key": "sort",
+									"value": "Terlama"
+								}
 							]
 						}
 					},
@@ -251,7 +261,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTc1NDgxMn0.TC4OcnkZ2Eh-sMg_7OJrDN4exIuMHfg-uhHljteLEL4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMzAiLCJuYW1lIjoiRmF1emFuIEFkaGltYSIsImRlcGFydG1lbnQiOiJUZWtuaWsgSW5mb3JtYXRpa2EiLCJyb2xlIjoibWFoYXNpc3dhIn0sImlhdCI6MTY5MTkzNTUwM30.m0rjAmqG1bFrVi-QK_IVF2DdfVl2g76Gv51fx2moiEQ",
 									"type": "string"
 								}
 							]
@@ -339,7 +349,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/request/64d639fec173b4535ee31c55",
+							"raw": "http://localhost:5000/api/request/64d8e68611f2fa40a5645572",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -348,7 +358,7 @@
 							"path": [
 								"api",
 								"request",
-								"64d639fec173b4535ee31c55"
+								"64d8e68611f2fa40a5645572"
 							]
 						}
 					},
@@ -509,7 +519,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE3NjE1NDN9.aLz1B_cMaek6Aegh7ZPWSK6iwLgjphf1ZQOYHnaZgUM",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IkQxMjEyMTEwMjkiLCJuYW1lIjoiR3VzdGkgTmd1cmFoIEFkaGkgQXN0aWthIiwiZGVwYXJ0bWVudCI6IlRla25payBJbmZvcm1hdGlrYSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2OTE4NDExOTN9.6a20usc-YBxp0UhkHjETZ-rL8snCkgZMp9lBNCZKFgo",
 									"type": "string"
 								}
 							]
@@ -517,7 +527,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/request",
+							"raw": "http://localhost:5000/api/request?sort=terlama",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -526,6 +536,12 @@
 							"path": [
 								"api",
 								"request"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "terlama"
+								}
 							]
 						}
 					},
@@ -575,7 +591,7 @@
 					"response": []
 				},
 				{
-					"name": "Post Rejected Request [Admin]",
+					"name": "Put Rejected Request [Admin]",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -587,7 +603,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -599,7 +615,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/request/64cb24e37c2f06fa7e44ddd8/tolak",
+							"raw": "http://localhost:5000/api/request/64cb24e37c2f06fa7e44ddd8?choose=tolak",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -608,15 +624,20 @@
 							"path": [
 								"api",
 								"request",
-								"64cb24e37c2f06fa7e44ddd8",
-								"tolak"
+								"64cb24e37c2f06fa7e44ddd8"
+							],
+							"query": [
+								{
+									"key": "choose",
+									"value": "tolak"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Post Approved Request [Admin]",
+					"name": "Put Approved Request [Admin]",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -628,7 +649,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -640,7 +661,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/request/64cb24e37c2f06fa7e44ddd8/terima",
+							"raw": "http://localhost:5000/api/request/64d8e68611f2fa40a5645572?choose=terima",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -649,8 +670,13 @@
 							"path": [
 								"api",
 								"request",
-								"64cb24e37c2f06fa7e44ddd8",
-								"terima"
+								"64d8e68611f2fa40a5645572"
+							],
+							"query": [
+								{
+									"key": "choose",
+									"value": "terima"
+								}
 							]
 						}
 					},
@@ -803,7 +829,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/classroom?day=Sabtu&duration=10:00-12:30&floor=Ground&capacity=Kapasitas 50",
+							"raw": "http://localhost:5000/api/classroom?day=Jumat&duration=10:00-12:30&floor=Ground&capacity=Kapasitas 50",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -816,7 +842,7 @@
 							"query": [
 								{
 									"key": "day",
-									"value": "Sabtu"
+									"value": "Jumat"
 								},
 								{
 									"key": "duration",

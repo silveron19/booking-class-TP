@@ -11,4 +11,6 @@ const userSchema = mongoose.Schema({
   profile_pic: { type: String, default: null },
 }, { collection: 'USERS' });
 
-module.exports = mongoose.model('USERS', userSchema);
+const Users = mongoose.model('USERS', userSchema);
+
+module.exports = Users;

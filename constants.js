@@ -6,4 +6,5 @@ exports.constants = {
   NOT_FOUND: 404,
   CONFLICT: 409,
   SERVER_ERROR: 500,
+  NO_CONTENT: 204,
 };

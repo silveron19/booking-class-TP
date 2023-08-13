@@ -14,6 +14,14 @@ const errorHandler = (err, req, res, next) => {
       });
       break;
 
+    case constants.NO_CONTENT:
+      logger.error(`No content: ${err.message}\n${err.stack}`);
+      res.status(statusCode).json({
+        title: 'No content',
+        message: err.message,
+      });
+      break;
+
     case constants.NOT_FOUND:
       logger.error(`Not Found: ${err.message}\n${err.stack}`);
       res.status(statusCode).json({

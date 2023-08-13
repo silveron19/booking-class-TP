@@ -1,8 +1,9 @@
+const asyncHandler = require('express-async-handler');
 const { constants } = require('../../constants');
 const Session = require('../api/session/Model');
 const errorHandler = require('./errorHandler');
 
-async function findSessionDetailById(req, res, next) {
+const findSessionDetailById = asyncHandler(async (req, res, next) => {
   const { sessionId } = req.params;
 
   const session = await Session.findOne({ _id: sessionId })
@@ -28,6 +29,6 @@ async function findSessionDetailById(req, res, next) {
   };
   req.session = result;
   next();
-}
+});
 
 module.exports = findSessionDetailById;

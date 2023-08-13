@@ -8,27 +8,17 @@ const {
 } = require('../../services/Request');
 const { constants } = require('../../../constants');
 const errorHandler = require('../../middleware/errorHandler');
-const { getAllUserByDepartment } = require('../../services/Users');
-const { getAllSubjectById } = require('../../services/Subject');
 
 const getAllRequestHandler = asyncHandler(async (req, res) => {
-  const { department } = req.user;
+  const { classPresidentId } = req;
   const { sort } = req.query;
-
-  const users = await getAllUserByDepartment(department);
-  const userId = users.map((user) => user._id);
-
-  const subjects = await getAllSubjectById(userId);
-  const classPresidentId = subjects
-    .map((user) => user.class_president)
-    .filter((value, index, self) => self.indexOf(value) === index);
 
   const requests = await getRequestsById(classPresidentId, sort);
   if (requests.length === 0) {
     errorHandler(
       {
-        status: constants.NOT_FOUND,
-        message: 'Request not found',
+        status: constants.NO_CONTENT,
+        message: 'The server has processed the request, but no content was found',
       },
       req,
       res,
@@ -44,8 +34,8 @@ const getRequestByUserHandler = asyncHandler(async (req, res) => {
   if (requests.length === 0) {
     errorHandler(
       {
-        status: constants.NOT_FOUND,
-        message: 'Request not found',
+        status: constants.NO_CONTENT,
+        message: 'The server has processed the request, but no content was found',
       },
       req,
       res,
@@ -62,8 +52,8 @@ const getRequestByQueryHandler = asyncHandler(async (req, res) => {
   if (requests.length === 0) {
     errorHandler(
       {
-        status: constants.NOT_FOUND,
-        message: 'Request not found',
+        status: constants.NO_CONTENT,
+        message: 'The server has processed the request, but no content was found',
       },
       req,
       res,
@@ -106,6 +96,7 @@ const putRequestHandler = asyncHandler(async (req, res, next) => {
       req,
       res,
     );
+    return;
   }
 
   if (request.status !== 'Menunggu Verifikasi') {
@@ -117,6 +108,7 @@ const putRequestHandler = asyncHandler(async (req, res, next) => {
       req,
       res,
     );
+    return;
   }
   if (choose.toLowerCase() === 'terima') {
     next();
@@ -131,6 +123,7 @@ const putRequestHandler = asyncHandler(async (req, res, next) => {
         req,
         res,
       );
+      return;
     }
 
     const result = await rejectRequest(request._id, why);

@@ -56,6 +56,7 @@ const getUserByIdHandler = asyncHandler(async (req, res) => {
       req,
       res,
     );
+    return;
   }
   res.status(200).send(result);
 });
