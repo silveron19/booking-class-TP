@@ -85,7 +85,7 @@ const getAllSessionHandler = asyncHandler(async (req, res) => {
       errorHandler(
         {
           status: constants.NOT_FOUND,
-          message: 'Subject not found',
+          message: 'Subjects not found',
         },
         req,
         res,
@@ -101,7 +101,7 @@ const getAllSessionHandler = asyncHandler(async (req, res) => {
       errorHandler(
         {
           status: constants.NOT_FOUND,
-          message: 'Subject not found',
+          message: 'Subjects not found',
         },
         req,
         res,

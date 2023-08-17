@@ -14,9 +14,7 @@ const host = process.env.HOST;
 
 connectDb();
 
-// app.use(cors());
 app.use(express.json());
-// app.use(bodyParser.json());
 app.use('/api', userRoutes, requestRoutes, sessionRoutes, classroomRoutes);
 app.use(errorHandler);
 

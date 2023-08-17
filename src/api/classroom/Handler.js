@@ -5,6 +5,7 @@ const { getEmptyClass, getAllClassroom } = require('../../services/Classroom');
 const { getSessionByFilter } = require('../../services/Session');
 
 const getEmptyClassHandler = asyncHandler(async (req, res) => {
+  let availableClass = [];
   const {
     day,
     duration,
@@ -19,13 +20,14 @@ const getEmptyClassHandler = asyncHandler(async (req, res) => {
   const formattedFloor = floor.toLowerCase();
 
   const sessions = await getSessionByFilter(day, start_time, end_time);
-
   const classrooms = await getAllClassroom();
-
-  const availableClass = classrooms
-    .filter((classroom) => sessions
-      .some((session) => session.classroom !== classroom._id));
-
+  if (sessions.length === 0) {
+    availableClass = classrooms;
+  } else {
+    availableClass = classrooms
+      .filter((classroom) => sessions
+        .some((session) => session.classroom !== classroom._id));
+  }
   const emptyClass = await getEmptyClass(availableClass, formattedCapacity, formattedFloor);
   if (emptyClass.length === 0) {
     errorHandler({

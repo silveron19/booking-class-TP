@@ -23,9 +23,6 @@ async function getRequestsById(id, sort) {
     })
     .exec();
 
-  if (!result) {
-    return null;
-  }
   return result;
 }
 
@@ -57,9 +54,6 @@ async function getRequestsByQuery(id, status, sort) {
     })
     .exec();
 
-  if (!result) {
-    return null;
-  }
   return result;
 }
 
@@ -72,9 +66,6 @@ async function getRequestDetailById(id) {
     })
     .exec();
 
-  if (!result) {
-    return null;
-  }
   return result;
 }
 
@@ -91,19 +82,11 @@ async function rejectRequest(id, why) {
     })
     .exec();
 
-  if (!result) {
-    return null;
-  }
-
   return result;
 }
 
 async function deleteRequestById(requestId) {
   const result = await Request.findByIdAndDelete(requestId);
-
-  if (!result) {
-    return null;
-  }
 
   return result;
 }

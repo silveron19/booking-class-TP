@@ -5,9 +5,6 @@ async function getSessionsByDepartment(department) {
   const sessions = await Session.find({ department })
     .populate('subject', 'name')
     .exec();
-  if (!sessions) {
-    return null;
-  }
 
   const result = sessions.map((session) => ({
     ...session.toObject(),
@@ -33,9 +30,6 @@ async function updateSessionById(request) {
   )
     .populate('subject', 'name')
     .exec();
-  if (!session) {
-    return null;
-  }
 
   const result = {
     ...session.toObject(),
@@ -58,9 +52,6 @@ async function getSessionsByDate(userId, deviceDay) {
     })
     .exec();
 
-  if (!result) {
-    return null;
-  }
   return result;
 }
 
@@ -76,9 +67,6 @@ async function getSessionsByUser(userId) {
     })
     .exec();
 
-  if (!result) {
-    return null;
-  }
   return result;
 }
 
@@ -101,9 +89,6 @@ async function createRequestBySession(
     reason,
   });
 
-  if (!result) {
-    return null;
-  }
   return result;
 }
 
@@ -113,9 +98,7 @@ async function getSessionByFilter(day, start_time, end_time) {
       day, start_time, end_time,
     },
   );
-  if (!result) {
-    return null;
-  }
+
   return result;
 }
 
