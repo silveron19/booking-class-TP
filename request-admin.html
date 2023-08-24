@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;
+    0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;
+    1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style-admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet"
+    href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+</head>
+
+<body>
+    <main>   
+        <div id="edit-popup">
+            <div class="close-btn" onclick="show()">&times;</div>
+            <div class="edit-content">
+                <div class="edit-info">
+                    <div><img src="images/calendar-icon.png" alt="trash" id="calendar"></div>
+                        <div>
+                            <div id="edit-nama">A Analta Dwiyanto (D121211023)<br></div>
+                            <div id="edit-tanggal">Rabu, 21 Oktober 2020 | 08.00 WITA</div>
+                        </div>
+                </div>
+                Nama Mata Kuliah :
+                <div class="edit-matkul">Rekayasa Perangkat Lunak</div>
+                Jadwal Baru :
+                <div class="edit-jadwal">Rabu, 20 September 2023 Pukul 07.30 - 08.30</div>
+                Kelas Baru :
+                <div class="edit-kelas">CR100 | 201</div>
+                Alasan :
+                <div class="edit-alasan">Dosen ingin mengganti kelas</div>
+                <div class="respond-user">
+                    <div class="conf-change" onclick="show()">Terima</div>
+                    <div class="conf-change" onclick="showreason()">Tolak</div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="reason-popup">
+            <div class="close-btn" onclick="erasetext(); showreason();">&times;</div>
+            <div class="edit-content">
+                <div class="edit-info">
+                    <div><img src="images/calendar-icon.png" alt="trash" id="calendar"></div>
+                        <div>
+                            <div id="edit-nama">A Analta Dwiyanto (D121211023)<br></div>
+                            <div id="edit-tanggal">Rabu, 21 Oktober 2020 | 08.00 WITA</div>
+                        </div>
+                </div>
+                Alasan penolakan :
+                <div class="respond-alasan"> 
+                    <textarea id="alasan" class="textarea-custom" placeholder="Berikan alasan" 
+                    rows="" cols="" name="" form="" maxlength="100" oninput="countchar()"></textarea>
+                    <p id="showdata">0/100</p>
+                </div>
+                <div class="respond-user">
+                    <div class="conf-change" onclick="erasetext(); showreason(); show()">Kirim</div>
+            </div>
+        </div>
+        </div>
+        
+	    <div class="main-content">  
+		    <div class="main-nav">
+			    <div class="search-bar">
+				  	<form>
+                        <input type="text" placeholder="Masukkan pencarian">
+                    </form>
+    		    </div>
+                <div class="dropdown-container">
+			    <div class="dropdown">
+                    <div class="select">
+                        <span class="selected">Terbaru</span>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <li class="active">Terbaru</li>
+                        <li>Terlama</li>
+                    </ul>
+                </div>
+                </div>
+		    </div>
+            <div class="content">
+                <div class="request" onclick="show()">
+                    <div class="request-status">
+                        <div class="request-user"><img src="images/request-user.png"></div>
+                    </div>
+                        <div class="request-info">
+                            <div class="request-id">
+                                <div class="req-name">A analta Dwiyanto</div>
+                                <div class="req-nim">D121211023</div>
+                                <div class="line"></div>
+                                <div class="req-class">Rekayasa perangkat lunak</div>
+                            </div>
+                            <h3 class="request-date">25 Juni</h3>
+                        </div>
+                </div>
+
+                <div class="request" onclick="show()">
+                    <div class="request-status">
+                        <div class="request-user"><img src="images/request-user.png"></div>
+                    </div>
+                        <div class="request-info">
+                            <div class="request-id">
+                                <div class="req-name">A analta Dwiyanto</div>
+                                <div class="req-nim">D121211023</div>
+                                <div class="line"></div>
+                                <div class="req-class">Rekayasa perangkat lunak</div>
+                            </div>
+                            <h3 class="request-date">25 Juni</h3>
+                        </div>
+                </div>
+
+                <div class="request" onclick="show()">
+                    <div class="request-status">
+                        <div class="request-user"><img src="images/request-user.png"></div>
+                    </div>
+                        <div class="request-info">
+                            <div class="request-id">
+                                <div class="req-name">A analta Dwiyanto</div>
+                                <div class="req-nim">D121211023</div>
+                                <div class="line"></div>
+                                <div class="req-class">Rekayasa perangkat lunak</div>
+                            </div>
+                            <h3 class="request-date">25 Juni</h3>
+                        </div>
+                </div>
+            </div>
+	    </div>/
+    </main>
+</body>
+<script src="js/script.js"></script>
+</html>

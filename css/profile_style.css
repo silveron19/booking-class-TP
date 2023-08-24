@@ -1,0 +1,187 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; 
+      margin-top: 150px; 
+  }
+
+  .profile-container {
+    display: flex;
+    align-items: flex-start; 
+    width: 60%;
+    min-width: 750px;
+  }
+
+  .profile-picture-container {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    border: 2px solid #ccc; 
+    margin-right: 4vw;
+    overflow: hidden; 
+    transition: filter 0.3s; 
+    user-select: none;
+  }
+
+  .profile-picture-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+  }
+
+  .profile-picture-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    background-image: url("../images/edit.png");
+    background-size: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0; 
+    transition: opacity 0.3s;
+  }
+
+  .profile-picture-container:hover::before {
+    opacity: 1; 
+  }
+
+  .personal-info {
+      border: 2px solid #DDDDDD; 
+      border-radius: 8px;
+      flex: 1; 
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); 
+  }
+
+  .info-title {
+      font-weight: bold;
+      padding: 20px 5vw;
+      border-bottom: 1px solid #DDDDDD; 
+      font-size: 20px;
+      user-select: none;
+  }
+
+  .info-details {
+      padding: 15px 5vw;
+      font-size: 20px;
+      font-weight: bold;
+      color: #000000;
+      user-select: none;
+      
+  }
+
+  .info-details strong {
+    color: #888; 
+    user-select: none;
+  }
+
+@media (min-width: 1024px) {
+  .popup-menu {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 0 30px;
+  }
+
+  .hamburger-icon {
+    display: inline-block;
+  }
+
+  .notification-popup {
+    top: 60px;
+    right: 142px;
+  }
+
+  .popup-menu {
+    margin-top: 80px;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .icons {
+    margin-left: auto;
+    margin-right: 30px;
+  }
+
+  .profile-icon {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: 60px;
+    padding: 0 20px;
+  }
+
+  .hamburger-icon {
+    display: inline-block;
+  }
+  
+  .notification-popup {
+    top: 45px;
+    right: 132px;
+    min-width: 325px;
+  }
+
+  .popup-menu {
+    margin-top: 60px;
+  }
+
+  .logo h1 {
+    font-size: 24px;
+  }
+
+  .menu ul li {
+    margin: 0 5px;
+  }
+
+  .menu ul li a {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .container {
+    margin-top: 80px;
+    overflow-x: hidden;
+  }
+  
+  .profile-container {
+    flex-direction: column; 
+    align-items: center; 
+    margin-right: 0; 
+    margin-bottom: 20px;
+  }
+  
+  .profile-picture-container {
+    display: flex;
+    justify-content: center;
+    margin-right: 0;
+    margin-bottom: 25px;
+  }
+  
+  .info-title {
+    font-size: 16px;
+    padding: 15px 50px;
+  }
+  
+  .info-details {
+    font-size: 16px;
+    padding: 8px 50px;
+  }
+  
+}

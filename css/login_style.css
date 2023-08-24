@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Readex+Pro:wght@200;300;400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", "Readex Pro", sans-serif;
+}
+
+body {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+
+.wrapper {
+    width: 60vw;
+    min-width: 725px;
+    background: #fff;
+    border: 1px solid #004267;
+    padding: 0px;
+    margin: 78px auto; 
+    display: flex;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+/* Banner */
+.banner {
+    flex: 1;
+    overflow: hidden;
+    position: relative;  
+    border-radius: 0 14px 14px 0;
+    user-select: none;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+}
+
+.banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #004267;
+    opacity: 0.85; 
+    z-index: 1; 
+}
+
+.content {
+    flex: 1;
+    padding: 5vw 6vw;
+}
+
+.wrapper header {
+    position: relative;
+    text-align: left;
+}
+
+.wrapper header h1 {
+    font-size: 34px;
+    font-weight: bold;
+    color: #004267;
+}
+
+.wrapper header p {
+    font-size: 17px;
+    font-weight: medium;
+}
+
+.wrapper form {
+    margin: 25px 0;
+}
+
+form .field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+form .field.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        margin-left: 0px;
+    }
+    20%,
+    80% {
+        margin-left: -12px;
+    }
+    40%,
+    60% {
+        margin-left: 12px;
+    }
+}
+
+form .field .input-area {
+    height: 50px;
+    width: 100%;
+    position: relative;
+}
+
+form input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    padding: 0 45px;
+    font-size: 18px;
+    background: none;
+    caret-color: #5372F0;
+    border-radius: 5px;
+    border: 1px solid #bfbfbf;
+    border-bottom-width: 2px;
+    transition: all 0.2s ease;
+}
+
+form .field input:focus,
+form .field.valid input {
+    border-color: #004267;
+}
+
+form .field.shake input,
+form .field.error input {
+    border-color: #dc3545;
+}
+
+.field .input-area i {
+    position: absolute;
+    top: 50%;
+    font-size: 18px;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.input-area .icon {
+    left: 15px;
+    color: #bfbfbf;
+    transition: color 0.2s ease;
+}
+
+.input-area .error-icon {
+    right: 15px;
+    color: #dc3545;
+}
+
+form input:focus~.icon,
+form .field.valid .icon {
+    color: #004267;
+}
+
+form .field.shake input:focus~.icon,
+form .field.error input:focus~.icon {
+    color: #bfbfbf;
+}
+
+form input::placeholder {
+    color: #bfbfbf;
+    font-size: 17px;
+}
+
+form .field .error-txt {
+    color: #dc3545;
+    text-align: left;
+    margin-top: 5px;
+}
+
+form .field .error {
+    display: none;
+}
+
+form .field.shake .error,
+form .field.error .error {
+    display: block;
+}
+
+form .pass-txt {
+    float: right;
+    margin-top: -10px;
+}
+
+form .pass-save {
+    display: flex;
+    float: left;
+    margin-top: -10px;
+    margin-left: 2px;
+    align-items: center; 
+}
+
+form .pass-save label {
+    white-space: nowrap; 
+    margin-left: 8px;
+}
+
+.wrapper a {
+    color: #5372F0;
+    text-decoration: none;
+}
+
+.wrapper a:hover {
+    text-decoration: underline;
+}
+
+form input[type="submit"] {
+    height: 50px;
+    margin-top: 30px;
+    color: #fff;
+    padding: 0;
+    border: none;
+    background: #004267;
+    cursor: pointer;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+    transform: translateY(-2px); 
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes flash {
+    0%, 15% {
+        opacity: 1;
+    }
+    10% {
+        opacity: 0.2; 
+    }
+}
+
+form input[type="submit"]:active {
+    animation: flash 0.3s; 
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        width: 480px;
+        min-width: 0px;
+        max-height: 645px;
+        flex-direction: column; 
+        align-items: center; 
+        margin: 10px auto;
+        border-radius: 14px;
+    }
+
+    .banner {
+        width: 100%;
+        height: 10px;
+        border-radius: 14px; 
+        margin-bottom: 10px; 
+    }
+
+    .content {
+        padding: 30px 10px; 
+        max-width: 320px; 
+        width: 100%; 
+    }
+
+    .wrapper header h1 {
+        font-size: 24px; 
+    }
+
+    .wrapper header p {
+        font-size: 14px; 
+    }
+
+    form .field .error-txt {
+        font-size: 12px; 
+    }
+
+    form .field .input-area {
+        height: 35px; 
+    }
+
+    form input[type="submit"] {
+        height: 35px; 
+        margin-top: 15px; 
+    }
+}

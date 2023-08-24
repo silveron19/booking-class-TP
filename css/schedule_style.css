@@ -1,0 +1,716 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+.schedule {
+  margin: 120px 300px 60px;
+  text-align: left;
+}
+
+
+.schedule .day {
+  margin-bottom: 20px;
+}
+
+.schedule .day h2 {
+  color: #000000;
+  font-size: 23px;
+  font-weight: bold;
+  padding-left: 15px;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.schedule .course {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  border: 2px solid #004267;
+  border-radius: 12px;
+  padding: 10px;
+  transition: all 0.2s ease; 
+}
+
+.schedule .course:hover,
+.schedule .course.active {
+  background-color: #004267;
+}
+
+.schedule .course:hover .room,
+.schedule .course:hover .course-name,
+.schedule .course.active .room,
+.schedule .course.active .course-name {
+  color: #ffffff;
+}
+
+
+.schedule .course .room {
+  background-color: transparent;
+  color: #004267;
+  font-size: 17px;
+  font-weight: bold;
+  padding: 5px 10px;
+  margin-right: 10px;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.schedule .course .course-name {
+  color: #004267;
+  font-size: 23px;
+  font-weight: bold;
+  font-family: 'Readex Pro', sans-serif;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.popup-container {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  padding-top: 64px;
+  padding-bottom: 64px;
+  background-color: #ffffff;
+  z-index: 9999;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  overflow-y: clip;
+}
+
+.popup-content {
+  height: 100%;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.close-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  user-select: none;
+  z-index: 9999;
+}
+
+.close-icon img {
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 24px;
+  height: 24px;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.close-icon:hover img {
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+
+.course-details {
+  margin-top: 60px;
+  margin-left: 50px;
+  user-select: none;
+  cursor: default;
+}
+
+.course-details .course-name span {
+  font-weight: bold;
+  font-size: 36px;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.course-details > div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.course-details img {
+  width: 42px;
+  height: 42px;
+  margin-right: 45px;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.course-details span {
+  font-size: 20px;
+  font-weight: 599;
+  color: #000000;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.popup-container.show {
+  transform: translateX(0);
+}
+
+.course-details {
+  margin-top: 0px;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.course-details .course-name {
+  margin-bottom: 10px;
+}
+
+.course-details .course-name .course-title {
+  font-weight: bold;
+  font-size: 26px;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.course-details .course-schedule .course-time {
+  font-size: 20px;
+  padding-left: 87px;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.additional-info {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-left: 60px;
+  user-select: none;
+}
+
+.additional-info span {
+  font-size: 20px;
+  color: #000000;
+  margin-bottom: 10px;
+  user-select: none;
+  cursor: default;
+}
+
+.buttons-container {
+  display: flex;
+  user-select: none;
+  margin-top: 22px;
+  cursor: default;
+}
+
+.custom-button {
+  background-color: #004267;
+  color: #ffffff;
+  font-size: 20px;
+  border: none;
+  padding: 14px 138px;
+  border-radius: 8px;
+  user-select: none;
+  cursor: default;
+}
+
+.custom-button:hover {
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-hari {
+  display: block;
+  font-size: 20px;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.dropdown-hari {
+  font-family: "Montserrat", sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url('../images/arrow_down.png') no-repeat;
+  background-size: 20px 10px;
+  background-position: right 14px center;
+  border: 2px solid #000000; 
+  color: #ccc;
+}
+
+#hari {
+  width: calc(100% - 50px); 
+  height: 51px;
+  border-radius: 8px;
+  font-size: 20px;
+  text-align: left;
+  padding: 6px 12px;
+  padding-right: 12px;
+  user-select: none;
+  flex: 1;
+}
+
+#hari option {
+  border-radius: 8px;
+  padding: 8px;
+  color: #000;
+}
+
+.dropdown-hari option:checked {
+  color: #000;
+}
+
+#hari:focus {
+  border-color: #000000;
+}
+
+.session-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-session {
+  display: block;
+  font-size: 20px;
+  color: #000000;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.dropdown-session {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url('../images/arrow_down.png') no-repeat;
+  background-size: 20px 10px;
+  background-position: right 14px center; 
+  border: 2px solid #000000;
+  color: #ccc;
+}
+
+#session {
+  width: calc(100% - 50px); 
+  height: 51px;
+  border-radius: 8px;
+  font-size: 20px;
+  text-align: left;
+  padding: 6px 12px;
+  padding-right: 12px;
+  user-select: none;
+  flex: 1;
+}
+
+#session option {
+  border-radius: 8px;
+  padding: 8px;
+  color: #000;
+}
+
+.dropdown-session option:checked {
+  color: #000;
+}
+
+#session:focus {
+  border-color: #000000;
+}
+
+.container {
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.field-label {
+  display: block;
+  font-size: 20px;
+  color: #000000;
+  margin: 10px 0px;
+}
+
+.field-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  position: sticky
+}
+
+#myInput {
+  width: 77%;
+  height: 51px;
+  border-radius: 8px;
+  font-size: 20px;
+  color: #cccccc;
+  border: 2px solid #000000;
+  text-align: left;
+  padding: 6px 12px;
+  user-select: none;
+  flex: 1;
+  color: black;
+  box-sizing: border-box;
+}
+
+#myInput::placeholder {
+  color: #cccccc;
+}
+
+.field-input:hover .dropdown-button {
+  pointer-events: auto;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  font-size: 20px;
+  top: 52px;
+  left: 0;
+  background-color: #f9f9f9;
+  width: calc(100% - 52px);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  z-index: 1;
+  max-height: 216.5px;
+  overflow-y: auto;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.show {
+  display: block;
+}
+
+.dropdown-button {
+  top: 20px;
+  right: 0;
+  margin-right: 10px;
+  height: 100%;
+  width: 40px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transform: translateX(calc(100% - 75px));
+}
+
+.dropdown-button img {
+  width: 20px;
+  height: 10px;
+}
+
+.character-counter-container {
+  width: calc(100% - 70.5px);
+  border-radius: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.character-counter {
+  position: absolute;
+  bottom: 0px;
+  right: -12px;
+  font-size: 12px;
+  color: gray;
+}
+
+.form-field {
+  margin-bottom: 0px;
+}
+
+.form-field label {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+#alasan::placeholder {
+  color: #cccccc;
+  font-size: 20px;
+}
+
+.form-field textarea {
+  font-size: 20px;
+  width: 100%;
+  height: 80px;
+  resize: none;
+  padding: 8px;
+  padding-bottom: 15px;
+  border: 2px solid #000000;
+  border-radius: 8px;
+}
+
+#submitButton {
+  width: calc(100% - 52px);
+  background-color: #004267;
+  color: white;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-top: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+#submitButton:hover {
+  background-color: #003152;
+}
+
+.successpopup {
+  position: fixed;
+  bottom: 20px;
+  right: -320px; 
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 24px;
+  padding-right: 35px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); 
+  display: none;
+  animation: slideInFromRight 0.7s ease-in-out forwards; 
+  user-select: none;
+}
+
+.successpopup-content {
+  display: flex;
+  align-items: center;
+}
+
+.successpopup-icon {
+  width: 55px;
+  height: 55px;
+  margin-right: 10px;
+  user-select: none;
+}
+
+.successpopup-icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.successpopup-message {
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 10px;
+  user-select: none;
+}
+
+.successpopup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.successpopup-close img {
+  width: 14px;
+  height: 14px;
+}
+
+@keyframes slideInFromRight {
+  to {
+    right: 20px;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    right: 20px;
+  }
+  to {
+    right: -320px;
+  }
+}
+
+.error-message {
+  display: none;
+  color: red;
+  font-size: 18px;
+  align-items: center;
+}
+
+.error-message img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.field-container.error .error-message {
+  display: flex;
+}
+
+@media (min-width: 1024px) {
+  .popup-menu {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 0 30px;
+  }
+
+  .hamburger-icon {
+    display: inline-block;
+  }
+
+  .notification-popup {
+    top: 60px;
+    right: 142px;
+  }
+
+  .popup-menu {
+    margin-top: 80px;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .icons {
+    margin-left: auto;
+    margin-right: 30px;
+  }
+
+  .profile-icon {
+    margin-left: 10px;
+  }
+
+  .popup-container {
+    width: 100%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .schedule {
+    margin: 120px 30px 60px;
+  }
+
+  .popup-container.show {
+    transform: none;
+  }
+
+  .custom-button {
+  padding: 7px 138px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: 60px;
+    padding: 0 20px;
+  }
+
+  .hamburger-icon {
+    display: inline-block;
+  }
+
+  .notification-popup {
+    top: 45px;
+    right: 132px;
+    min-width: 325px;
+  }
+
+  .popup-menu {
+    margin-top: 60px;
+  }
+
+  .logo h1 {
+    font-size: 24px;
+  }
+
+  .menu ul li {
+    margin: 0 5px;
+  }
+
+  .menu ul li a {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .notification-popup {
+    width: 34vw;
+  }
+
+  .schedule {
+    margin: 80px 20px 40px;
+  }
+
+  .schedule .day h2 {
+    font-size: 22px;
+  }
+
+  .schedule .course {
+    padding: 8px;
+  }
+
+  .schedule .course .room {
+    font-size: 18px;
+    padding: 3px 6px;
+    margin-right: 8px;
+  }
+
+  .schedule .course .course-name {
+    font-size: 22px;
+  }
+
+  .popup-container {
+    top: 60px;
+  }
+
+  .course-details img {
+    width: 24px;
+    height: 24px;
+    margin-right: 30px;
+  }
+
+  .course-details span {
+    font-size: 20px;
+    color: #000000;
+  }
+
+  .course-details {
+    margin-left: 50px;
+  }
+
+  .course-details .course-name .course-title {
+    font-size: 24px;
+  }
+
+  .course-details .course-schedule .course-time {
+    font-size: 20px;
+    padding-left: 56px;
+  }
+
+  .custom-button {
+    padding: 7px 138px;
+  }
+}

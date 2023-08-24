@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/schedule_style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <script src="js/schedule.js"></script>
+</head>
+<body>
+  <div class="schedule">
+    <div class="day">
+      <h2>Senin</h2>
+      <div class="course" onclick="showPopup(this, 'Rekayasa Perangkat Lunak', '08.00 - 10.00 WITA', 'Elly Warni, ST.,MT.', '33 orang', 'CR 201')">
+        <div class="room">CR 201</div>
+        <div class="course-name">Rekayasa Perangkat Lunak</div>
+      </div>
+      <div class="course" onclick="showPopup(this, 'Metode Komputasi Numerik', '10.30 - 12.30 WITA', 'Mukarramah Yusuf, B.Sc., M.Sc., Ph.D', '33 orang', 'CR 120')">
+        <div class="room">CR 120</div>
+        <div class="course-name">Metode Komputasi Numerik</div>
+      </div>
+    </div>
+  
+    <div class="day">
+      <h2>Selasa</h2>
+      <div class="course" onclick="showPopup(this, 'Sistem Operasi', '09.00 - 11.00 WITA', 'Dr. Eng. Ir. Muhammad Niswar, S.T., M.InfoTech.', '33 orang', 'CR 301')">
+        <div class="room">CR 301</div>
+        <div class="course-name">Sistem Operasi</div>
+      </div>
+      <div class="course" onclick="showPopup(this, 'Manajemen Basis Data', '13.00 - 15.00 WITA', 'A. Ais Prayogi, ST., M.Eng', '33 orang', 'CR 220')">
+        <div class="room">CR 220</div>
+        <div class="course-name">Manajemen Basis Data</div>
+      </div>
+      <div class="course" onclick="showPopup(this, 'Etika Profesi', '15.30 - 17.30 WITA', 'Dr. Eng. Ir. Dewiani, MT.', '33 orang', 'CR G20')">
+        <div class="room">CR G20</div>
+        <div class="course-name">Etika Profesi</div>
+      </div>
+    </div>
+  
+    <div class="day">
+      <h2>Rabu</h2>
+      <div class="course" onclick="showPopup(this, 'Keamanan Digital', '10.00 - 12.00 WITA', 'Dr. Eng. Ady Wahyudi Paundu, ST., MT', '33 orang', 'CR 301')">
+        <div class="room">CR 301</div>
+        <div class="course-name">Keamanan Digital</div>
+      </div>
+    </div>
+  
+    <div class="day">
+      <h2>Kamis</h2>
+      <div class="course" onclick="showPopup(this, 'Jaringan Komputer', '14.00 - 16.00 WITA', 'Dr. Eng. Ir. Muhammad Niswar, S.T., M.InfoTech.', '33 orang', 'CR 301')">
+        <div class="room">CR 301</div>
+        <div class="course-name">Jaringan Komputer</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="popupContainer" class="popup-container">
+    <div class="popup-content">
+      <div class="close-icon" onclick="hidePopup()">
+        <img src="images/exit.png" alt="Close Icon">
+      </div>
+      <div class="course-details">
+        <div class="course-name">
+          <img src="images/calendar.png" alt="Calendar Icon">
+          <span id="courseTitle" class="course-title"></span>
+        </div>
+        <div class="course-schedule">
+          <span id="courseTime" class="course-time"></span>
+        </div>
+        <div class="course-lecturer">
+          <img src="images/graduation_cap.png" alt="Lecturer Icon">
+          <span id="lecturerName"></span>
+        </div>
+        <div class="course-participant">
+          <img src="images/participant.png" alt="Participant Icon">
+          <span id="participants"></span>
+        </div>
+        <div class="course-room">
+          <img src="images/location.png" alt="Room Icon">
+          <span id="roomNumber"></span>
+        </div>
+      </div>
+      <div class="additional-info">
+        <span id="infoText">Kamu adalah ketua kelas mata kuliah ini</span>
+        <div id="buttonGroup">
+          <button id="changeScheduleButton" class="custom-button" onclick="showForm()">Ganti Jadwal</button>
+        </div>
+        <div class="form-group" id="form-group" style="display: none;">
+          <label for="hari" class="label-hari">Hari :</label>
+          <select id="hari" class="dropdown-hari" required>
+            <option value="" disabled selected hidden>Pilih Hari</option>
+            <option value="Senin">Senin</option>
+            <option value="Selasa">Selasa</option>
+            <option value="Rabu">Rabu</option>
+            <option value="Kamis">Kamis</option>
+            <option value="Jumat">Jumat</option>
+            <option value="Sabtu">Sabtu</option>
+          </select>
+          <div class="error-message" id="hari-error">
+            <img src="images/alert.png" alt="Peringatan">
+            Wajib Diisi
+          </div>
+        </div>
+        <div class="session-form" id="session-form" style="display: none;">
+          <label for="session" class="label-session">Durasi Mata Kuliah :</label>
+          <select id="session" class="dropdown-session" required>
+            <option value="" disabled selected hidden>Pilih Sesi</option>
+            <option value="7:30 - 9:30">7:30 - 9:30</option>
+            <option value="10:00 - 12:30">10:00 - 12:30</option>
+            <option value="13:00 - 15:30">13:00 - 15:30</option>
+          </select>
+          <div class="error-message" id="session-error">
+            <img src="images/alert.png" alt="Peringatan">
+            Wajib Diisi
+          </div>
+        </div>
+        <div class="container" id="myContainer" style="display: none;">
+          <label for="myInput" class="field-label">Kelas Baru :</label>
+          <div class="field-input">
+            <input type="text" id="myInput" onclick="toggleDropdown()" oninput="filterFunction()" placeholder="Pilih Kelas" required>
+            <div class="dropdown-button"> 
+              <img src="images/arrow_down.png" alt="Dropdown" onclick="toggleDropdown()">
+            </div>
+            <div id="myDropdown" class="dropdown-content">
+              <a href="#" onclick="selectOption('G01')">G01</a>
+              <a href="#" onclick="selectOption('G02')">G02</a>
+              <a href="#" onclick="selectOption('G03')">G03</a>
+              <a href="#" onclick="selectOption('G04')">G04</a>
+              <a href="#" onclick="selectOption('G05')">G05</a>
+              <a href="#" onclick="selectOption('G06')">G06</a>
+              <a href="#" onclick="selectOption('G07')">G07</a>
+              <a href="#" onclick="selectOption('G08')">G08</a>
+              <a href="#" onclick="selectOption('G09')">G09</a>
+              <a href="#" onclick="selectOption('101')">101</a>
+              <a href="#" onclick="selectOption('102')">102</a>
+              <a href="#" onclick="selectOption('103')">103</a>
+              <a href="#" onclick="selectOption('104')">104</a>
+              <a href="#" onclick="selectOption('105')">105</a>
+              <a href="#" onclick="selectOption('106')">106</a>
+              <a href="#" onclick="selectOption('107')">107</a>
+              <a href="#" onclick="selectOption('108')">108</a>
+              <a href="#" onclick="selectOption('109')">109</a>
+              <a href="#" onclick="selectOption('201')">201</a>
+              <a href="#" onclick="selectOption('202')">202</a>
+              <a href="#" onclick="selectOption('203')">203</a>
+              <a href="#" onclick="selectOption('204')">204</a>
+              <a href="#" onclick="selectOption('205')">205</a>
+              <a href="#" onclick="selectOption('206')">206</a>
+              <a href="#" onclick="selectOption('207')">207</a>
+              <a href="#" onclick="selectOption('208')">208</a>
+              <a href="#" onclick="selectOption('209')">209</a>
+              <a href="#" onclick="selectOption('301')">301</a>
+              <a href="#" onclick="selectOption('302')">302</a>
+              <a href="#" onclick="selectOption('303')">303</a>
+              <a href="#" onclick="selectOption('304')">304</a>
+              <a href="#" onclick="selectOption('305')">305</a>
+              <a href="#" onclick="selectOption('306')">306</a>
+              <a href="#" onclick="selectOption('307')">307</a>
+              <a href="#" onclick="selectOption('308')">308</a>
+              <a href="#" onclick="selectOption('309')">309</a>              
+            </div>
+          </div>
+          <div class="error-message" id="myInput-error">
+            <img src="images/alert.png" alt="Peringatan">
+            Wajib Diisi
+          </div>
+        </div>
+        <div class="form-field" id="reasonfield" style="display: none;">
+          <label class="field-label" for="alasan">Alasan :</label>
+          <div class="character-counter-container">
+            <textarea id="alasan" name="alasan" maxlength="100" oninput="countCharacters()" placeholder="Berikan Alasan" required></textarea>
+            <p class="character-counter" id="characterCount">0/100</p>
+          </div>
+          <div class="error-message" id="alasan-error">
+            <img src="images/alert.png" alt="Peringatan">
+            Wajib Diisi
+          </div>
+        </div>
+        <button id="submitButton" onclick="collectData();" style="display: none;">Kirim</button>        
+      </div>    
+    </div>
+  </div>
+
+  <div id="successpopup" class="successpopup">
+    <div class="successpopup-content">
+      <img src="images/success2.png" class="successpopup-icon" alt="Success Icon" />
+      <span class="successpopup-message">Terima kasih, permintaan Anda sedang diproses!</span>
+    </div>
+    <button class="successpopup-close" onclick="closeSuccessPopup()">
+      <img src="images/close2.png" alt="Close Icon" />
+    </button>
+  </div>
+
+</body>
+</html>

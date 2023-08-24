@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/navbar_style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <script src="js/navbar.js"></script>
+</head>
+<body>
+  <div class="navbar">
+    <div class="hamburger-icon" onclick="toggleMenu()"></div>
+    <div class="logo">
+      <h1>mRuangan</h1>
+    </div>
+    <div class="menu">
+      <ul id="navbar-menu" class="menu">
+        <li><a href="#" data-target="home">Home</a></li>
+        <li><a href="#" data-target="request">Request</a></li>
+        <li><a href="#" data-target="schedule">Schedule</a></li>
+        <li><a href="#" data-target="classroom">Classroom</a></li>
+      </ul>                  
+    </div>
+    <div class="icons">
+      <div class="notification-icon" onclick="showNotificationPopup()">
+        <img src="images/notification.png" alt="Notification Icon" id="notificationBtn">
+      </div>
+      <div class="notification-popup" id="notificationPopup">
+        <div class="notification-header">
+          <h2>Notification</h2>
+        </div>
+        <div class="notification-content">
+          <p class="centered-text">Tidak ada notifikasi</p>
+        </div>
+      </div>
+      <div class="profile-icon" onclick="showmenuPopup(this)">
+        <div class="popup">
+          <img src="images/photo_profile.png" alt="Photo Profile">
+          <div class="menu-popup">
+            <div class="menu-item" data-target="profile" onclick="loadContent('profile.html')">
+              <img src="images/user.png" alt="Profile Icon">
+              <span>Profile</span>
+            </div>
+            <hr class="menu-divider">
+            <div class="menu-item" onclick="logout()">
+              <img src="images/logout.png" alt="Logout Icon">
+              <span>Logout</span>
+            </div>
+          </div>
+        </div>
+      </div>     
+    </div>
+  </div>
+  <div class="menu-overlay" onclick="toggleMenu()"></div>
+  <div class="popup-menu">
+    <ul class="hamburger-menu-list">
+      <li><a href="#" data-target="home"><span>Home</span><img src="images/arrow_up.png" alt="Arrow Icon"></a></li>
+      <li><a href="#" data-target="request"><span>Request</span><img src="images/arrow_up.png" alt="Arrow Icon"></a></li>
+      <li><a href="#" data-target="schedule"><span>Schedule</span><img src="images/arrow_up.png" alt="Arrow Icon"></a></li>
+      <li><a href="#" data-target="classroom"><span>Classroom</span><img src="images/arrow_up.png" alt="Arrow Icon"></a></li>
+    </ul>
+  </div>
+
+  <div id="content"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  // script untuk link menu navbar, hamburger menu, tombol profile, dan logout
+  $(document).ready(function() {
+    loadContent("home.html");
+    $("#navbar-menu li:first-child").addClass("active");
+
+    $("#navbar-menu a").click(function(e) {
+      e.preventDefault();
+      var targetPage = $(this).attr("data-target") + ".html";
+      loadContent(targetPage);
+      $("#navbar-menu li").removeClass("active");
+      $(this).parent().addClass("active");
+    });
+
+    $("#hamburger-menu").click(function() {
+      $(this).toggleClass("open");
+      $("ul.hamburger-menu-list").toggleClass("active");
+    });
+
+    $("ul.hamburger-menu-list li a").click(function(e) {
+      e.preventDefault();
+      var targetPage = $(this).attr("data-target") + ".html";
+      loadContent(targetPage);
+      $("#hamburger-menu").removeClass("open");
+      $("ul.hamburger-menu-list").removeClass("active");
+    });
+  });
+
+  function loadContent(page) {
+    $("#content").load(page);
+      // Menghapus kelas aktif dari elemen-elemen menu-item
+      const menuItems = document.querySelectorAll('.menu ul li');
+      menuItems.forEach(item => {
+        item.classList.remove('active');
+      });
+      }
+
+      function logout() {
+        window.location.href = 'index.html';
+      }
+  </script>
+<html>
